@@ -91,7 +91,7 @@ Looking at the `Cat` class's constructor is a good reference point for making an
 
 ```java
 public Cat(float x, float y) {
-    super(new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24), x, y, "STAND_RIGHT");
+    super(new SpriteSheet(ImageLoader.load("JackSparrow.png"), 24, 24), x, y, "STAND_RIGHT");
     gravity = .5f;
     terminalVelocityY = 6f;
     jumpHeight = 14.5f;
@@ -101,7 +101,7 @@ public Cat(float x, float y) {
 }
 ```
 
-The image file for the cat player is `Cat.png`.
+The image file for the cat player is `JackSparrow.png`.
 
 ## Player Moving
 
