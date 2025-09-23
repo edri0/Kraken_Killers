@@ -26,7 +26,7 @@ It is recommend that if you are creating a new `GameObject` with animations, a n
 
 The `SpriteSheet` class is used to define a sprite sheet that the `AnimatedSprite` class uses for loading animation graphics.
 A sprite sheet is one image file that contains multiple graphics (frames images) for a sprite. 
-For example, below is the sprite sheet image file `Cat.png` which is used for the cat player character:
+For example, below is the sprite sheet image file `JackSparrow.png` which is used for the cat player character:
 
 ![cat-spritesheet.png](../../../assets/images/cat-spritesheet.png)
 
@@ -39,7 +39,7 @@ From here, a `SpriteSheet` class instance can be created, which will be passed i
 Here is an example of creating a `SpriteSheet` instance that the `Cat` class uses with the above cat sprite sheet image:
 
 ```java
-new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24)
+new SpriteSheet(ImageLoader.load("JackSparrow.png"), 32, 32)
 ```
 
 The 24x24 is the size of each sprite in the sheet (width and height).
