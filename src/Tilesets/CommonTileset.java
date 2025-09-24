@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class CommonTileset extends Tileset {
 
     public CommonTileset() {
-        super(ImageLoader.load("CommonTileset.png"), 16, 16, 3);
+        super(ImageLoader.load("CommonTileset2.png"), 16, 16, 3);
     }
 
     @Override
@@ -261,6 +261,117 @@ public class CommonTileset extends Tileset {
                 .withTileLayout(SlopeTileLayoutUtils.createTopLeft30SlopeLayout(spriteWidth, (int) tileScale));
 
         mapTiles.add(leftStairsTopTile);
+
+//Kraken Killers
+        //  boat bottom left 
+        Frame boatBottomLEFTFrame = new FrameBuilder(getSubImage(5, 4))  // column = 4, row = 5
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder boatBottomLEFTTile = new MapTileBuilder(boatBottomLEFTFrame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(boatBottomLEFTTile);
+
+        //  boat bottom right
+        Frame boatBottomRIGHTFrame = new FrameBuilder(getSubImage(5, 5))  // column = 5, row = 5
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder boatBottomRIGHTTile = new MapTileBuilder(boatBottomRIGHTFrame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(boatBottomRIGHTTile);
+
+                //  left corner side boat 
+                Frame boatLeftFrame = new FrameBuilder(getSubImage(5, 0))  // column = 0, row = 5
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder boatLeftTile = new MapTileBuilder(boatLeftFrame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(boatLeftTile);
+
+                //  right corner side boat 
+                Frame boatRightFrame = new FrameBuilder(getSubImage(5, 3))  // column = 3, row = 5
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder boatRightTile = new MapTileBuilder(boatRightFrame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(boatRightTile);
+
+                //  Window 1 
+                Frame Window1Frame = new FrameBuilder(getSubImage(5, 1))  // column = 1, row = 5
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder Window1Tile = new MapTileBuilder(Window1Frame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(Window1Tile);
+
+                //  Window 2 
+                Frame Window2Frame = new FrameBuilder(getSubImage(5, 2))  // column = 2, row = 5
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder Window2Tile = new MapTileBuilder(Window2Frame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(Window2Tile);
+      
+        //   bottom 2 
+        Frame Bottom2Frame = new FrameBuilder(getSubImage(3, 5))  // column = 5, row = 3
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder Bottom2Tile = new MapTileBuilder(Bottom2Frame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(Bottom2Tile);
+
+        //   bottom 3
+        Frame Bottom3Frame = new FrameBuilder(getSubImage(4, 5))  // column = 5, row = 4
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder Bottom3Tile = new MapTileBuilder(Bottom3Frame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(Bottom3Tile);
+
+        //   Post
+        Frame PostFrame = new FrameBuilder(getSubImage(4, 3))  // column = 3, row = 4
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder PostTile = new MapTileBuilder(PostFrame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(PostTile);
+
+        //   Flag
+        Frame FlagFrame = new FrameBuilder(getSubImage(4, 2))  // column = 2, row = 4
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder FlagTile = new MapTileBuilder(FlagFrame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(FlagTile);
+
+        //   Light
+        Frame LightFrame = new FrameBuilder(getSubImage(4, 4))  // column = 4, row = 4
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder LightTile = new MapTileBuilder(LightFrame)
+                .withTileType(TileType.NOT_PASSABLE); 
+
+        mapTiles.add(LightTile);
 
         return mapTiles;
     }
