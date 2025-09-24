@@ -14,8 +14,8 @@ public class MenuScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected int currentMenuItemHovered = 0; // current menu item being "hovered" over
     protected int menuItemSelected = -1;
-    protected SpriteFont playGame;
-    protected SpriteFont credits;
+    protected SpriteFont Campaign;
+    protected SpriteFont Arcade;
     protected Map background;
     protected int keyPressTimer;
     protected int pointerLocationX, pointerLocationY;
@@ -27,12 +27,12 @@ public class MenuScreen extends Screen {
 
     @Override
     public void initialize() {
-        playGame = new SpriteFont("PLAY GAME", 200, 123, "Arial", 30, new Color(49, 207, 240));
-        playGame.setOutlineColor(Color.black);
-        playGame.setOutlineThickness(3);
-        credits = new SpriteFont("CREDITS", 200, 223, "Arial", 30, new Color(49, 207, 240));
-        credits.setOutlineColor(Color.black);
-        credits.setOutlineThickness(3);
+        Campaign = new SpriteFont("CAMPAIGN", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        Campaign.setOutlineColor(Color.black);
+        Campaign.setOutlineThickness(3);
+        Arcade = new SpriteFont("ARCADE", 200, 223, "Arial", 30, new Color(49, 207, 240));
+        Arcade.setOutlineColor(Color.black);
+        Arcade.setOutlineThickness(3);
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
         keyPressTimer = 0;
@@ -66,13 +66,13 @@ public class MenuScreen extends Screen {
 
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
-            playGame.setColor(new Color(255, 215, 0));
-            credits.setColor(new Color(49, 207, 240));
+            Campaign.setColor(new Color(255, 215, 0));
+            Arcade.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = 130;
         } else if (currentMenuItemHovered == 1) {
-            playGame.setColor(new Color(49, 207, 240));
-            credits.setColor(new Color(255, 215, 0));
+            Campaign.setColor(new Color(49, 207, 240));
+            Arcade.setColor(new Color(255, 215, 0));
             pointerLocationX = 170;
             pointerLocationY = 230;
         }
@@ -93,8 +93,8 @@ public class MenuScreen extends Screen {
 
     public void draw(GraphicsHandler graphicsHandler) {
         background.draw(graphicsHandler);
-        playGame.draw(graphicsHandler);
-        credits.draw(graphicsHandler);
+        Campaign.draw(graphicsHandler);
+        Arcade.draw(graphicsHandler);
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
     }
 }

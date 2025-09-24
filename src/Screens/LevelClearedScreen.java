@@ -22,7 +22,6 @@ public class LevelClearedScreen extends Screen {
 
     @Override
     public void update() {
-
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
