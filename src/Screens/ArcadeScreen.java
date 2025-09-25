@@ -12,17 +12,17 @@ import Players.Cat;
 import Utils.Point;
 
 // This class is for when the platformer game is actually being played
-public class PlayLevelScreen extends Screen implements PlayerListener {
+public class ArcadeScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
-    protected PlayLevelScreenState playLevelScreenState;
+    protected ArcadeScreenState arcadeScreenState;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
 
-    public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
+    public ArcadeScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
@@ -38,12 +38,12 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
-        this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        this.arcadeScreenState = ArcadeScreenState.RUNNING;
     }
 
     public void update() {
         // based on screen state, perform specific actions
-        switch (playLevelScreenState) {
+        switch (arcadeScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
                 player.update();
@@ -71,7 +71,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
-        switch (playLevelScreenState) {
+        switch (arcadeScreenState) {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
@@ -85,22 +85,22 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         }
     }
 
-    public PlayLevelScreenState getPlayLevelScreenState() {
-        return playLevelScreenState;
+    public ArcadeScreenState getArcadeScreenState() {
+        return arcadeScreenState;
     }
 
     @Override
     public void onLevelCompleted() {
-        if (playLevelScreenState != PlayLevelScreenState.LEVEL_COMPLETED) {
-            playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
+        if (arcadeScreenState != ArcadeScreenState.LEVEL_COMPLETED) {
+            arcadeScreenState = ArcadeScreenState.LEVEL_COMPLETED;
             levelCompletedStateChangeStart = true;
         }
     }
 
     @Override
     public void onDeath() {
-        if (playLevelScreenState != PlayLevelScreenState.LEVEL_LOSE) {
-            playLevelScreenState = PlayLevelScreenState.LEVEL_LOSE;
+        if (arcadeScreenState != ArcadeScreenState.LEVEL_LOSE) {
+            arcadeScreenState = ArcadeScreenState.LEVEL_LOSE;
         }
     }
 
@@ -113,7 +113,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
 
     // This enum represents the different states this screen can be in
-    private enum PlayLevelScreenState {
+    private enum ArcadeScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
     }
 }

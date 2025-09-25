@@ -30,18 +30,18 @@ Pass either method an image file and it will read it in.
 
 The `ImageLoader` class will look for image files relative to the directory defined as the `RESOURCES_PATH`,
 which is set in the `Config` class. By default, it is set to a `Resources/` directory at the root of the project.
-If an image is placed in that `Resources/` directory named "cat.png", the file name can be supplied directly
+If an image is placed in that `Resources/` directory named "JackSparrow.png", the file name can be supplied directly
 to the `ImageLoader` methods.
 
 ```java
-BufferedImage catImage = ImageLoader.load("cat.png");
+BufferedImage catImage = ImageLoader.load("JackSparrow.png");
 ```
 
 It is fine to add subfolders to the `Resource` directory, just be sure to include that in the path to the image.
 For example, if there was a folder named `CatPics` inside the `Resources` folder, the path would look like this:
 
 ```java
-BufferedImage catImage = ImageLoader.load("CatPics/cat.png");
+BufferedImage catImage = ImageLoader.load("CatPics/JackSparrow.png");
 ```
 
 ### Changing resources directory
@@ -74,7 +74,7 @@ to allow for a transparent color to be specified instead of just using the defau
 
 ```java
 // sets transparent color to blue
-BufferedImage catImage = ImageLoader.load("cat.png", Color.blue);
+BufferedImage catImage = ImageLoader.load("JackSparrow.png", Color.blue);
 ```
 
 ### Changing default transparent color
