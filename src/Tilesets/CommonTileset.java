@@ -373,6 +373,16 @@ public class CommonTileset extends Tileset {
 
         mapTiles.add(LightTile);
 
+      //   Cloud
+      Frame CloudFrame = new FrameBuilder(getSubImage(0, 6))  // column = 4, row = 4
+      .withScale(tileScale)
+      .build();
+
+MapTileBuilder CloudTile = new MapTileBuilder(CloudFrame)
+      .withTileType(TileType.NOT_PASSABLE); 
+
+mapTiles.add(CloudTile);
+
         return mapTiles;
     }
 }
