@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class CommonTileset extends Tileset {
 
     public CommonTileset() {
-        super(ImageLoader.load("CommonTileset2.png"), 16, 16, 3);
+        super(ImageLoader.load("CommonTileSet3.png"), 16, 16, 3);
     }
 
     @Override
@@ -240,29 +240,30 @@ public class CommonTileset extends Tileset {
 
         mapTiles.add(rightSlopeTile);
 
-        // left 30 degree slope bottom
-        Frame leftStairsBottomFrame = new FrameBuilder(getSubImage(4, 0))
+   //Kraken Killers
+        // BLUESKY
+        Frame BLUESKYFrame = new FrameBuilder(getSubImage(4, 0))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder leftStairsBottomTile = new MapTileBuilder(leftStairsBottomFrame)
-                .withTileType(TileType.SLOPE)
+        MapTileBuilder BLUESKYTile = new MapTileBuilder(BLUESKYFrame)
+                .withTileType(TileType.PASSABLE)
                 .withTileLayout(SlopeTileLayoutUtils.createBottomLeft30SlopeLayout(spriteWidth, (int) tileScale));
 
-        mapTiles.add(leftStairsBottomTile);
+        mapTiles.add(BLUESKYTile);
 
-        // left 30 degree slope top
-        Frame leftStairsTopFrame = new FrameBuilder(getSubImage(4, 1))
+
+        // SAND
+        Frame SANDFrame = new FrameBuilder(getSubImage(4, 1))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder leftStairsTopTile = new MapTileBuilder(leftStairsTopFrame)
-                .withTileType(TileType.SLOPE)
+        MapTileBuilder SANDTile = new MapTileBuilder(SANDFrame)
+                .withTileType(TileType.NOT_PASSABLE)
                 .withTileLayout(SlopeTileLayoutUtils.createTopLeft30SlopeLayout(spriteWidth, (int) tileScale));
 
-        mapTiles.add(leftStairsTopTile);
+        mapTiles.add(SANDTile);
 
-//Kraken Killers
         //  boat bottom left 
         Frame boatBottomLEFTFrame = new FrameBuilder(getSubImage(5, 4))  // column = 4, row = 5
                 .withScale(tileScale)
