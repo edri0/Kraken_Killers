@@ -37,8 +37,6 @@ public class ShopScreen extends Screen{
 
 
 
-
-
     public ShopScreen(PlayerInventory inventory){
         this.inventory = inventory;
         seedCatalog();
@@ -76,22 +74,24 @@ public class ShopScreen extends Screen{
                 inShop = true;
                 keyPressTimer = 14;
             
-                }
-                else if (Keyboard.isKeyDown(Key.W) || Keyboard.isKeyDown(Key.UP)) {
-                    if (inShop)
-                        shopIndex = Math.max(0, shopIndex - 1);
-                    else    
-                        ownedIndex = Math.max(0, ownedIndex - 1);
+            }
+            if (Keyboard.isKeyDown(Key.W) || Keyboard.isKeyDown(Key.UP)) {
+               if (inShop)
+               shopIndex = Math.max(0, shopIndex - 1);
+               else    
+                    ownedIndex = Math.max(0, ownedIndex - 1);
                     keyPressTimer = 14;
+                    return;
 
-                } else if (Keyboard.isKeyDown(Key.S) || Keyboard.isKeyDown(Key.DOWN)){
+                } else if (Keyboard.isKeyDown(Key.S)) {
                     if (inShop)
                         shopIndex = Math.min(shopItems.size() - 1, shopIndex + 1);
                     else 
                         ownedIndex = Math.min(inventory.getOwned().size() - 1, ownedIndex + 1);
                     keyPressTimer = 14;
+                    return;
                 }
-                    else if (Keyboard.isKeyDown(Key.SPACE) || Keyboard.isKeyDown(Key.ENTER)) {
+                 if (Keyboard.isKeyDown(Key.SPACE) || Keyboard.isKeyDown(Key.ENTER)) {
                     if(inShop && !shopItems.isEmpty()){
                         inventory.buy(shopItems.get(shopIndex));
 

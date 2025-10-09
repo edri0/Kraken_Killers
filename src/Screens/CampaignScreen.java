@@ -28,7 +28,7 @@ import Screens.ShopScreen;
 
 // This class is for when the platformer game is actually being played
 public class CampaignScreen extends Screen implements PlayerListener {
-    protected ScreenCoordinator screenCoordinator;
+    protected final ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
     protected CampaignScreenState campaignScreenState;
@@ -38,7 +38,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
     protected boolean levelCompletedStateChangeStart;
     
  
-    private PlayerInventory playerInventory;
+    private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
 
@@ -49,8 +49,10 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
 
 
-    public CampaignScreen(ScreenCoordinator screenCoordinator) {
+    public CampaignScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory) {
+
         this.screenCoordinator = screenCoordinator;
+        this.playerInventory = inventory;
     }
 
     public void initialize() {
@@ -81,7 +83,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
-        this.playerInventory = new PlayerInventory();
+
         this.shopScreen = new ShopScreen(playerInventory);
         this.shopScreen.initialize();
 
@@ -147,7 +149,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 String money = PlayerInventory.fmt(playerInventory.getMoneyCents());
                 int w = ScreenManager.getScreenWidth();
                 graphicsHandler.drawFilledRectangle(w - 170, 10, 160, 30, new Color(22,29,44,200));
-                graphicsHandler.drawString(money, w - 160,32, new Font("Ariel", Font.BOLD, 18), Color.WHITE);
+                graphicsHandler.drawString(money, w - 160,32, new Font("Arial", Font.BOLD, 18), Color.WHITE);
                 break;
             case SHOP:{
                 map.draw(graphicsHandler);

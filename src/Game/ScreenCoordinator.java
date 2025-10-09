@@ -3,6 +3,7 @@ package Game;
 import Engine.DefaultScreen;
 import Engine.GraphicsHandler;
 import Engine.Screen;
+import Inventory.PlayerInventory;
 import Screens.ArcadeScreen;
 import Screens.MenuScreen;
 import Screens.CampaignScreen;
@@ -22,6 +23,8 @@ public class ScreenCoordinator extends Screen {
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
 	protected GameState gameState;
 	protected GameState previousGameState;
+
+	private final PlayerInventory sharedInventory = new PlayerInventory();
 
 	public GameState getGameState() {
 		return gameState;
@@ -52,10 +55,10 @@ public class ScreenCoordinator extends Screen {
 						currentScreen = new PickPlayerScreen(this); 
 						break; 
 					case LEVEL:
-						currentScreen = new CampaignScreen(this);
+						currentScreen = new CampaignScreen(this, sharedInventory);
 						break;
-					case CREDITS:
-						currentScreen = new ArcadeScreen(this);
+					case ARCADE:
+						currentScreen = new ArcadeScreen(this, sharedInventory);
 						break;
 				}
 				currentScreen.initialize();

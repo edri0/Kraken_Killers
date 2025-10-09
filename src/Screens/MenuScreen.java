@@ -35,7 +35,7 @@ public class MenuScreen extends Screen {
     public void initialize() {
         hasSave = new File(SAVE_FILE).exists();
 
-        NewGame = new SpriteFont("NEW GAME", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        NewGame = new SpriteFont("CAMPAIGN", 200, 123, "Arial", 30, new Color(49, 207, 240));
         NewGame.setOutlineColor(Color.black);
         NewGame.setOutlineThickness(3);
 
