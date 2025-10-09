@@ -7,6 +7,7 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
+import Maps.Level2;
 import Maps.TestMap;
 import Players.Cat;
 import Utils.Point;
@@ -41,6 +42,7 @@ public class ArcadeScreen extends Screen implements PlayerListener {
         this.arcadeScreenState = ArcadeScreenState.RUNNING;
     }
 
+    //Campaign
     public void update() {
         // based on screen state, perform specific actions
         switch (arcadeScreenState) {
@@ -54,11 +56,16 @@ public class ArcadeScreen extends Screen implements PlayerListener {
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
+                    map = new Level2();
                 } else {
                     levelClearedScreen.update();
                     screenTimer--;
-                    if (screenTimer == 0) {
-                        goBackToMenu();
+                    if (screenTimer <= 0) {
+                        this.map = new Level2();
+                        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+                        this.player.setMap(map);
+                        this.player.addListener(this);
+                        this.arcadeScreenState = ArcadeScreenState.RUNNING;
                     }
                 }
                 break;

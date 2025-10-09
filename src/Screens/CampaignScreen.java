@@ -22,6 +22,7 @@ import Level.PlayerListener;
 import Maps.TestMap;
 import Players.Cat;
 import Utils.Point;
+import Maps.Level2;
 import Screens.ShopScreen;
 
 // This class is for when the platformer game is actually being played
@@ -115,6 +116,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     screenTimer--;
                     if (screenTimer == 0) {
                         goBackToMenu();
+                        //map = new Level2();
                     }
                 }
                 break;
