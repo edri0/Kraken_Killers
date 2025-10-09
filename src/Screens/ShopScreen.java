@@ -83,7 +83,7 @@ public class ShopScreen extends Screen{
                     keyPressTimer = 14;
                     return;
 
-                } else if (Keyboard.isKeyDown(Key.S)) {
+                } else if (Keyboard.isKeyDown(Key.DOWN)) {
                     if (inShop)
                         shopIndex = Math.min(shopItems.size() - 1, shopIndex + 1);
                     else 
@@ -133,7 +133,7 @@ public class ShopScreen extends Screen{
             Item it = shopItems.get(i);
             boolean selected = inShop && ( i == shopIndex);
             String line = it.name + " - " + PlayerInventory.fmt(it.costCents) + " [" + it.type + "]";
-            drawRow(g,panelShop.x + 16, panelShop.y + 32 + i *28, line, selected);
+            drawRow(g,panelShop.x + 16, panelShop.y + 32 + i * 28, line, selected);
            }
 
            g.drawFilledRectangle(actionBox.x, actionBox.y, actionBox.width, actionBox.height, new Color(46,83,125));

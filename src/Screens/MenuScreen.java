@@ -124,7 +124,7 @@ public class MenuScreen extends Screen {
             } else if (menuItemSelected == 1 && hasSave){
                 screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1 && !hasSave || (menuItemSelected == 2)) {
-                screenCoordinator.setGameState(GameState.CREDITS);
+                screenCoordinator.setGameState(GameState.ARCADE);
             }
         }
     }
