@@ -1,5 +1,11 @@
 package Screens;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.File;
+
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Game.GameState;
@@ -10,6 +16,7 @@ import Level.PlayerListener;
 import Maps.TestMap;
 import Players.Cat;
 import Utils.Point;
+import Maps.Level2;
 
 // This class is for when the platformer game is actually being played
 public class CampaignScreen extends Screen implements PlayerListener {
@@ -21,12 +28,28 @@ public class CampaignScreen extends Screen implements PlayerListener {
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
+    
+ 
+    private int levelIndex = 0;
+    private static final String SAVE_FILE = "campaign_level_save.txt";
+
+
+
 
     public CampaignScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     public void initialize() {
+        if (new File(SAVE_FILE).exists()) {
+            loadProgress();
+        } else {
+            levelIndex = 0;
+        }
+        
+
+        this.map = loadMapForIndex(levelIndex);
+
         // define/setup map
         this.map = new TestMap();
 
@@ -59,6 +82,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     screenTimer--;
                     if (screenTimer == 0) {
                         goBackToMenu();
+                        //map = new Level2();
                     }
                 }
                 break;
@@ -94,6 +118,10 @@ public class CampaignScreen extends Screen implements PlayerListener {
         if (campaignScreenState != CampaignScreenState.LEVEL_COMPLETED) {
             campaignScreenState = CampaignScreenState.LEVEL_COMPLETED;
             levelCompletedStateChangeStart = true;
+
+            levelIndex++;
+            saveProgress();
+
         }
     }
 
@@ -105,13 +133,51 @@ public class CampaignScreen extends Screen implements PlayerListener {
     }
 
     public void resetLevel() {
-        initialize();
+        this.map = loadMapForIndex(levelIndex);
+        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        this.player.setMap(map);
+        this.player.addListener(this);
+
+        campaignScreenState = CampaignScreenState.RUNNING;
+        levelCompletedStateChangeStart = false;
     }
 
     public void goBackToMenu() {
+        saveProgress();
         screenCoordinator.setGameState(GameState.MENU);
     }
+    
 
+    private void saveProgress(){
+        try (FileWriter writer = new FileWriter(SAVE_FILE)) {
+            writer.write("level=" + levelIndex + "\n");
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    private void loadProgress(){
+        try(BufferedReader reader = new BufferedReader(new FileReader(SAVE_FILE))){
+            String line = reader.readLine();
+            if (line != null && line.startsWith("level=")) {
+                levelIndex = Integer.parseInt(line.split("=")[1]);
+            } else{
+                levelIndex = 0;
+            }
+
+        } catch (Exception e) {
+            levelIndex = 0;
+        }
+    }
+    private void clearProgress(){
+        try {
+            new File(SAVE_FILE).delete();
+
+        } catch (Exception ignored) {}
+    }
+    private Map loadMapForIndex(int idx){
+        return new TestMap();
+    }
     // This enum represents the different states this screen can be in
     private enum CampaignScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
