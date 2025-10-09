@@ -53,15 +53,16 @@ public class TestMap extends Map {
         enhancedMapTiles.add(endLevelBox);
 
         return enhancedMapTiles;
-    }
+    } 
 
-    @Override
+    //@Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Walrus walrus = new Walrus(getMapTile(30, 10).getLocation().subtractY(13));
-        npcs.add(walrus);
+        //Walrus walrus = new Walrus(getMapTile(30, 10).getLocation().subtractY(13));
+        //npcs.add(walrus);
 
         return npcs;
+        
     }
 }

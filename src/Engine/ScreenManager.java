@@ -12,6 +12,8 @@ public class ScreenManager {
     private Screen currentScreen;
     private static Rectangle screenBounds = new Rectangle(0, 0, 0, 0);
 
+    
+
     public void initialize(Rectangle screenBounds) {
         ScreenManager.screenBounds = screenBounds;
         setCurrentScreen(new DefaultScreen());
@@ -46,4 +48,7 @@ public class ScreenManager {
     public static Rectangle getScreenBounds() {
         return screenBounds;
     }
+
+   
 }
+
