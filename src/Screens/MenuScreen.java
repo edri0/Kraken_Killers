@@ -35,7 +35,7 @@ public class MenuScreen extends Screen {
     public void initialize() {
         hasSave = new File(SAVE_FILE).exists();
 
-        NewGame = new SpriteFont("NEW GAME", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        NewGame = new SpriteFont("CAMPAIGN", 200, 123, "Arial", 30, new Color(49, 207, 240));
         NewGame.setOutlineColor(Color.black);
         NewGame.setOutlineThickness(3);
 
@@ -56,6 +56,10 @@ public class MenuScreen extends Screen {
     public void update() {
         // update background map (to play tile animations)
         background.update(null);
+
+        if(keyPressTimer >0){
+            keyPressTimer--;
+        }
 
         // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
         if (Keyboard.isKeyDown(Key.DOWN) &&  keyPressTimer == 0) {
@@ -120,7 +124,7 @@ public class MenuScreen extends Screen {
             } else if (menuItemSelected == 1 && hasSave){
                 screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1 && !hasSave || (menuItemSelected == 2)) {
-                screenCoordinator.setGameState(GameState.CREDITS);
+                screenCoordinator.setGameState(GameState.ARCADE);
             }
         }
     }

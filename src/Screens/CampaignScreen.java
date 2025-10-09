@@ -5,11 +5,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
+import java.awt.Color;
+import java.awt.Font;
 
 import Engine.GraphicsHandler;
 import Engine.Screen;
+import Engine.ScreenManager;
+import Engine.Key;
+import Engine.Keyboard;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Inventory.PlayerInventory;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
@@ -17,10 +23,11 @@ import Maps.TestMap;
 import Players.Cat;
 import Utils.Point;
 import Maps.Level2;
+import Screens.ShopScreen;
 
 // This class is for when the platformer game is actually being played
 public class CampaignScreen extends Screen implements PlayerListener {
-    protected ScreenCoordinator screenCoordinator;
+    protected final ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
     protected CampaignScreenState campaignScreenState;
@@ -30,14 +37,21 @@ public class CampaignScreen extends Screen implements PlayerListener {
     protected boolean levelCompletedStateChangeStart;
     
  
+    private final PlayerInventory playerInventory;
+    private ShopScreen shopScreen;
+    private boolean sToggleLock = false;
+
+
     private int levelIndex = 0;
     private static final String SAVE_FILE = "campaign_level_save.txt";
 
 
 
 
-    public CampaignScreen(ScreenCoordinator screenCoordinator) {
+    public CampaignScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory) {
+
         this.screenCoordinator = screenCoordinator;
+        this.playerInventory = inventory;
     }
 
     public void initialize() {
@@ -61,6 +75,10 @@ public class CampaignScreen extends Screen implements PlayerListener {
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
+
+        this.shopScreen = new ShopScreen(playerInventory);
+        this.shopScreen.initialize();
+
         this.campaignScreenState = CampaignScreenState.RUNNING;
     }
 
@@ -70,9 +88,27 @@ public class CampaignScreen extends Screen implements PlayerListener {
         switch (campaignScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
+                boolean sDown = Keyboard.isKeyDown(Key.S);
+                if( sDown && !sToggleLock){
+                    sToggleLock = true;
+                    campaignScreenState = CampaignScreenState.SHOP;
+                }
+                if(!sDown) sToggleLock = false;
+
                 player.update();
                 map.update(player);
                 break;
+            case SHOP: {
+                shopScreen.update();
+
+                sDown = Keyboard.isKeyDown(Key.S);
+                if(sDown && !sToggleLock){
+                    sToggleLock = true;
+                    campaignScreenState = CampaignScreenState.RUNNING;
+                }
+                if (!sDown) sToggleLock = false;
+                break;
+            }
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
                 if (levelCompletedStateChangeStart) {
@@ -95,6 +131,8 @@ public class CampaignScreen extends Screen implements PlayerListener {
             case LEVEL_LOSE:
                 levelLoseScreen.update();
                 break;
+           
+                
         }
     }
     public void draw(GraphicsHandler graphicsHandler) {
@@ -103,13 +141,25 @@ public class CampaignScreen extends Screen implements PlayerListener {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
+
+                String money = PlayerInventory.fmt(playerInventory.getMoneyCents());
+                int w = ScreenManager.getScreenWidth();
+                graphicsHandler.drawFilledRectangle(w - 170, 10, 160, 30, new Color(22,29,44,200));
+                graphicsHandler.drawString(money, w - 160,32, new Font("Arial", Font.BOLD, 18), Color.WHITE);
                 break;
+            case SHOP:{
+                map.draw(graphicsHandler);
+                player.draw(graphicsHandler);
+                shopScreen.draw(graphicsHandler);
+                break;
+            }
             case LEVEL_COMPLETED:
                 levelClearedScreen.draw(graphicsHandler);
                 break;
             case LEVEL_LOSE:
                 levelLoseScreen.draw(graphicsHandler);
                 break;
+
         }
     }
 
@@ -184,6 +234,6 @@ public class CampaignScreen extends Screen implements PlayerListener {
     }
     // This enum represents the different states this screen can be in
     private enum CampaignScreenState {
-        RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
+        RUNNING, LEVEL_COMPLETED, LEVEL_LOSE, SHOP
     }
 }
