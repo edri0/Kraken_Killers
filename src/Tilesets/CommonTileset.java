@@ -109,14 +109,16 @@ public class CommonTileset extends Tileset {
         mapTiles.add(treeTrunkTile);
 
         // tree top leaves
-        Frame treeTopLeavesFrame = new FrameBuilder(getSubImage(1, 1))
+        // BLUESKY
+        Frame DarkSkyFrame = new FrameBuilder(getSubImage(1, 1))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder treeTopLeavesTile = new MapTileBuilder(treeTopLeavesFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+        MapTileBuilder DarkSkyTile = new MapTileBuilder(DarkSkyFrame)
+                .withTileType(TileType.PASSABLE)
+                .withTileLayout(SlopeTileLayoutUtils.createBottomLeft30SlopeLayout(spriteWidth, (int) tileScale));
 
-        mapTiles.add(treeTopLeavesTile);
+        mapTiles.add(DarkSkyTile);
 
         // yellow flower
         Frame[] yellowFlowerFrames = new Frame[] {
