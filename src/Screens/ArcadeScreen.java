@@ -8,7 +8,8 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
-import Players.Cat;
+import Players.JackSparrow;
+import Players.WillTurner;
 import Utils.Point;
 
 // This class is for when the platformer game is actually being played
@@ -31,7 +32,14 @@ public class ArcadeScreen extends Screen implements PlayerListener {
         this.map = new TestMap();
 
         // setup player
-        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        Point playerStart = map.getPlayerStartPosition(); 
+        if (ScreenCoordinator.selectedPlayer.equals("JackSparrow")){
+            this.player = new JackSparrow(playerStart.x, playerStart.y); 
+        }
+        else if (ScreenCoordinator.selectedPlayer.equals("WillTurner")){
+            this.player = new WillTurner(playerStart.x, playerStart.y); 
+        }
+
         this.player.setMap(map);
         this.player.addListener(this);
 

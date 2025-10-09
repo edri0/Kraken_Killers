@@ -22,6 +22,7 @@ public class ScreenManager {
         screen.initialize();
         this.currentScreen = screen;
     }
+ 
 
     public void update() {
         currentScreen.update();

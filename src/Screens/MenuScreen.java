@@ -112,13 +112,13 @@ public class MenuScreen extends Screen {
             keyLocker.unlockKey(Key.SPACE);
         }
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-            menuItemSelected = currentMenuItemHovered;
+            menuItemSelected = currentMenuItemHovered;  
 
             if (menuItemSelected == 0 ) {
                 new File(SAVE_FILE).delete();
-                screenCoordinator.setGameState(GameState.LEVEL);
+                screenCoordinator.setGameState(GameState.PLAYER);
             } else if (menuItemSelected == 1 && hasSave){
-                screenCoordinator.setGameState(GameState.LEVEL);
+                screenCoordinator.setGameState(GameState.PLAYER);
             } else if (menuItemSelected == 1 && !hasSave || (menuItemSelected == 2)) {
                 screenCoordinator.setGameState(GameState.CREDITS);
             }

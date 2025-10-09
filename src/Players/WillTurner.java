@@ -12,10 +12,10 @@ import java.util.HashMap;
 
 // This is the class for the Cat player character
 // basically just sets some values for physics and then defines animations
-public class Cat extends Player {
+public class WillTurner extends Player {
 
-    public Cat(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("JackSparrow.png"), 32, 32), x, y, "STAND_RIGHT");
+    public WillTurner(float x, float y) {
+        super(new SpriteSheet(ImageLoader.load("WillTurnerSpriteSheet.png"), 32, 32), x, y, "STAND_RIGHT");
         gravity = .5f;
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
@@ -182,3 +182,4 @@ public class Cat extends Player {
         }};
     }
 }
+
