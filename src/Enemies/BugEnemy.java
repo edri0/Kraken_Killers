@@ -1,4 +1,4 @@
-/* */
+/* 
 package Enemies;
 
 import Builders.FrameBuilder;
@@ -124,3 +124,4 @@ public class BugEnemy extends Enemy {
         }};
     }
 }
+*/
