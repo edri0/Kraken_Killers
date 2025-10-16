@@ -65,7 +65,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
         this.map = loadMapForIndex(levelIndex);
 
         // define/setup map
-        this.map = new TestMap();
+        //this.map = new TestMap();
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
