@@ -7,6 +7,7 @@ import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
 import Level.*;
+import NPCs.Chest;
 import NPCs.Walrus;
 import Tilesets.CommonTileset;
 import Utils.Direction;
@@ -59,8 +60,8 @@ public class TestMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        //Walrus walrus = new Walrus(getMapTile(30, 10).getLocation().subtractY(13));
-        //npcs.add(walrus);
+        Chest chest = new Chest(getMapTile(30, 10).getLocation().subtractY(13));
+        npcs.add(chest);
 
         return npcs;
         
