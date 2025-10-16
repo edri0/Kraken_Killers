@@ -4,12 +4,12 @@ import Engine.GraphicsHandler;
 import Engine.Screen;
 import Engine.ScreenManager;
 import SpriteFont.SpriteFont;
-
 import java.awt.*;
 
-// This class is for the level cleared screen
+// Simple automatic Level Cleared screen — no keypress needed
 public class LevelClearedScreen extends Screen {
-    protected SpriteFont winMessage;
+
+    private SpriteFont winMessage;
 
     public LevelClearedScreen() {
         initialize();
@@ -17,16 +17,22 @@ public class LevelClearedScreen extends Screen {
 
     @Override
     public void initialize() {
-        winMessage = new SpriteFont("Level Cleared", 320, 239, "Arial", 30, Color.white);
+        winMessage = new SpriteFont("LEVEL CLEARED!", 320, 239, "Arial", 30, Color.WHITE);
     }
 
     @Override
     public void update() {
+        // Nothing needed — CampaignScreen handles timing and transitions
     }
 
+    @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        // paint entire screen black and dislpay level cleared text
-        graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), Color.black);
+        graphicsHandler.drawFilledRectangle(
+            0, 0,
+            ScreenManager.getScreenWidth(),
+            ScreenManager.getScreenHeight(),
+            Color.BLACK
+        );
         winMessage.draw(graphicsHandler);
     }
 }

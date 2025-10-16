@@ -21,9 +21,13 @@ import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
 import Players.Cat;
-import Utils.Point;
+//import Utils.Point;
 import Maps.Level2;
+import Maps.Level3;
+import Maps.Level4;
+import Maps.Level5;
 import Screens.ShopScreen;
+
 
 // This class is for when the platformer game is actually being played
 public class CampaignScreen extends Screen implements PlayerListener {
@@ -111,20 +115,30 @@ public class CampaignScreen extends Screen implements PlayerListener {
             }
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
-                if (levelCompletedStateChangeStart) {
-                    screenTimer = 130;
-                    levelCompletedStateChangeStart = false;
-                    map = new Level2();
-                } else {
-                    levelClearedScreen.update();
-                    screenTimer--;
-                    if (screenTimer <= 0) {
-                        this.map = new Level2();
-                        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-                        this.player.setMap(map);
-                        this.player.addListener(this);
-                        this.campaignScreenState = CampaignScreenState.RUNNING;
+            if (levelCompletedStateChangeStart) {
+                screenTimer = 130;
+                levelCompletedStateChangeStart = false;
+            } else {
+                levelClearedScreen.update();
+                screenTimer--;
+                if (screenTimer <= 0) {
+                    levelIndex++;
+                    saveProgress();
+
+                    // Load next level dynamically
+                    Map nextMap = loadMapForIndex(levelIndex);
+                    if (nextMap == null) {
+                        // No more levels — reset to menu or end of campaign
+                        screenCoordinator.setGameState(GameState.MENU);
+                        return;
                     }
+
+                    this.map = nextMap;
+                    this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+                    this.player.setMap(map);
+                    this.player.addListener(this);
+                    this.campaignScreenState = CampaignScreenState.RUNNING;
+                }
                 }
                 break;
             // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
@@ -168,16 +182,15 @@ public class CampaignScreen extends Screen implements PlayerListener {
     }
 
     @Override
-    public void onLevelCompleted() {
-        if (campaignScreenState != CampaignScreenState.LEVEL_COMPLETED) {
-            campaignScreenState = CampaignScreenState.LEVEL_COMPLETED;
-            levelCompletedStateChangeStart = true;
-
-            levelIndex++;
-            saveProgress();
-
-        }
+  
+public void onLevelCompleted() {
+    if (campaignScreenState != CampaignScreenState.LEVEL_COMPLETED) {
+        campaignScreenState = CampaignScreenState.LEVEL_COMPLETED;
+        levelCompletedStateChangeStart = true;
+        // DON'T increment levelIndex here
     }
+}
+
 
     @Override
     public void onDeath() {
@@ -229,9 +242,17 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
         } catch (Exception ignored) {}
     }
-    private Map loadMapForIndex(int idx){
-        return new TestMap();
+    private Map loadMapForIndex(int idx) {
+        switch (idx) {
+            case 0: return new TestMap();
+            case 1: return new Level2();
+            case 2: return new Level3();
+            case 3: return new Level4(); // if you have it
+            case 4: return new Level5(); // if you have it
+            default: return null; // no more levels
+        }
     }
+    
     // This enum represents the different states this screen can be in
     private enum CampaignScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE, SHOP

@@ -14,10 +14,10 @@ import Inventory.PlayerInventory;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
-import Maps.Level2;
+//import Maps.Level2;
 import Maps.TestMap;
 import Players.Cat;
-import Utils.Point;
+//import Utils.Point;
 
 // This class is for when the platformer game is actually being played
 public class ArcadeScreen extends Screen implements PlayerListener {

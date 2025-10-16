@@ -126,7 +126,7 @@ public class Cat extends Player {
             put("CROUCH_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(4, 0))
                             .withScale(3)
-                            .withBounds(8, 12, 8, 6)
+                            .withBounds(8, 9, 8, 6)
                             .build()
             });
 
@@ -134,7 +134,7 @@ public class Cat extends Player {
                     new FrameBuilder(spriteSheet.getSprite(4, 0))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 12, 8, 6)
+                            .withBounds(8, 9, 8, 6)
                             .build()
             });
 
