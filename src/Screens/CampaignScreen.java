@@ -82,6 +82,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
         this.campaignScreenState = CampaignScreenState.RUNNING;
     }
 
+    //Campaign
     public void update() {
         // based on screen state, perform specific actions
         switch (campaignScreenState) {
@@ -113,12 +114,16 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
+                    map = new Level2();
                 } else {
                     levelClearedScreen.update();
                     screenTimer--;
-                    if (screenTimer == 0) {
-                        goBackToMenu();
-                        //map = new Level2();
+                    if (screenTimer <= 0) {
+                        this.map = new Level2();
+                        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+                        this.player.setMap(map);
+                        this.player.addListener(this);
+                        this.campaignScreenState = CampaignScreenState.RUNNING;
                     }
                 }
                 break;
@@ -130,7 +135,6 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 
         }
     }
-
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
         switch (campaignScreenState) {
