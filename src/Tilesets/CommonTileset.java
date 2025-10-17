@@ -16,6 +16,7 @@ public class CommonTileset extends Tileset {
 
     public CommonTileset() {
         super(ImageLoader.load("CommonTileSet3.png"), 16, 16, 3);
+        
     }
 
     @Override
@@ -53,10 +54,10 @@ public class CommonTileset extends Tileset {
 
         // sun
         Frame[] sunFrames = new Frame[]{
-                new FrameBuilder(getSubImage(2, 0), 50)
+                new FrameBuilder(getSubImage(2, 0))
                         .withScale(tileScale)
                         .build(),
-                new FrameBuilder(getSubImage(2, 1), 50)
+                new FrameBuilder(getSubImage(2, 1))
                         .withScale(tileScale)
                         .build()
         };
