@@ -7,12 +7,8 @@ import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
 import Level.*;
-<<<<<<< HEAD
 import NPCs.Chest;
 import NPCs.Walrus;
-=======
-//import NPCs.Walrus;
->>>>>>> 13a7320d62f92095bf8dc9c9716bb8773bb9a4d4
 import Tilesets.CommonTileset;
 import Utils.Direction;
 
