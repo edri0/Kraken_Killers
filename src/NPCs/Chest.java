@@ -33,11 +33,13 @@ public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
            put("Chest_Closed", new Frame[] {
                    new FrameBuilder(spriteSheet.getSprite(0, 0))
+                        .withBounds(8, 5, 16, 16)
                            .withScale(3)
                            .build()
            });
             put("Chest_Open", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 1))
+                    .withBounds(8, 5, 16, 16)
                             .withScale(3)
                             .build()
             });

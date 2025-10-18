@@ -18,7 +18,7 @@ import java.util.HashMap;
 // It walks back and forth between two set points (startLocation and endLocation)
 // Every so often (based on shootTimer) it will shoot a Fireball enemy
 public class DinosaurEnemy extends Enemy {
-    // start and end location defines the two points that it walks between
+    // start and end location defines the two points that it walks between 
     // is only made to walk along the x axis and has no air ground state logic, so make sure both points have the same Y value
     protected Point startLocation;
     protected Point endLocation;
@@ -30,8 +30,9 @@ public class DinosaurEnemy extends Enemy {
 
 
 
+
     public DinosaurEnemy(Point startLocation, Point endLocation, Direction facingDirection) {
-        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("enemy.png"), 32, 32), "WALK_RIGHT");
+        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("enemySpriteSheet.png"), 32, 32), "WALK_RIGHT");
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
@@ -41,6 +42,15 @@ public class DinosaurEnemy extends Enemy {
     @Override
     public void initialize() {
         super.initialize();
+       // dinosaurState = DinosaurState.WALK;
+       // previousDinosaurState = dinosaurState;
+        facingDirection = startFacingDirection;
+        if (facingDirection == Direction.RIGHT) {
+            currentAnimationName = "WALK_RIGHT";
+        } else if (facingDirection == Direction.LEFT) {
+            currentAnimationName = "WALK_LEFT";
+        }
+        airGroundState = AirGroundState.GROUND;
 
     }
 
@@ -70,6 +80,19 @@ public class DinosaurEnemy extends Enemy {
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(4, 2, 5, 13)
                             .build(),
+            });
+            put("HIT_ENEMY_LEFT", new Frame[]{
+                new FrameBuilder(spriteSheet.getSprite(1, 0),14)
+                .withScale(3)
+                .withBounds(4,2,5,13)
+                .build(),
+            });
+             put("HIT_ENEMY_RIGHT", new Frame[]{
+                new FrameBuilder(spriteSheet.getSprite(1, 0),14)
+                .withScale(3)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(4,2,5,13)
+                .build(),
             });
 
             

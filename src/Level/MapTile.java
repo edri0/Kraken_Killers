@@ -4,6 +4,7 @@ import Engine.GraphicsHandler;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 // Represents a map tile in a Map's tile map
