@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
 import Engine.ScreenManager;
-
-
+import GameObject.Sprite;
+import Inventory.Armor;
 import Inventory.Item;
 import Inventory.ItemType;
 import Inventory.PlayerInventory;
@@ -43,8 +45,22 @@ public class ShopScreen extends Screen{
 
     }
     private void seedCatalog(){
-        shopItems.add(new Item("Gun", 1500, ItemType.WEAPON));
-        shopItems.add(new Item("Sword", 1500, ItemType.WEAPON));
+        BufferedImage bronzeImg = ImageLoader.load("Bronze_armor.png");
+        BufferedImage ironImg = ImageLoader.load("Iron_armor.png");
+        BufferedImage diamondImg = ImageLoader.load("Diamond_armor.png");
+       
+       Sprite bronzeArmorSprite = new Sprite(bronzeImg);
+       Sprite ironArmorSprite = new Sprite(ironImg);
+       Sprite diamondArmorSprite = new Sprite(diamondImg);
+
+
+
+
+        shopItems.add(new Armor("Bronze Armor", 1500, 5, bronzeArmorSprite));
+        shopItems.add(new Armor("Iron Armor", 1500, 5, ironArmorSprite));
+        shopItems.add(new Armor("Diamond Armor", 1500, 5, diamondArmorSprite));
+
+        
         shopItems.add(new Item("Grappling hook", 1500, ItemType.WEAPON));
         shopItems.add(new Item("Shield", 1500, ItemType.ARMOR));
         shopItems.add(new Item("Underwater boots", 1500, ItemType.ARMOR));
