@@ -247,9 +247,9 @@ public void onLevelCompleted() {
             case 0: return new TestMap();
             case 1: return new Level2();
             case 2: return new Level3();
-            case 3: return new Level4(); // if you have it
-            case 4: return new Level5(); // if you have it
-            default: return null; // no more levels
+            case 3: return new Level4(); 
+            case 4: return new Level5(); 
+            default: return null; // no more levels yet
         }
     }
     
