@@ -46,18 +46,17 @@ public class ShopScreen extends Screen{
     }
     private void seedCatalog(){
         BufferedImage bronzeImg = ImageLoader.load("Bronze_armor.png");
-        BufferedImage ironImg = ImageLoader.load("Iron_armor.png");
-        BufferedImage diamondImg = ImageLoader.load("Diamond_armor.png");
-       
-       Sprite bronzeArmorSprite = new Sprite(bronzeImg);
-       Sprite ironArmorSprite = new Sprite(ironImg);
-       Sprite diamondArmorSprite = new Sprite(diamondImg);
-
-
-
-
+        Sprite bronzeArmorSprite = new Sprite(bronzeImg);
         shopItems.add(new Armor("Bronze Armor", 1500, 5, bronzeArmorSprite));
+
+
+        BufferedImage ironImg = ImageLoader.load("Iron_armor.png");
+        Sprite ironArmorSprite = new Sprite(ironImg);
         shopItems.add(new Armor("Iron Armor", 1500, 5, ironArmorSprite));
+
+
+        BufferedImage diamondImg = ImageLoader.load("Diamond_armor.png");
+        Sprite diamondArmorSprite = new Sprite(diamondImg);
         shopItems.add(new Armor("Diamond Armor", 1500, 5, diamondArmorSprite));
 
         
@@ -128,7 +127,7 @@ public class ShopScreen extends Screen{
            
            g.drawFilledRectangle(0,0,w,60, new Color(22,29,44));
            g.drawString("SHOP and INVENTORY (WASD + ENTER, Press S to close)", 20, 40, new Font("Ariel", Font.BOLD, 24), Color.WHITE);
-           g.drawString(PlayerInventory.fmt(inventory.getMoneyCents()), w-160, 40, new Font("Ariel", Font.BOLD, 20), Color.WHITE);
+           g.drawString("Cash: " + PlayerInventory.fmt(inventory.getMoneyCents()), actionBox.x + actionBox.width, actionBox.y +34, new Font("Ariel", Font.BOLD, 18), Color.WHITE);
 
 
            drawPanel(g, panelOwned, "INVENTORY ( <- / -> to switch)", new Color(31,47,70));
@@ -138,7 +137,7 @@ public class ShopScreen extends Screen{
            for (int i = 0; i< inventory.getOwned().size(); i++){
             Item it = inventory.getOwned().get(i);
             boolean selected = !inShop && (i== ownedIndex);
-            drawRow(g,panelOwned.x + 16, panelOwned.y + 32 + i + 28, it.name + " [" + it.type + "]", selected);
+            drawRow(g, panelOwned.x + 16, panelOwned.y + 32 + (i * 28), it.name + " [" + it.type + "]", selected);
         
            }
 
@@ -149,7 +148,7 @@ public class ShopScreen extends Screen{
             Item it = shopItems.get(i);
             boolean selected = inShop && ( i == shopIndex);
             String line = it.name + " - " + PlayerInventory.fmt(it.costCents) + " [" + it.type + "]";
-            drawRow(g,panelShop.x + 16, panelShop.y + 32 + i * 28, line, selected);
+            drawRow(g,panelShop.x + 16, panelShop.y + 32 + (i * 28), line, selected);
            }
 
            g.drawFilledRectangle(actionBox.x, actionBox.y, actionBox.width, actionBox.height, new Color(46,83,125));

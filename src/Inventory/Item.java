@@ -10,4 +10,13 @@ public class Item {
         this.costCents = costCents;
         this.type = type;
     }
+    public String getName(){
+        return name;
+    }
+    public int getCostCents(){
+        return costCents;
+    }
+    public ItemType getType(){
+        return type;
+    }
 }

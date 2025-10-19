@@ -1,14 +1,17 @@
 package Level;
 
+import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
+import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
 import Utils.AirGroundState;
 import Utils.Direction;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public abstract class Player extends GameObject {
@@ -410,10 +413,29 @@ public abstract class Player extends GameObject {
         return equippedArmor;
     }
     // Uncomment this to have game draw player's bounds to make it easier to visualize
-    /*
+   
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
+        if (equippedArmor != null && equippedArmor.getSprite() != null){
+            Sprite armorSprite = equippedArmor.getSprite();
+            
+            armorSprite.setX(getX());
+            armorSprite.setY(getY());
+            armorSprite.setScale(getScale());
+
+            float offsetX = 0;
+            float offsetY = 0;
+
+            armorSprite.setX(getX() + offsetX);
+            armorSprite.setY(getY() + offsetY);
+            armorSprite.setScale(getScale());
+
+            armorSprite.draw(graphicsHandler);
+
+
+        }
+        super.draw(graphicsHandler);
+       
     }
-    */
+    
 }

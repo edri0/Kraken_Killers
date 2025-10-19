@@ -27,11 +27,6 @@ public class PlayerInventory{
     }
 
     public boolean buy(Item item){
-        for (Item ownedItem : owned){
-            if(ownedItem.name.equals(item.name)){
-                return false;
-            }
-        }
         if(moneyCents >= item.costCents){
             moneyCents -= item.costCents;
             owned.add(item);
