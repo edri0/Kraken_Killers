@@ -33,13 +33,15 @@ public class ArcadeScreen extends Screen implements PlayerListener {
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
+    private PickPlayerScreen pickPlayerScreen;
 
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
 
-    public ArcadeScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory) {
+    public ArcadeScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory, PickPlayerScreen pickPlayerScreen) {
         this.screenCoordinator = screenCoordinator;
         this.playerInventory = inventory;
+        this.pickPlayerScreen = pickPlayerScreen;
     }
 
     public void initialize() {
@@ -48,12 +50,24 @@ public class ArcadeScreen extends Screen implements PlayerListener {
 
         // setup player
         Point playerStart = map.getPlayerStartPosition(); 
-        if (ScreenCoordinator.selectedPlayer.equals("JackSparrow")){
+        int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+
+        if(selectedPlayerType == 0) {
+            this.player = new JackSparrow(playerStart.x, playerStart.y); 
+        }
+        else if(selectedPlayerType == 1) {
+            this.player = new WillTurner(playerStart.x, playerStart.y); 
+        }
+        else {
+            this.player = new JackSparrow(playerStart.x, playerStart.y); 
+        }
+
+        /*if (ScreenCoordinator.selectedPlayer.equals("JackSparrow")){
             this.player = new JackSparrow(playerStart.x, playerStart.y); 
         }
         else if (ScreenCoordinator.selectedPlayer.equals("WillTurner")){
             this.player = new WillTurner(playerStart.x, playerStart.y); 
-        }
+        }*/
 
         this.player.setMap(map);
         this.player.addListener(this);
@@ -102,6 +116,17 @@ public class ArcadeScreen extends Screen implements PlayerListener {
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
+                    Point arcadeStartPos = map.getPlayerStartPosition(); 
+                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                    if(selectedPlayerType == 0){
+                        this.player = new JackSparrow(arcadeStartPos.x, arcadeStartPos.y);
+                    }
+                    else {
+                        this.player = new WillTurner(arcadeStartPos.x, arcadeStartPos.y);
+                    }
+                    this.player.setMap(map); 
+                    this.player.addListener(this); 
+                    this.arcadeScreenState = arcadeScreenState.RUNNING;
                 } else {
                     levelClearedScreen.update();
                     screenTimer--;
@@ -163,6 +188,7 @@ public class ArcadeScreen extends Screen implements PlayerListener {
 
     public void resetLevel() {
         initialize();
+
     }
 
     public void goBackToMenu() {

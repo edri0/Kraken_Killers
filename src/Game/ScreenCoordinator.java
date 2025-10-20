@@ -14,8 +14,10 @@ import Screens.PickPlayerScreen;
  * There can only be one "currentScreen", although screens can have "nested" screens
  */
 public class ScreenCoordinator extends Screen {
+
+	private PickPlayerScreen pickPlayerScreen; 
 	//Global selected player(default to JackSparrow)
-	public static String selectedPlayer = "JackSparrow"; 
+	// public static String selectedPlayer = "JackSparrow"; 
 	
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
@@ -52,13 +54,14 @@ public class ScreenCoordinator extends Screen {
 						currentScreen = new MenuScreen(this);
 						break;
 					case PLAYER: 
-						currentScreen = new PickPlayerScreen(this); 
+						pickPlayerScreen = new PickPlayerScreen(this); 
+						currentScreen = pickPlayerScreen; 
 						break; 
 					case LEVEL:
-						currentScreen = new CampaignScreen(this, sharedInventory);
+						currentScreen = new CampaignScreen(this, sharedInventory, pickPlayerScreen);
 						break;
 					case ARCADE:
-						currentScreen = new ArcadeScreen(this, sharedInventory);
+						currentScreen = new ArcadeScreen(this, sharedInventory, pickPlayerScreen);
 						break;
 				}
 				currentScreen.initialize();

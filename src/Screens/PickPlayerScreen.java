@@ -1,155 +1,153 @@
 package Screens;
 
-import Engine.GraphicsHandler;
-import Engine.Key;
-import Engine.KeyLocker;
-import Engine.Keyboard;
-import Engine.Screen;
+import Engine.*;
+import Game.GameState;
 import Game.ScreenCoordinator;
+import Level.Map;
+import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
-import Game.GameState; 
-import SpriteFont.SpriteFont; 
+import Players.JackSparrow; 
+import Players.WillTurner; 
 
 import java.awt.*;
+import java.io.File;
 
+// This is the class for the main menu screen
 public class PickPlayerScreen extends Screen {
-    protected ScreenCoordinator screenCoordinator; 
-    protected int currentOption = 0; 
-    protected SpriteFont jack, will; 
-    protected int pointerLocationX, pointerLocationY; 
-    protected KeyLocker keyLocker = new KeyLocker(); 
-    protected int keyPressTimer = 0; 
+    protected ScreenCoordinator screenCoordinator;
+    protected int currentMenuItemHovered = 0; // current menu item being "hovered" over
+    protected int menuItemSelected = -1;
+    protected SpriteFont jack;
+    protected SpriteFont will;
+    protected Map background;
+    protected int keyPressTimer;
+    protected int pointerLocationX, pointerLocationY;
+    protected KeyLocker keyLocker = new KeyLocker();
 
-     public PickPlayerScreen(ScreenCoordinator screenCoordinator) {
+    // public pickPlayerScreen playerType = pickScreen.getSelectedPlayer();
+    // PickPlayerScreen pickScreen; 
+
+
+    private static final String SAVE_FILE = "campaign_level_save.txt" ;
+    private boolean hasSave = false;
+    private int selectedPlayer; 
+
+    public PickPlayerScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
-    
-    public class Players{
-        public static final String jack = "JackSparrow"; 
-        public static final String will = "WillTurner"; 
-    } 
-
-    
-    public void initialize() {
-        jack = new SpriteFont("JackSparrow", 200, 150, "Arial", 30, new Color(49, 207, 240));
-        will = new SpriteFont("WillTurner", 200, 150, "Arial", 30, new Color(49, 207, 240)); 
-    
-        jack.setOutlineColor(Color.BLACK); 
-        jack.setOutlineThickness(2);
-        will.setOutlineColor(Color.BLACK); 
-        will.setOutlineThickness(2); 
-
-        keyLocker.lockKey(Key.SPACE); 
-        keyLocker.lockKey(Key.RIGHT); 
-        keyLocker.lockKey(Key.LEFT); 
-
-    }   
-
-    public void update(Keyboard keyboard) {
-        if (keyboard.isKeyDown(Key.RIGHT) && !keyLocker.isKeyLocked(Key.RIGHT)) {
-            currentOption = 1; 
-            keyLocker.lockKey(Key.RIGHT); 
-        }
-        else if (keyboard.isKeyDown(Key.LEFT) && !keyLocker.isKeyLocked(Key.LEFT)) {
-            currentOption = 0; 
-            keyLocker.lockKey(Key.LEFT); 
-        }
-
-        if (keyboard.isKeyUp(Key.RIGHT)){
-            keyLocker.unlockKey(Key.RIGHT);
-        }
-
-        if (keyboard.isKeyUp(Key.LEFT)){
-            keyLocker.unlockKey(Key.LEFT);
-        }
-
-        if (keyboard.isKeyDown(Key.SPACE) && !keyLocker.isKeyLocked(Key.SPACE)){
-            if (currentOption == 0){
-                ScreenCoordinator.selectedPlayer = "JackSparrow";
-            }
-            else {
-                ScreenCoordinator.selectedPlayer = "WillTurner";
-            }
-
-            screenCoordinator.setGameState(GameState.LEVEL); 
-            keyLocker.lockKey(Key.SPACE); 
-        }
-        if (keyboard.isKeyUp(Key.SPACE)){
-            keyLocker.unlockKey(Key.SPACE); 
-        }
-
-    }
-
-    public void draw(GraphicsHandler graphicsHandler) {
-        if (currentOption == 0){
-            jack.setColor(Color.YELLOW); 
-            will.setColor(Color.BLUE); 
-            pointerLocationX = 170; 
-            pointerLocationY = 155; 
-        }
-        else if (currentOption == 1){
-            jack.setColor(Color.YELLOW); 
-            will.setColor(Color.BLUE); 
-            pointerLocationX = 170; 
-            pointerLocationY = 155; 
-
-            jack.draw(graphicsHandler); 
-            will.draw(graphicsHandler); 
-
-            graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.BLACK, 2);
-        }
-    }
+ 
 
 
- /* 
     @Override
+    public void initialize() {
+        hasSave = new File(SAVE_FILE).exists();
+
+        jack = new SpriteFont("JACK", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        jack.setOutlineColor(Color.black);
+        jack.setOutlineThickness(3);
+
+        will = new SpriteFont("WILL", 200, 173, "Arial", 30, new Color(49, 207, 240));
+        will.setOutlineColor(Color.black);
+        will.setOutlineThickness(3);
+
+        background = new TitleScreenMap();
+        background.setAdjustCamera(false);
+        keyPressTimer = 0;
+        menuItemSelected = -1;
+        keyLocker.lockKey(Key.SPACE);
+
+        selectedPlayer = 0; 
+
+    }
+
     public void update() {
-        Keyboard keyboard = ScreenCoordinator.getKeyboard();
+        // update background map (to play tile animations)
+        background.update(null);
 
-    if (keyboard.isKeyDown(Key.RIGHT) && !keyLocker.isKeyLocked(Key.RIGHT)) {
-            currentOption = 1;
-            keyLocker.lockKey(Key.RIGHT);
-        } else if (keyboard.isKeyDown(Key.LEFT) && !keyLocker.isKeyLocked(Key.LEFT)) {
-            currentOption = 0;
-            keyLocker.lockKey(Key.LEFT); 
+        if(keyPressTimer >0){
+            keyPressTimer--;
         }
 
-        if (keyboard.isKeyUp(Key.RIGHT)){
-            keyLocker.unlockKey(Key.RIGHT);
+        // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
+        if (Keyboard.isKeyDown(Key.DOWN) &&  keyPressTimer == 0) {
+            keyPressTimer = 14;
+            currentMenuItemHovered++;
+        } else if (Keyboard.isKeyDown(Key.UP) &&  keyPressTimer == 0) {
+            keyPressTimer = 14;
+            currentMenuItemHovered--;
+        } else if (keyPressTimer > 0) { keyPressTimer--;}
+
+        int maxIndex = hasSave ? 2 : 1;
+
+
+        // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
+        if (currentMenuItemHovered > maxIndex) {
+            currentMenuItemHovered = 0;
+        } if (currentMenuItemHovered < 0) {
+            currentMenuItemHovered = maxIndex;
         }
 
-        if (keyboard.isKeyUp(Key.LEFT)){
-            keyLocker.unlockKey(Key.LEFT);
-        }
+        // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
+        if (currentMenuItemHovered == 0) {
+            jack.setColor(new Color(255, 215, 0));
+            will.setColor(new Color(49, 207, 240));
+            pointerLocationX = 170;
+            pointerLocationY = 130;
+        } else if (currentMenuItemHovered == 1) {
+            if (hasSave) {
+                jack.setColor(new Color(49, 207, 240));
+                will.setColor(new Color(255,215,0));
+                pointerLocationX = 170;
+                pointerLocationY = 180;
+            } else {
+                jack.setColor(new Color(49, 207, 240));
+                will.setColor(new Color(255, 215, 0));
+                pointerLocationX = 170;
+                pointerLocationY = 230;
 
-        if (keyboard.isKeyDown(Key.SPACE) && !keyLocker.isKeyLocked(Key.SPACE)){
-            if (currentOption == 0){
-                ScreenCoordinator.selectedPlayer = "JackSparrow";
             }
-            else {
-                ScreenCoordinator.selectedPlayer = "WillTurner";
-            }
-
-            screenCoordinator.setGameState(GameState.LEVEL); 
-            keyLocker.lockKey(Key.SPACE); 
-        }
-        if (keyboard.isKeyUp(Key.SPACE)){
-            keyLocker.unlockKey(Key.SPACE); 
+            
+        } else if (currentMenuItemHovered == 2 && hasSave){
+            jack.setColor( new Color(49, 207, 240));
+            will.setColor(new Color(49, 207, 240));
+            pointerLocationX = 170;
+            pointerLocationY = 230;
         }
 
+        // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
+        if (Keyboard.isKeyUp(Key.SPACE)) {
+            keyLocker.unlockKey(Key.SPACE);
+        }
+        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+            menuItemSelected = currentMenuItemHovered; 
+            
 
+
+            if (menuItemSelected == 0 ) {
+                new File(SAVE_FILE).delete(); 
+                screenCoordinator.setGameState(GameState.LEVEL);
+                selectedPlayer = 0;
+            } 
+            else if (menuItemSelected == 1 && hasSave){
+                screenCoordinator.setGameState(GameState.LEVEL);
+                selectedPlayer = 0;
+            } 
+            else if ((menuItemSelected == 1 && !hasSave) || (menuItemSelected == 2)){
+                screenCoordinator.setGameState(GameState.ARCADE);
+                selectedPlayer = 1;
+            } 
+
+        }
     }
 
-    @Override
-    public void initialize() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'draw'");
-    }   
-  */
+        background.draw(graphicsHandler);
+        jack.draw(graphicsHandler);
+        will.draw(graphicsHandler);
+
+        graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
+    }
+    public int getSelectedPlayer(){
+        return selectedPlayer; 
+    }
 }
