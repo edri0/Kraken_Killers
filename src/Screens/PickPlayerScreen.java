@@ -6,8 +6,8 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
-import Players.JackSparrow; 
-import Players.WillTurner; 
+//import Players.JackSparrow; 
+//import Players.WillTurner; 
 
 import java.awt.*;
 import java.io.File;
@@ -124,17 +124,17 @@ public class PickPlayerScreen extends Screen {
 
 
             if (menuItemSelected == 0 ) {
+                selectedPlayer = 0;
                 new File(SAVE_FILE).delete(); 
                 screenCoordinator.setGameState(GameState.LEVEL);
-                selectedPlayer = 0;
             } 
             else if (menuItemSelected == 1 && hasSave){
-                screenCoordinator.setGameState(GameState.LEVEL);
                 selectedPlayer = 0;
+                screenCoordinator.setGameState(GameState.LEVEL);
             } 
             else if ((menuItemSelected == 1 && !hasSave) || (menuItemSelected == 2)){
-                screenCoordinator.setGameState(GameState.ARCADE);
                 selectedPlayer = 1;
+                screenCoordinator.setGameState(GameState.ARCADE);
             } 
 
         }

@@ -62,12 +62,6 @@ public class ArcadeScreen extends Screen implements PlayerListener {
             this.player = new JackSparrow(playerStart.x, playerStart.y); 
         }
 
-        /*if (ScreenCoordinator.selectedPlayer.equals("JackSparrow")){
-            this.player = new JackSparrow(playerStart.x, playerStart.y); 
-        }
-        else if (ScreenCoordinator.selectedPlayer.equals("WillTurner")){
-            this.player = new WillTurner(playerStart.x, playerStart.y); 
-        }*/
 
         this.player.setMap(map);
         this.player.addListener(this);
@@ -75,7 +69,7 @@ public class ArcadeScreen extends Screen implements PlayerListener {
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
-        this.shopScreen = new ShopScreen(playerInventory);
+        this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
             
 

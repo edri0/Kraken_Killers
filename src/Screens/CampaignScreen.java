@@ -23,7 +23,6 @@ import Maps.TestMap;
 import Players.JackSparrow;
 import Players.WillTurner;
 import Utils.Point;
-import Players.Cat;
 import UI.HealthBar;
 //import Utils.Point;
 import Maps.Level2;
@@ -75,7 +74,6 @@ public class CampaignScreen extends Screen implements PlayerListener {
         //this.map = loadMapForIndex(levelIndex);
 
         // define/setup map
-        //this.map = new TestMap();
         this.map = new TestMap();
         Point startPos = map.getPlayerStartPosition(); 
         
@@ -94,21 +92,9 @@ public class CampaignScreen extends Screen implements PlayerListener {
         this.player.setMap(map);
         this.player.addListener(this);
 
+        this.healthBar = new HealthBar(player); 
 
-        // setup player
-       /*  this.player = new JackSparrow(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-        this.player.setMap(map);
-        this.player.addListener(this);
 
-        this.healthBar = new HealthBar(player);
-
-        if (ScreenCoordinator.selectedPlayer.equals("JackSparrow")) {
-            this.player = new JackSparrow(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y); 
-        }
-        else if (ScreenCoordinator.selectedPlayer.equals("WillTurner")){
-            this.player = new WillTurner(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y); 
-        }
-*/
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
@@ -161,6 +147,17 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 if (screenTimer <= 0) {
                     levelIndex++;
                     saveProgress();
+                    Point levelStartPos = map.getPlayerStartPosition();
+                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                    if(selectedPlayerType == 0){
+                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
+                    }
+                    else {
+                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
+                    }
+                    this.player.setMap(map); 
+                    this.player.addListener(this); 
+                    this.campaignScreenState = CampaignScreenState.RUNNING;
 
                     // Load next level dynamically
                     Map nextMap = loadMapForIndex(levelIndex);
@@ -171,11 +168,10 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     }
 
                     this.map = nextMap;
-                    this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
                     this.player.setMap(map);
                     this.player.addListener(this);
                     this.campaignScreenState = CampaignScreenState.RUNNING;
-                }
+                    }
                 }
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
@@ -193,24 +189,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     this.player.addListener(this); 
                     this.campaignScreenState = CampaignScreenState.RUNNING;
 
-                /*  else {
-                    levelClearedScreen.update();
-                    screenTimer--;
-                    if (screenTimer <= 0) {
-                        this.map = new Level2();
-                        Point levelStartPos = map.getPlayerStartPosition(); 
-                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
-                    if(selectedPlayerType == 0){
-                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
-                    }
-                    else {
-                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
-                    }
-                        this.player.setMap(map);
-                        this.player.addListener(this);
-                        this.campaignScreenState = CampaignScreenState.RUNNING;
-                    }
-                }*/}
+                }
                 break;
             // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
             case LEVEL_LOSE:
@@ -274,7 +253,6 @@ public void onLevelCompleted() {
 
     public void resetLevel() {
         this.map = loadMapForIndex(levelIndex);
-        //this.player = new JackSparrow(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         Point resetStartPos = map.getPlayerStartPosition(); 
         int selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
         if(selectedPlayerType == 0){
@@ -285,6 +263,7 @@ public void onLevelCompleted() {
         }
         this.player.setMap(map);
         this.player.addListener(this);
+        this.healthBar = new HealthBar(player); 
 
         campaignScreenState = CampaignScreenState.RUNNING;
         levelCompletedStateChangeStart = false;
