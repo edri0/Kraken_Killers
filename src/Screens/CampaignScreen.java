@@ -21,12 +21,13 @@ import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
 import Players.Cat;
+import UI.HealthBar;
 //import Utils.Point;
 import Maps.Level2;
 import Maps.Level3;
 import Maps.Level4;
 import Maps.Level5;
-import Screens.ShopScreen;
+
 
 
 // This class is for when the platformer game is actually being played
@@ -44,6 +45,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
     private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
+    private HealthBar healthBar;
 
 
     private int levelIndex = 0;
@@ -76,18 +78,22 @@ public class CampaignScreen extends Screen implements PlayerListener {
         this.player.setMap(map);
         this.player.addListener(this);
 
+        this.healthBar = new HealthBar(player);
+
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
 
-        this.shopScreen = new ShopScreen(playerInventory);
+        this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
+        
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
     }
 
     //Campaign
     public void update() {
+        
         // based on screen state, perform specific actions
         switch (campaignScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
@@ -101,6 +107,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
                 player.update();
                 map.update(player);
+                healthBar.update();
                 break;
             case SHOP: {
                 shopScreen.update();
@@ -151,10 +158,12 @@ public class CampaignScreen extends Screen implements PlayerListener {
     }
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
+    
         switch (campaignScreenState) {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
+                healthBar.draw(graphicsHandler);
 
                 String money = PlayerInventory.fmt(playerInventory.getMoneyCents());
                 int w = ScreenManager.getScreenWidth();

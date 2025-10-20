@@ -1,5 +1,4 @@
 package Screens;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ import Level.Player;
 
 public class ShopScreen extends Screen{
     private final PlayerInventory inventory;
+    private final Player player;
     private final List<Item> shopItems = new ArrayList<>();
     
     private int shopIndex = 0;
@@ -39,8 +39,9 @@ public class ShopScreen extends Screen{
 
 
 
-    public ShopScreen(PlayerInventory inventory){
+    public ShopScreen(PlayerInventory inventory, Player player){
         this.inventory = inventory;
+        this.player = player;
         seedCatalog();
 
     }
@@ -77,19 +78,19 @@ public class ShopScreen extends Screen{
 
 
     }
-        public void update(){
-            if (keyPressTimer > 0) {
-                keyPressTimer--;
-                return;
-            }
-            if( Keyboard.isKeyDown(Key.A) || Keyboard.isKeyDown(Key.LEFT)){
-                inShop = false;
-                keyPressTimer = 14;
-            } else if (Keyboard.isKeyDown(Key.D) || Keyboard.isKeyDown(Key.RIGHT)){
-                inShop = true;
-                keyPressTimer = 14;
+    public void update(){
+          if (keyPressTimer > 0) {
+               keyPressTimer--;
+               return;
+         }
+        if( Keyboard.isKeyDown(Key.A) || Keyboard.isKeyDown(Key.LEFT)){
+            inShop = false;
+            keyPressTimer = 14;
+         } else if (Keyboard.isKeyDown(Key.D) || Keyboard.isKeyDown(Key.RIGHT)){
+            inShop = true;
+            keyPressTimer = 14;
             
-            }
+        }
             if (Keyboard.isKeyDown(Key.W) || Keyboard.isKeyDown(Key.UP)) {
                if (inShop)
                shopIndex = Math.max(0, shopIndex - 1);
@@ -111,7 +112,13 @@ public class ShopScreen extends Screen{
                         inventory.buy(shopItems.get(shopIndex));
 
                     } else if(!inShop && !inventory.getOwned().isEmpty()){
-                        inventory.equip(inventory.getOwned().get(ownedIndex));
+                        Item selected = inventory.getOwned().get(ownedIndex);
+
+                        if(selected instanceof Armor armorItem){
+                            armorItem.equip(player);
+                        } else{
+                            inventory.equip(selected);
+                        }
 
                     }
                     keyPressTimer = 14;
