@@ -1,13 +1,17 @@
 package Level;
 
+import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
+import GameObject.Sprite;
 import GameObject.SpriteSheet;
+import Inventory.Armor;
 import Utils.AirGroundState;
 import Utils.Direction;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public abstract class Player extends GameObject {
@@ -33,6 +37,7 @@ public abstract class Player extends GameObject {
     protected AirGroundState airGroundState;
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
+    private Armor equippedArmor;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -43,6 +48,10 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
+
+    //health bar
+    private int currentHealth;
+    private int maxHealth;
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
@@ -55,6 +64,8 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         levelState = LevelState.RUNNING;
+        this.maxHealth = 100;
+        this.currentHealth = maxHealth;
     }
 
     public void update() {
@@ -394,12 +405,58 @@ public abstract class Player extends GameObject {
     public void addListener(PlayerListener listener) {
         listeners.add(listener);
     }
-
-    // Uncomment this to have game draw player's bounds to make it easier to visualize
-    /*
-    public void draw(GraphicsHandler graphicsHandler) {
-        super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
+    public void setArmor(Armor armor){
+        this.equippedArmor = armor;
+        System.out.println("Equipped armor: " + armor.getName());
     }
-    */
+    public void removeArmor() {
+        if ( equippedArmor != null){
+            System.out.println("Unequipped armor: " + equippedArmor.getName());
+            this.equippedArmor = null;
+        }
+    }
+    public Armor getEquippedArmor(){
+        return equippedArmor;
+    }
+    // Uncomment this to have game draw player's bounds to make it easier to visualize
+   
+    public void draw(GraphicsHandler graphicsHandler) {
+
+        super.draw(graphicsHandler);
+        if (equippedArmor != null && equippedArmor.getSprite() != null){
+            Sprite armorSprite = equippedArmor.getSprite();
+            armorSprite.setX(getX());
+            armorSprite.setY(getY());
+            armorSprite.setScale(getScale());
+
+            float offsetX = 0;
+            float offsetY = -97;
+            
+            armorSprite.setX(getX() + offsetX);
+            armorSprite.setY(getY() + offsetY);
+            armorSprite.setScale(getScale());
+
+            armorSprite.draw(graphicsHandler);
+
+
+        }
+        
+       
+    }
+
+    public int getCurrentHealth() {
+       return currentHealth;
+    }
+    public int getMaxHealth(){
+        return maxHealth;
+    }
+    public void takeDamage(int amount){
+        currentHealth -= amount;
+        if(currentHealth < 0) {
+            currentHealth = 0;
+        }
+    }
+
+    
+    
 }

@@ -1,19 +1,20 @@
 package Screens;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
 import Engine.ScreenManager;
-
-
+import GameObject.Sprite;
+import Inventory.Armor;
 import Inventory.Item;
 import Inventory.ItemType;
 import Inventory.PlayerInventory;
@@ -21,6 +22,7 @@ import Level.Player;
 
 public class ShopScreen extends Screen{
     private final PlayerInventory inventory;
+    private final Player player;
     private final List<Item> shopItems = new ArrayList<>();
     
     private int shopIndex = 0;
@@ -37,14 +39,28 @@ public class ShopScreen extends Screen{
 
 
 
-    public ShopScreen(PlayerInventory inventory){
+    public ShopScreen(PlayerInventory inventory, Player player){
         this.inventory = inventory;
+        this.player = player;
         seedCatalog();
 
     }
     private void seedCatalog(){
-        shopItems.add(new Item("Gun", 1500, ItemType.WEAPON));
-        shopItems.add(new Item("Sword", 1500, ItemType.WEAPON));
+        BufferedImage bronzeImg = ImageLoader.load("Bronze_armor.png");
+        Sprite bronzeArmorSprite = new Sprite(bronzeImg);
+        shopItems.add(new Armor("Bronze Armor", 1500, 5, bronzeArmorSprite));
+
+
+        BufferedImage ironImg = ImageLoader.load("Iron_armor.png");
+        Sprite ironArmorSprite = new Sprite(ironImg);
+        shopItems.add(new Armor("Iron Armor", 1500, 5, ironArmorSprite));
+
+
+        BufferedImage diamondImg = ImageLoader.load("Diamond_armor.png");
+        Sprite diamondArmorSprite = new Sprite(diamondImg);
+        shopItems.add(new Armor("Diamond Armor", 1500, 5, diamondArmorSprite));
+
+        
         shopItems.add(new Item("Grappling hook", 1500, ItemType.WEAPON));
         shopItems.add(new Item("Shield", 1500, ItemType.ARMOR));
         shopItems.add(new Item("Underwater boots", 1500, ItemType.ARMOR));
@@ -62,19 +78,19 @@ public class ShopScreen extends Screen{
 
 
     }
-        public void update(){
-            if (keyPressTimer > 0) {
-                keyPressTimer--;
-                return;
-            }
-            if( Keyboard.isKeyDown(Key.A) || Keyboard.isKeyDown(Key.LEFT)){
-                inShop = false;
-                keyPressTimer = 14;
-            } else if (Keyboard.isKeyDown(Key.D) || Keyboard.isKeyDown(Key.RIGHT)){
-                inShop = true;
-                keyPressTimer = 14;
+    public void update(){
+          if (keyPressTimer > 0) {
+               keyPressTimer--;
+               return;
+         }
+        if( Keyboard.isKeyDown(Key.A) || Keyboard.isKeyDown(Key.LEFT)){
+            inShop = false;
+            keyPressTimer = 14;
+         } else if (Keyboard.isKeyDown(Key.D) || Keyboard.isKeyDown(Key.RIGHT)){
+            inShop = true;
+            keyPressTimer = 14;
             
-            }
+        }
             if (Keyboard.isKeyDown(Key.W) || Keyboard.isKeyDown(Key.UP)) {
                if (inShop)
                shopIndex = Math.max(0, shopIndex - 1);
@@ -96,7 +112,13 @@ public class ShopScreen extends Screen{
                         inventory.buy(shopItems.get(shopIndex));
 
                     } else if(!inShop && !inventory.getOwned().isEmpty()){
-                        inventory.equip(inventory.getOwned().get(ownedIndex));
+                        Item selected = inventory.getOwned().get(ownedIndex);
+
+                        if(selected instanceof Armor armorItem){
+                            armorItem.equip(player);
+                        } else{
+                            inventory.equip(selected);
+                        }
 
                     }
                     keyPressTimer = 14;
@@ -112,7 +134,7 @@ public class ShopScreen extends Screen{
            
            g.drawFilledRectangle(0,0,w,60, new Color(22,29,44));
            g.drawString("SHOP and INVENTORY (WASD + ENTER, Press S to close)", 20, 40, new Font("Ariel", Font.BOLD, 24), Color.WHITE);
-           g.drawString(PlayerInventory.fmt(inventory.getMoneyCents()), w-160, 40, new Font("Ariel", Font.BOLD, 20), Color.WHITE);
+           g.drawString("Cash: " + PlayerInventory.fmt(inventory.getMoneyCents()), actionBox.x + actionBox.width, actionBox.y +34, new Font("Ariel", Font.BOLD, 18), Color.WHITE);
 
 
            drawPanel(g, panelOwned, "INVENTORY ( <- / -> to switch)", new Color(31,47,70));
@@ -122,7 +144,7 @@ public class ShopScreen extends Screen{
            for (int i = 0; i< inventory.getOwned().size(); i++){
             Item it = inventory.getOwned().get(i);
             boolean selected = !inShop && (i== ownedIndex);
-            drawRow(g,panelOwned.x + 16, panelOwned.y + 32 + i + 28, it.name + " [" + it.type + "]", selected);
+            drawRow(g, panelOwned.x + 16, panelOwned.y + 32 + (i * 28), it.name + " [" + it.type + "]", selected);
         
            }
 
@@ -133,7 +155,7 @@ public class ShopScreen extends Screen{
             Item it = shopItems.get(i);
             boolean selected = inShop && ( i == shopIndex);
             String line = it.name + " - " + PlayerInventory.fmt(it.costCents) + " [" + it.type + "]";
-            drawRow(g,panelShop.x + 16, panelShop.y + 32 + i * 28, line, selected);
+            drawRow(g,panelShop.x + 16, panelShop.y + 32 + (i * 28), line, selected);
            }
 
            g.drawFilledRectangle(actionBox.x, actionBox.y, actionBox.width, actionBox.height, new Color(46,83,125));

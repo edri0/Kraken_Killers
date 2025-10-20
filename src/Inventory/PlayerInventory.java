@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class PlayerInventory{
-    private int moneyCents = 0;
+    private int moneyCents = 20000;
     private final List<Item> owned = new ArrayList<>();
     private Item equippedWeapon;
     private Item equippedArmor;
@@ -27,9 +27,6 @@ public class PlayerInventory{
     }
 
     public boolean buy(Item item){
-        if(owned.contains(item)){
-            return true;
-        }
         if(moneyCents >= item.costCents){
             moneyCents -= item.costCents;
             owned.add(item);

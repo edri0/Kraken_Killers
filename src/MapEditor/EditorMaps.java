@@ -13,7 +13,7 @@ public class EditorMaps {
             add("TestMap");
             add("TitleScreen");
             add("Level2");
-        }};
+                    }};
     }
 
     public static Map getMapByName(String mapName) {
@@ -24,7 +24,7 @@ public class EditorMaps {
                 return new TitleScreenMap();
             case "Level2":
                 return new Level2();
-            default:
+                        default:
                 throw new RuntimeException("Unrecognized map name");
         }
     }
