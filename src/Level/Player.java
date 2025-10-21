@@ -5,6 +5,7 @@ import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
+import Inventory.Armor;
 import Utils.AirGroundState;
 import Utils.Direction;
 
@@ -33,6 +34,7 @@ public abstract class Player extends GameObject {
     protected AirGroundState airGroundState;
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
+    private Armor equippedArmor;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -394,7 +396,19 @@ public abstract class Player extends GameObject {
     public void addListener(PlayerListener listener) {
         listeners.add(listener);
     }
-
+    public void setArmor(Armor armor){
+        this.equippedArmor = armor;
+        System.out.println("Equipped armor: " + armor.getName());
+    }
+    public void removeArmor() {
+        if ( equippedArmor != null){
+            System.out.println("Unequipped armor: " + equippedArmor.getName());
+            this.equippedArmor = null;
+        }
+    }
+    public Armor getEquippedArmor(){
+        return equippedArmor;
+    }
     // Uncomment this to have game draw player's bounds to make it easier to visualize
     /*
     public void draw(GraphicsHandler graphicsHandler) {
