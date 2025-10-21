@@ -16,8 +16,9 @@ import Level.Player;
 import Level.PlayerListener;
 //import Maps.Level2;
 import Maps.TestMap;
-import Players.Cat;
-//import Utils.Point;
+import Players.JackSparrow;
+import Players.WillTurner;
+import Utils.Point;
 
 // This class is for when the platformer game is actually being played
 public class ArcadeScreen extends Screen implements PlayerListener {
@@ -32,13 +33,15 @@ public class ArcadeScreen extends Screen implements PlayerListener {
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
+    private PickPlayerScreen pickPlayerScreen;
 
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
 
-    public ArcadeScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory) {
+    public ArcadeScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory, PickPlayerScreen pickPlayerScreen) {
         this.screenCoordinator = screenCoordinator;
         this.playerInventory = inventory;
+        this.pickPlayerScreen = pickPlayerScreen;
     }
 
     public void initialize() {
@@ -46,14 +49,27 @@ public class ArcadeScreen extends Screen implements PlayerListener {
         this.map = new TestMap();
 
         // setup player
-        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        Point playerStart = map.getPlayerStartPosition(); 
+        int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+
+        if(selectedPlayerType == 0) {
+            this.player = new JackSparrow(playerStart.x, playerStart.y); 
+        }
+        else if(selectedPlayerType == 1) {
+            this.player = new WillTurner(playerStart.x, playerStart.y); 
+        }
+        else {
+            this.player = new JackSparrow(playerStart.x, playerStart.y); 
+        }
+
+
         this.player.setMap(map);
         this.player.addListener(this);
 
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
-        this.shopScreen = new ShopScreen(playerInventory);
+        this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
             
 
@@ -94,6 +110,17 @@ public class ArcadeScreen extends Screen implements PlayerListener {
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
+                    Point arcadeStartPos = map.getPlayerStartPosition(); 
+                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                    if(selectedPlayerType == 0){
+                        this.player = new JackSparrow(arcadeStartPos.x, arcadeStartPos.y);
+                    }
+                    else {
+                        this.player = new WillTurner(arcadeStartPos.x, arcadeStartPos.y);
+                    }
+                    this.player.setMap(map); 
+                    this.player.addListener(this); 
+                    this.arcadeScreenState = arcadeScreenState.RUNNING;
                 } else {
                     levelClearedScreen.update();
                     screenTimer--;
@@ -155,6 +182,7 @@ public class ArcadeScreen extends Screen implements PlayerListener {
 
     public void resetLevel() {
         initialize();
+
     }
 
     public void goBackToMenu() {

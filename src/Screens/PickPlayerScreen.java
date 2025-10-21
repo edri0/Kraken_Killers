@@ -6,51 +6,58 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
+//import Players.JackSparrow; 
+//import Players.WillTurner; 
 
 import java.awt.*;
 import java.io.File;
 
 // This is the class for the main menu screen
-public class MenuScreen extends Screen {
+public class PickPlayerScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected int currentMenuItemHovered = 0; // current menu item being "hovered" over
     protected int menuItemSelected = -1;
-    protected SpriteFont NewGame;
-    protected SpriteFont Continue;
-    protected SpriteFont Arcade;
+    protected SpriteFont jack;
+    protected SpriteFont will;
     protected Map background;
     protected int keyPressTimer;
     protected int pointerLocationX, pointerLocationY;
     protected KeyLocker keyLocker = new KeyLocker();
 
+    // public pickPlayerScreen playerType = pickScreen.getSelectedPlayer();
+    // PickPlayerScreen pickScreen; 
+
 
     private static final String SAVE_FILE = "campaign_level_save.txt" ;
     private boolean hasSave = false;
+    private int selectedPlayer; 
 
-    public MenuScreen(ScreenCoordinator screenCoordinator) {
+    public PickPlayerScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
+ 
+
 
     @Override
     public void initialize() {
         hasSave = new File(SAVE_FILE).exists();
 
-        NewGame = new SpriteFont("CAMPAIGN", 200, 123, "Arial", 30, new Color(49, 207, 240));
-        NewGame.setOutlineColor(Color.black);
-        NewGame.setOutlineThickness(3);
+        jack = new SpriteFont("JACK", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        jack.setOutlineColor(Color.black);
+        jack.setOutlineThickness(3);
 
-        Continue = new SpriteFont("CONTINUE", 200, 173, "Arial", 30, new Color(49, 207, 240));
-        Continue.setOutlineColor(Color.black);
-        Continue.setOutlineThickness(3);
+        will = new SpriteFont("WILL", 200, 173, "Arial", 30, new Color(49, 207, 240));
+        will.setOutlineColor(Color.black);
+        will.setOutlineThickness(3);
 
-        Arcade = new SpriteFont("ARCADE", 200, 223, "Arial", 30, new Color(49, 207, 240));
-        Arcade.setOutlineColor(Color.black);
-        Arcade.setOutlineThickness(3);
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
         keyPressTimer = 0;
         menuItemSelected = -1;
         keyLocker.lockKey(Key.SPACE);
+
+        selectedPlayer = 0; 
+
     }
 
     public void update() {
@@ -71,7 +78,6 @@ public class MenuScreen extends Screen {
         } else if (keyPressTimer > 0) { keyPressTimer--;}
 
         int maxIndex = hasSave ? 2 : 1;
-    
 
 
         // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
@@ -83,30 +89,27 @@ public class MenuScreen extends Screen {
 
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
-            NewGame.setColor(new Color(255, 215, 0));
-            Continue.setColor(hasSave  ? new Color(49, 207, 240) : Color.gray);
-            Arcade.setColor(new Color(49, 207, 240));
+            jack.setColor(new Color(255, 215, 0));
+            will.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = 130;
         } else if (currentMenuItemHovered == 1) {
             if (hasSave) {
-                NewGame.setColor(new Color(49, 207, 240));
-                Continue.setColor(new Color(255,215,0));
-                Arcade.setColor(new Color(49, 207, 240));
+                jack.setColor(new Color(49, 207, 240));
+                will.setColor(new Color(255,215,0));
                 pointerLocationX = 170;
                 pointerLocationY = 180;
             } else {
-                NewGame.setColor(new Color(49, 207, 240));
-                Arcade.setColor(new Color(255, 215, 0));
+                jack.setColor(new Color(49, 207, 240));
+                will.setColor(new Color(255, 215, 0));
                 pointerLocationX = 170;
                 pointerLocationY = 230;
 
             }
             
         } else if (currentMenuItemHovered == 2 && hasSave){
-            NewGame.setColor( new Color(49, 207, 240));
-            Continue.setColor(new Color(49, 207, 240));
-            Arcade.setColor(new Color(255, 215, 0));
+            jack.setColor( new Color(49, 207, 240));
+            will.setColor(new Color(49, 207, 240));
             pointerLocationX = 170;
             pointerLocationY = 230;
         }
@@ -116,25 +119,35 @@ public class MenuScreen extends Screen {
             keyLocker.unlockKey(Key.SPACE);
         }
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-            menuItemSelected = currentMenuItemHovered;  
+            menuItemSelected = currentMenuItemHovered; 
+            
+
 
             if (menuItemSelected == 0 ) {
-                new File(SAVE_FILE).delete();
-                screenCoordinator.setGameState(GameState.PLAYER);
-            } else if (menuItemSelected == 1 && hasSave){
+                selectedPlayer = 0;
+                new File(SAVE_FILE).delete(); 
                 screenCoordinator.setGameState(GameState.LEVEL);
-            } else if (menuItemSelected == 1 && !hasSave || (menuItemSelected == 2)) {
-                screenCoordinator.setGameState(GameState.PLAYER);
-            }
+            } 
+            else if (menuItemSelected == 1 && hasSave){
+                selectedPlayer = 0;
+                screenCoordinator.setGameState(GameState.LEVEL);
+            } 
+            else if ((menuItemSelected == 1 && !hasSave) || (menuItemSelected == 2)){
+                selectedPlayer = 1;
+                screenCoordinator.setGameState(GameState.ARCADE);
+            } 
+
         }
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
         background.draw(graphicsHandler);
-        NewGame.draw(graphicsHandler);
-        if (hasSave) Continue.draw(graphicsHandler);
-        Arcade.draw(graphicsHandler);
+        jack.draw(graphicsHandler);
+        will.draw(graphicsHandler);
 
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
+    }
+    public int getSelectedPlayer(){
+        return selectedPlayer; 
     }
 }

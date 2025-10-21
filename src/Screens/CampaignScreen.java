@@ -20,7 +20,9 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
-import Players.Cat;
+import Players.JackSparrow;
+import Players.WillTurner;
+import Utils.Point;
 import UI.HealthBar;
 //import Utils.Point;
 import Maps.Level2;
@@ -40,7 +42,8 @@ public class CampaignScreen extends Screen implements PlayerListener {
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
-    
+
+    private PickPlayerScreen pickPlayerScreen; 
  
     private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
@@ -53,9 +56,9 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
 
 
+    public CampaignScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory, PickPlayerScreen pickPlayerScreen) {
 
-    public CampaignScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory) {
-
+        this.pickPlayerScreen = pickPlayerScreen; 
         this.screenCoordinator = screenCoordinator;
         this.playerInventory = inventory;
     }
@@ -71,14 +74,24 @@ public class CampaignScreen extends Screen implements PlayerListener {
         this.map = loadMapForIndex(levelIndex);
 
         // define/setup map
-        //this.map = new TestMap();
+        Point startPos = map.getPlayerStartPosition(); 
+        
+        int selectedPlayerType = 0; 
 
-        // setup player
-        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        if(pickPlayerScreen != null){
+            selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
+        }
+        if(selectedPlayerType ==0){
+            this.player = new JackSparrow(startPos.x, startPos.y);
+        }else {
+            this.player = new WillTurner(startPos.x, startPos.y);
+        }
+
         this.player.setMap(map);
         this.player.addListener(this);
 
-        this.healthBar = new HealthBar(player);
+        this.healthBar = new HealthBar(player); 
+
 
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
@@ -89,6 +102,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
         
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
+
     }
 
     //Campaign
@@ -131,6 +145,17 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 if (screenTimer <= 0) {
                     levelIndex++;
                     saveProgress();
+                    Point levelStartPos = map.getPlayerStartPosition();
+                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                    if(selectedPlayerType == 0){
+                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
+                    }
+                    else {
+                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
+                    }
+                    this.player.setMap(map); 
+                    this.player.addListener(this); 
+                    this.campaignScreenState = CampaignScreenState.RUNNING;
 
                     // Load next level dynamically
                     Map nextMap = loadMapForIndex(levelIndex);
@@ -141,11 +166,27 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     }
 
                     this.map = nextMap;
-                    this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
                     this.player.setMap(map);
                     this.player.addListener(this);
                     this.campaignScreenState = CampaignScreenState.RUNNING;
+                    }
                 }
+                if (levelCompletedStateChangeStart) {
+                    screenTimer = 130;
+                    levelCompletedStateChangeStart = false;
+                    map = new Level2();
+                    Point levelStartPos = map.getPlayerStartPosition(); 
+                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                    if(selectedPlayerType == 0){
+                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
+                    }
+                    else {
+                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
+                    }
+                    this.player.setMap(map); 
+                    this.player.addListener(this); 
+                    this.campaignScreenState = CampaignScreenState.RUNNING;
+
                 }
                 break;
             // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
@@ -210,9 +251,17 @@ public void onLevelCompleted() {
 
     public void resetLevel() {
         this.map = loadMapForIndex(levelIndex);
-        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        Point resetStartPos = map.getPlayerStartPosition(); 
+        int selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
+        if(selectedPlayerType == 0){
+            this.player = new JackSparrow(resetStartPos.x, resetStartPos.y);
+        }
+        else {
+            this.player = new WillTurner(resetStartPos.x, resetStartPos.y); 
+        }
         this.player.setMap(map);
         this.player.addListener(this);
+        this.healthBar = new HealthBar(player); 
 
         campaignScreenState = CampaignScreenState.RUNNING;
         levelCompletedStateChangeStart = false;
@@ -256,9 +305,9 @@ public void onLevelCompleted() {
             case 0: return new TestMap();
             case 1: return new Level2();
             case 2: return new Level3();
-            case 3: return new Level4(); // if you have it
-            case 4: return new Level5(); // if you have it
-            default: return null; // no more levels
+            case 3: return new Level4(); 
+            case 4: return new Level5(); 
+            default: return null; // no more levels yet
         }
     }
     

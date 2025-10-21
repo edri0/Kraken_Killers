@@ -1,9 +1,12 @@
 package Level;
 
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import Game.ArmorType;
+import Game.GameState;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
@@ -38,6 +41,10 @@ public abstract class Player extends GameObject {
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
     private Armor equippedArmor;
+    private SpriteSheet playSpriteSheet;
+
+    private ArmorType armorType = ArmorType.NONE;
+    private GameState avatarType = GameState.JACK;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -53,20 +60,33 @@ public abstract class Player extends GameObject {
     private int currentHealth;
     private int maxHealth;
 
+
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
-
-    public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
-        super(spriteSheet, x, y, startingAnimationName);
-        facingDirection = Direction.RIGHT;
-        airGroundState = AirGroundState.AIR;
-        previousAirGroundState = airGroundState;
-        playerState = PlayerState.STANDING;
-        previousPlayerState = playerState;
-        levelState = LevelState.RUNNING;
-        this.maxHealth = 100;
-        this.currentHealth = maxHealth;
+        
+            
+        
+            public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
+                super(spriteSheet, x, y, startingAnimationName);
+                facingDirection = Direction.RIGHT;
+                airGroundState = AirGroundState.AIR;
+                previousAirGroundState = airGroundState;
+                playerState = PlayerState.STANDING;
+                previousPlayerState = playerState;
+                levelState = LevelState.RUNNING;
+                this.maxHealth = 100;
+                this.currentHealth = maxHealth;
+            }
+        
+            public void updateSpriteSteet(){
+                String avatarName = avatarType.name().toLowerCase();
+                String armorName = armorType.name().toLowerCase();
+        
+                String path = String.format("Resources/%s_%s.png", avatarType.name().toLowerCase(), armorType.name().toLowerCase());
+        
+                
     }
+
 
     public void update() {
         moveAmountX = 0;
@@ -408,11 +428,23 @@ public abstract class Player extends GameObject {
     public void setArmor(Armor armor){
         this.equippedArmor = armor;
         System.out.println("Equipped armor: " + armor.getName());
+
+        //adjust health based on armor
+        int bonus = 0;
+        String name = armor.getName().toLowerCase();
+        if(name.contains("bronze")) bonus = 10;
+        else if (name.contains("iron")) bonus = 20;
+        else if (name.contains("diamond")) bonus = 30;
+
+        setMaxHealth(100 + bonus);
+        setCurrentHealth(getMaxHealth());
     }
     public void removeArmor() {
         if ( equippedArmor != null){
             System.out.println("Unequipped armor: " + equippedArmor.getName());
             this.equippedArmor = null;
+            setMaxHealth(100);
+            setCurrentHealth(Math.min(getCurrentHealth(), getMaxHealth()));
         }
     }
     public Armor getEquippedArmor(){
@@ -423,18 +455,25 @@ public abstract class Player extends GameObject {
     public void draw(GraphicsHandler graphicsHandler) {
 
         super.draw(graphicsHandler);
+
         if (equippedArmor != null && equippedArmor.getSprite() != null){
             Sprite armorSprite = equippedArmor.getSprite();
-            armorSprite.setX(getX());
-            armorSprite.setY(getY());
+
+            float baseX = getX();
+            float baseY = getY();
+
             armorSprite.setScale(getScale());
 
-            float offsetX = 0;
-            float offsetY = -97;
-            
-            armorSprite.setX(getX() + offsetX);
-            armorSprite.setY(getY() + offsetY);
-            armorSprite.setScale(getScale());
+            float armorOffsetX = 5f;
+            float armorOffsetY = -25f;
+
+            if(facingDirection == Direction.LEFT){
+                armorOffsetX = -armorOffsetX;
+
+            }
+            armorSprite.setX(baseX + armorOffsetX);
+            armorSprite.setY(baseY + armorOffsetY);
+
 
             armorSprite.draw(graphicsHandler);
 
@@ -449,6 +488,17 @@ public abstract class Player extends GameObject {
     }
     public int getMaxHealth(){
         return maxHealth;
+    }
+    public void setCurrentHealth(int health){
+        this.currentHealth = Math.max(0, Math.min(health, maxHealth));
+
+    }
+    public void setMaxHealth(int health){
+        this.maxHealth = health;
+        if(currentHealth > maxHealth) currentHealth = maxHealth;
+    }
+    public void heal(int amount){
+        setCurrentHealth(currentHealth + amount);
     }
     public void takeDamage(int amount){
         currentHealth -= amount;
