@@ -17,7 +17,6 @@ public class ScreenCoordinator extends Screen {
 
 	private PickPlayerScreen pickPlayerScreen; 
 	//Global selected player(default to JackSparrow)
-	// public static String selectedPlayer = "JackSparrow"; 
 	
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
