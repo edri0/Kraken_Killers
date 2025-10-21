@@ -90,13 +90,31 @@ public class GameObject extends AnimatedSprite {
     // will stop object from moving based on map collision logic (such as if it hits a solid tile)
     public float moveXHandleCollision(float dx) {
         if (map != null) {
-            return handleCollisionX(dx);
-        } else {
-            super.moveX(dx);
-            return dx;
-        }
-    }
+            amountMovedX = handleCollisionX(dx);
+            
+            boolean touchingLeft = false;
+            boolean touchingRight = false;
+            MapEntity collidedEntity = null;
 
+            if(dx<0){
+                if(map.collidesWithTileOnLeft(this)){
+                    touchingLeft = true;
+                    collidedEntity = map.getTileOnLeft(this);
+                }
+            } else if (dx >0){
+                if(map.collidesWithTileOnRight(this)){
+                    touchingLeft = true;
+                    collidedEntity = map.getTileOnRight(this);
+            }
+        }
+    onEndCollisionCheckX(touchingLeft, Direction.LEFT, collidedEntity);
+    onEndCollisionCheckX(touchingRight, Direction.RIGHT, collidedEntity);
+        }else {
+            super.moveX(dx);
+            amountMovedX = dx;
+        }
+        return amountMovedX;
+    }
     // move game object along the y axis
     // will stop object from moving based on map collision logic (such as if it hits a solid tile)
     public float moveYHandleCollision(float dy) {

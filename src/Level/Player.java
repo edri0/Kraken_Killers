@@ -95,6 +95,9 @@ public abstract class Player extends GameObject {
         moveAmountX = 0;
         moveAmountY = 0;
 
+        isTouchingLeftWall = map.collidesWithTileOnLeft(this);
+        isTouchingRightWall = map.collidesWithTileOnRight(this);
+
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
             applyGravity();
@@ -290,76 +293,40 @@ public abstract class Player extends GameObject {
 
 
     protected void playerClimbing() {
-        // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
-        if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
 
-            // sets animation to a JUMP animation based on which way player is facing
-            currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
+        momentumY = 0;
+        moveAmountY = 0;
 
-            // player is set to be in air and then player is sent into the air
+        currentAnimationName = facingDirection == Direction.RIGHT ? "CLIMB_RIGHT" : "CLIMB_LEFT" ;
+
+        if(Keyboard.isKeyDown(Key.UP)){
+            moveAmountY -= walkSpeed * 0.75f;
+
+        }
+        else if (Keyboard.isKeyDown(Key.DOWN)){
+            moveAmountY += walkSpeed * 0.75f;
+
+        }
+
+        if ((!isTouchingLeftWall && facingDirection == Direction.LEFT) || (!isTouchingRightWall && facingDirection == Direction.RIGHT)){
+            playerState = PlayerState.JUMPING;
+            applyGravity();
+            return;
+        }
+        if(Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)){
+            keyLocker.lockKey(JUMP_KEY);
+            playerState = PlayerState.JUMPING;
+            momentumY = -jumpHeight * 0.8f;
+            moveAmountX = facingDirection == Direction.RIGHT ? -walkSpeed * 1.5f : walkSpeed * 1.5f;
             airGroundState = AirGroundState.AIR;
-            jumpForce = jumpHeight;
-            if (jumpForce > 0) {
-                moveAmountY -= jumpForce;
-                jumpForce -= jumpDegrade;
-                if (jumpForce < 0) {
-                    jumpForce = 0;
-                }
-            }
         }
-
-        // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
-        else if (airGroundState == AirGroundState.AIR) {
-            if (jumpForce > 0) {
-                moveAmountY -= jumpForce;
-                jumpForce -= jumpDegrade;
-                if (jumpForce < 0) {
-                    jumpForce = 0;
-                }
-            }
-
-            // allows you to move left and right while in the air
-            if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
-                moveAmountX -= walkSpeed;
-            } else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
-                moveAmountX += walkSpeed;
-            }
-
-            // if player is falling, increases momentum as player falls so it falls faster over time
-            if (moveAmountY > 0) {
-                increaseMomentum();
-            }
-
+        if(Keyboard.isKeyUp(CLIMB_KEY)){
+            playerState = PlayerState.JUMPING;
+            applyGravity();
         }
+     }
 
-        // if player last frame was in air and this frame is now on ground, player enters STANDING state
-        else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) {
-            playerState = PlayerState.STANDING;
-        }
-    }
-
-    // // player CLIMBING state logic
-    // protected void playerClimbing() {
-    //     // no gravity while climbing 
-    //     momentumY = 0; 
-    //     moveAmountY = 0; 
-
-    //     if(Keyboard.isKeyDown(Key.LEFT_KEY)) {
-    //         moveAmountY -= walkSpeed;
-    //         facingDirection = Direction.LEFT;
-    //     }
-    //     else if(Keyboard.isKeyDown(Key.RIGHT_KEY)) {
-    //         moveAmountY += walkSpeed; 
-    //         facingDirection = Direction.RIGHT;
-    //     }
-    //     else{
-    //         moveAmountY = 0; 
-    //     }
-    //     if (!isTouchingLeftWall && !isTouchingRightWall){
-    //         playerState = PlayerState.STANDING; 
-    //     }
-    // }
-
+   
    
 
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
@@ -413,6 +380,7 @@ public abstract class Player extends GameObject {
     public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) { 
         if (direction == Direction.LEFT) {
             isTouchingLeftWall = hasCollided; 
+            
         }
         else if (direction == Direction.RIGHT) {
             isTouchingRightWall = hasCollided; 
