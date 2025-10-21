@@ -1,4 +1,5 @@
 package Inventory;
+import Game.ArmorType;
 import GameObject.Sprite;
 import Level.Player;
 
@@ -8,6 +9,7 @@ public class Armor extends Item{
     private int hpValue;
     private boolean equipped;
     private Sprite sprite;
+    private ArmorType armorType;
 
     public Armor(String name, int costCents, int hpValue, Sprite sprite){
         super(name, costCents, ItemType.ARMOR);
@@ -15,6 +17,12 @@ public class Armor extends Item{
         this.hpValue = hpValue;
         this.equipped = false;
         this.sprite = sprite;
+
+        String lowerName = name.toLowerCase();
+        if(lowerName.contains("bronze")) armorType = ArmorType.BRONZE;
+        else if(lowerName.contains("iron")) armorType = ArmorType.IRON;
+        else if(lowerName.contains("diamond"))armorType = ArmorType.DIAMOND;
+        else armorType = ArmorType.NONE;
     }
  
     public int getHpValue(){
@@ -30,12 +38,22 @@ public class Armor extends Item{
         if (!equipped){
             equipped = true;
             player.setArmor(this);
+            String avatarName = player.getAvatarTypeName();
+            ArmorType armorType;
+
+            if(name.toLowerCase().contains("bronze")) armorType = ArmorType.BRONZE;
+            else if(name.toLowerCase().contains("iron")) armorType = ArmorType.IRON;
+            else if(name.toLowerCase().contains("diamond")) armorType = ArmorType.DIAMOND;
+            else armorType = ArmorType.NONE;
+        
+            player.updatePlayerSprite(avatarName, armorType);
         }
     }
     public void unequip( Player player){
         if (equipped){
             equipped = false;
             player.removeArmor();
+            player.updatePlayerSprite(player.getAvatarTypeName(), ArmorType.NONE);
         }
     }
 
