@@ -1,9 +1,12 @@
 package Level;
 
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import Game.ArmorType;
+import Game.GameState;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
@@ -38,6 +41,10 @@ public abstract class Player extends GameObject {
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
     private Armor equippedArmor;
+    private SpriteSheet playSpriteSheet;
+
+    private ArmorType armorType = ArmorType.NONE;
+    private GameState avatarType = GameState.JACK;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -53,20 +60,33 @@ public abstract class Player extends GameObject {
     private int currentHealth;
     private int maxHealth;
 
+
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
-
-    public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
-        super(spriteSheet, x, y, startingAnimationName);
-        facingDirection = Direction.RIGHT;
-        airGroundState = AirGroundState.AIR;
-        previousAirGroundState = airGroundState;
-        playerState = PlayerState.STANDING;
-        previousPlayerState = playerState;
-        levelState = LevelState.RUNNING;
-        this.maxHealth = 100;
-        this.currentHealth = maxHealth;
+        
+            
+        
+            public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
+                super(spriteSheet, x, y, startingAnimationName);
+                facingDirection = Direction.RIGHT;
+                airGroundState = AirGroundState.AIR;
+                previousAirGroundState = airGroundState;
+                playerState = PlayerState.STANDING;
+                previousPlayerState = playerState;
+                levelState = LevelState.RUNNING;
+                this.maxHealth = 100;
+                this.currentHealth = maxHealth;
+            }
+        
+            public void updateSpriteSteet(){
+                String avatarName = avatarType.name().toLowerCase();
+                String armorName = armorType.name().toLowerCase();
+        
+                String path = String.format("Resources/%s_%s.png", avatarType.name().toLowerCase(), armorType.name().toLowerCase());
+        
+                
     }
+
 
     public void update() {
         moveAmountX = 0;
