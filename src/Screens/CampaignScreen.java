@@ -20,13 +20,16 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
-import Players.Cat;
+import Players.JackSparrow;
+import Players.WillTurner;
+import Utils.Point;
+import UI.HealthBar;
 //import Utils.Point;
 import Maps.Level2;
 import Maps.Level3;
 import Maps.Level4;
 import Maps.Level5;
-import Screens.ShopScreen;
+
 
 
 // This class is for when the platformer game is actually being played
@@ -39,11 +42,13 @@ public class CampaignScreen extends Screen implements PlayerListener {
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
-    
+
+    private PickPlayerScreen pickPlayerScreen; 
  
     private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
+    private HealthBar healthBar;
 
 
     private int levelIndex = 0;
@@ -51,9 +56,9 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
 
 
+    public CampaignScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory, PickPlayerScreen pickPlayerScreen) {
 
-    public CampaignScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory) {
-
+        this.pickPlayerScreen = pickPlayerScreen; 
         this.screenCoordinator = screenCoordinator;
         this.playerInventory = inventory;
     }
@@ -66,28 +71,45 @@ public class CampaignScreen extends Screen implements PlayerListener {
         }
         
 
-        this.map = loadMapForIndex(levelIndex);
+        //this.map = loadMapForIndex(levelIndex);
 
         // define/setup map
-        //this.map = new TestMap();
+        this.map = new TestMap();
+        Point startPos = map.getPlayerStartPosition(); 
+        
+        int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
 
-        // setup player
-        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        if(selectedPlayerType == 0){
+            this.player = new JackSparrow(startPos.x, startPos.y); 
+        }
+        else if(selectedPlayerType == 1) {
+            this.player = new WillTurner(startPos.x, startPos.y); 
+        }
+        else { 
+            this.player = new JackSparrow(startPos.x, startPos.y);
+        }
+
         this.player.setMap(map);
         this.player.addListener(this);
+
+        this.healthBar = new HealthBar(player); 
+
 
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
 
-        this.shopScreen = new ShopScreen(playerInventory);
+        this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
+        
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
+
     }
 
     //Campaign
     public void update() {
+        
         // based on screen state, perform specific actions
         switch (campaignScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
@@ -101,6 +123,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
                 player.update();
                 map.update(player);
+                healthBar.update();
                 break;
             case SHOP: {
                 shopScreen.update();
@@ -124,6 +147,17 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 if (screenTimer <= 0) {
                     levelIndex++;
                     saveProgress();
+                    Point levelStartPos = map.getPlayerStartPosition();
+                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                    if(selectedPlayerType == 0){
+                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
+                    }
+                    else {
+                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
+                    }
+                    this.player.setMap(map); 
+                    this.player.addListener(this); 
+                    this.campaignScreenState = CampaignScreenState.RUNNING;
 
                     // Load next level dynamically
                     Map nextMap = loadMapForIndex(levelIndex);
@@ -134,11 +168,27 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     }
 
                     this.map = nextMap;
-                    this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
                     this.player.setMap(map);
                     this.player.addListener(this);
                     this.campaignScreenState = CampaignScreenState.RUNNING;
+                    }
                 }
+                if (levelCompletedStateChangeStart) {
+                    screenTimer = 130;
+                    levelCompletedStateChangeStart = false;
+                    map = new Level2();
+                    Point levelStartPos = map.getPlayerStartPosition(); 
+                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                    if(selectedPlayerType == 0){
+                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
+                    }
+                    else {
+                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
+                    }
+                    this.player.setMap(map); 
+                    this.player.addListener(this); 
+                    this.campaignScreenState = CampaignScreenState.RUNNING;
+
                 }
                 break;
             // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
@@ -151,10 +201,12 @@ public class CampaignScreen extends Screen implements PlayerListener {
     }
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
+    
         switch (campaignScreenState) {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
+                healthBar.draw(graphicsHandler);
 
                 String money = PlayerInventory.fmt(playerInventory.getMoneyCents());
                 int w = ScreenManager.getScreenWidth();
@@ -201,9 +253,17 @@ public void onLevelCompleted() {
 
     public void resetLevel() {
         this.map = loadMapForIndex(levelIndex);
-        this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        Point resetStartPos = map.getPlayerStartPosition(); 
+        int selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
+        if(selectedPlayerType == 0){
+            this.player = new JackSparrow(resetStartPos.x, resetStartPos.y);
+        }
+        else {
+            this.player = new WillTurner(resetStartPos.x, resetStartPos.y); 
+        }
         this.player.setMap(map);
         this.player.addListener(this);
+        this.healthBar = new HealthBar(player); 
 
         campaignScreenState = CampaignScreenState.RUNNING;
         levelCompletedStateChangeStart = false;

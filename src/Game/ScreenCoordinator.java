@@ -7,12 +7,18 @@ import Inventory.PlayerInventory;
 import Screens.ArcadeScreen;
 import Screens.MenuScreen;
 import Screens.CampaignScreen;
+import Screens.PickPlayerScreen; 
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
  * There can only be one "currentScreen", although screens can have "nested" screens
  */
 public class ScreenCoordinator extends Screen {
+
+	private PickPlayerScreen pickPlayerScreen; 
+	//Global selected player(default to JackSparrow)
+	// public static String selectedPlayer = "JackSparrow"; 
+	
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
 
@@ -47,11 +53,15 @@ public class ScreenCoordinator extends Screen {
 					case MENU:
 						currentScreen = new MenuScreen(this);
 						break;
+					case PLAYER: 
+						pickPlayerScreen = new PickPlayerScreen(this); 
+						currentScreen = pickPlayerScreen; 
+						break; 
 					case LEVEL:
-						currentScreen = new CampaignScreen(this, sharedInventory);
+						currentScreen = new CampaignScreen(this, sharedInventory, pickPlayerScreen);
 						break;
 					case ARCADE:
-						currentScreen = new ArcadeScreen(this, sharedInventory);
+						currentScreen = new ArcadeScreen(this, sharedInventory, pickPlayerScreen);
 						break;
 				}
 				currentScreen.initialize();

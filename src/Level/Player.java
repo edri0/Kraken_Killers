@@ -1,14 +1,17 @@
 package Level;
 
+import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
+import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
 import Utils.AirGroundState;
 import Utils.Direction;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public abstract class Player extends GameObject {
@@ -46,6 +49,10 @@ public abstract class Player extends GameObject {
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
 
+    //health bar
+    private int currentHealth;
+    private int maxHealth;
+
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
 
@@ -57,6 +64,8 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         levelState = LevelState.RUNNING;
+        this.maxHealth = 100;
+        this.currentHealth = maxHealth;
     }
 
     public void update() {
@@ -410,10 +419,44 @@ public abstract class Player extends GameObject {
         return equippedArmor;
     }
     // Uncomment this to have game draw player's bounds to make it easier to visualize
-    /*
+   
     public void draw(GraphicsHandler graphicsHandler) {
+
         super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
+        if (equippedArmor != null && equippedArmor.getSprite() != null){
+            Sprite armorSprite = equippedArmor.getSprite();
+            armorSprite.setX(getX());
+            armorSprite.setY(getY());
+            armorSprite.setScale(getScale());
+
+            float offsetX = 0;
+            float offsetY = -97;
+            
+            armorSprite.setX(getX() + offsetX);
+            armorSprite.setY(getY() + offsetY);
+            armorSprite.setScale(getScale());
+
+            armorSprite.draw(graphicsHandler);
+
+
+        }
+        
+       
     }
-    */
+
+    public int getCurrentHealth() {
+       return currentHealth;
+    }
+    public int getMaxHealth(){
+        return maxHealth;
+    }
+    public void takeDamage(int amount){
+        currentHealth -= amount;
+        if(currentHealth < 0) {
+            currentHealth = 0;
+        }
+    }
+
+    
+    
 }
