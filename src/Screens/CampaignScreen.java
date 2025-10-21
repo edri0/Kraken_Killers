@@ -71,7 +71,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
         }
         
 
-        //this.map = loadMapForIndex(levelIndex);
+        this.map = loadMapForIndex(levelIndex);
 
         // define/setup map
         this.map = new TestMap();
@@ -109,7 +109,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
     //Campaign
     public void update() {
-        
+        //DO NOT CHANGE THIS PLEASE-Nicky
         // based on screen state, perform specific actions
         switch (campaignScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
@@ -176,7 +176,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
-                    map = new Level2();
+                    map = loadMapForIndex(levelIndex);
                     Point levelStartPos = map.getPlayerStartPosition(); 
                     int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
                     if(selectedPlayerType == 0){
@@ -198,6 +198,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
            
                 
         }
+        //DO NOT CHANGE THIS PLEASE-Nicky
     }
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
@@ -252,7 +253,7 @@ public void onLevelCompleted() {
     }
 
     public void resetLevel() {
-        this.map = loadMapForIndex(levelIndex);
+        this.map = loadMapForIndex(levelIndex);  //This is needed for the levels to work
         Point resetStartPos = map.getPlayerStartPosition(); 
         int selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
         if(selectedPlayerType == 0){
