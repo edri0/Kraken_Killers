@@ -137,6 +137,19 @@ public class JackSparrow extends Player {
                          .withBounds(14, 22, 8, 9)
                             .build()
             });
+            put("CLIMB_RIGHT", new Frame[] {
+                new FrameBuilder(spriteSheet.getSprite(2,0))
+                .withScale(3)
+                .withBounds(14,22,8,9)
+                .build()
+            });
+            put("CLIMB_LEFT", new Frame[] {
+                new FrameBuilder(spriteSheet.getSprite(2,0))
+                .withScale(3)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(14,22,8,9)
+                .build()
+            });
 
             put("DEATH_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(5, 0), 8)
