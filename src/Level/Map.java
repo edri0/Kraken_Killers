@@ -3,6 +3,7 @@ package Level;
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
+import GameObject.GameObject;
 import Utils.Point;
 
 import java.io.File;
@@ -399,4 +400,48 @@ public abstract class Map {
 
     public int getEndBoundX() { return endBoundX; }
     public int getEndBoundY() { return endBoundY; }
+
+    public boolean collidesWithTileOnLeft(GameObject gameObject) {
+       int leftX = Math.round(gameObject.getBounds().getX1())-1;
+       int topY = Math.round(gameObject.getBounds().getY1());
+       int bottomY = Math.round(gameObject.getBounds().getY2())-1;
+
+       for(int y = topY; y <= bottomY; y+= 8){
+        MapTile tile = getTileByPosition(leftX, y);
+        if(tile != null && tile.getTileType() == TileType.NOT_PASSABLE){
+            return true;
+        }
+
+       }
+       return false;
+    
+    }
+    public MapEntity getTileOnLeft(GameObject gameObject) {
+        int leftX = Math.round(gameObject.getBounds().getX2()) -  1;
+        int midY = Math.round(gameObject.getBounds().getY1() + gameObject.getBounds().getY2()) /2;
+        return getTileByPosition(leftX, midY);
+    }
+
+    public boolean collidesWithTileOnRight(GameObject gameObject) {
+        int rightX = Math.round(gameObject.getBounds().getX2()) +  1;
+        int topY = Math.round(gameObject.getBounds().getY1());
+        int bottomY = Math.round(gameObject.getBounds().getY2())-1;
+
+        for(int y = topY; y <= bottomY; y+= 8){
+            MapTile tile = getTileByPosition(rightX, y);
+            if(tile != null && tile.getTileType() == TileType.NOT_PASSABLE){
+                return true;
+            }
+    
+           }
+           return false;
+        
+    }
+
+    public MapEntity getTileOnRight(GameObject gameObject) {
+        int rightX = Math.round(gameObject.getBounds().getX2()) + 1;
+        int midY = Math.round(gameObject.getBounds().getY1() + gameObject.getBounds().getY2()) /2;
+        return getTileByPosition(rightX, midY);
+        
+    }
 }

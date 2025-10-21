@@ -1,9 +1,12 @@
 package Level;
 
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import Game.ArmorType;
+import Game.GameState;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
@@ -38,6 +41,12 @@ public abstract class Player extends GameObject {
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
     private Armor equippedArmor;
+    private SpriteSheet playSpriteSheet;
+
+    private ArmorType armorType = ArmorType.NONE;
+    private GameState avatarType = GameState.JACK;
+    protected boolean isTouchingLeftWall = false;
+    protected boolean isTouchingRightWall = false; 
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -48,29 +57,46 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
+    protected Key CLIMB_KEY = Key.C; 
 
     //health bar
     private int currentHealth;
     private int maxHealth;
 
+
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
-
-    public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
-        super(spriteSheet, x, y, startingAnimationName);
-        facingDirection = Direction.RIGHT;
-        airGroundState = AirGroundState.AIR;
-        previousAirGroundState = airGroundState;
-        playerState = PlayerState.STANDING;
-        previousPlayerState = playerState;
-        levelState = LevelState.RUNNING;
-        this.maxHealth = 100;
-        this.currentHealth = maxHealth;
+        
+            
+        
+            public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
+                super(spriteSheet, x, y, startingAnimationName);
+                facingDirection = Direction.RIGHT;
+                airGroundState = AirGroundState.AIR;
+                previousAirGroundState = airGroundState;
+                playerState = PlayerState.STANDING;
+                previousPlayerState = playerState;
+                levelState = LevelState.RUNNING;
+                this.maxHealth = 100;
+                this.currentHealth = maxHealth;
+            }
+        
+            public void updateSpriteSteet(){
+                String avatarName = avatarType.name().toLowerCase();
+                String armorName = armorType.name().toLowerCase();
+        
+                String path = String.format("Resources/%s_%s.png", avatarType.name().toLowerCase(), armorType.name().toLowerCase());
+        
+                
     }
+
 
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
+
+        isTouchingLeftWall = map.collidesWithTileOnLeft(this);
+        isTouchingRightWall = map.collidesWithTileOnRight(this);
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
@@ -109,8 +135,11 @@ public abstract class Player extends GameObject {
 
     // add gravity to player, which is a downward force
     protected void applyGravity() {
-        moveAmountY += gravity + momentumY;
+        if (playerState != PlayerState.CLIMBING) {
+            moveAmountY += gravity + momentumY;
+        }
     }
+    
 
     // based on player's current state, call appropriate player state handling method
     protected void handlePlayerState() {
@@ -126,6 +155,9 @@ public abstract class Player extends GameObject {
                 break;
             case JUMPING:
                 playerJumping();
+                break;
+            case CLIMBING:
+                playerClimbing();
                 break;
         }
     }
@@ -147,6 +179,12 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
+
+        //if Climb key is pressed, 
+        else if (Keyboard.isKeyDown(CLIMB_KEY) && (isTouchingLeftWall || isTouchingRightWall)) {
+            playerState = PlayerState.CLIMBING;
+            momentumY = 0; 
+        }
     }
 
     // player WALKING state logic
@@ -165,6 +203,12 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.STANDING;
         }
 
+        //if Climb key is pressed, 
+        else if (Keyboard.isKeyDown(CLIMB_KEY) && (isTouchingLeftWall || isTouchingRightWall)) {
+            playerState = PlayerState.CLIMBING;
+            momentumY = 0; 
+        }
+
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
@@ -175,6 +219,7 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
+
     }
 
     // player CROUCHING state logic
@@ -232,6 +277,12 @@ public abstract class Player extends GameObject {
             if (moveAmountY > 0) {
                 increaseMomentum();
             }
+
+            //if Climb key is pressed, 
+        else if (Keyboard.isKeyDown(CLIMB_KEY) && (isTouchingLeftWall || isTouchingRightWall)) {
+            playerState = PlayerState.CLIMBING;
+            momentumY = 0; 
+        }
         }
 
         // if player last frame was in air and this frame is now on ground, player enters STANDING state
@@ -239,6 +290,44 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.STANDING;
         }
     }
+
+
+    protected void playerClimbing() {
+
+        momentumY = 0;
+        moveAmountY = 0;
+
+        currentAnimationName = facingDirection == Direction.RIGHT ? "CLIMB_RIGHT" : "CLIMB_LEFT" ;
+
+        if(Keyboard.isKeyDown(Key.UP)){
+            moveAmountY -= walkSpeed * 0.75f;
+
+        }
+        else if (Keyboard.isKeyDown(Key.DOWN)){
+            moveAmountY += walkSpeed * 0.75f;
+
+        }
+
+        if ((!isTouchingLeftWall && facingDirection == Direction.LEFT) || (!isTouchingRightWall && facingDirection == Direction.RIGHT)){
+            playerState = PlayerState.JUMPING;
+            applyGravity();
+            return;
+        }
+        if(Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)){
+            keyLocker.lockKey(JUMP_KEY);
+            playerState = PlayerState.JUMPING;
+            momentumY = -jumpHeight * 0.8f;
+            moveAmountX = facingDirection == Direction.RIGHT ? -walkSpeed * 1.5f : walkSpeed * 1.5f;
+            airGroundState = AirGroundState.AIR;
+        }
+        if(Keyboard.isKeyUp(CLIMB_KEY)){
+            playerState = PlayerState.JUMPING;
+            applyGravity();
+        }
+     }
+
+   
+   
 
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
     protected void increaseMomentum() {
@@ -288,7 +377,15 @@ public abstract class Player extends GameObject {
     }
 
     @Override
-    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) { }
+    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) { 
+        if (direction == Direction.LEFT) {
+            isTouchingLeftWall = hasCollided; 
+            
+        }
+        else if (direction == Direction.RIGHT) {
+            isTouchingRightWall = hasCollided; 
+        }
+    }
 
     @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
@@ -408,11 +505,23 @@ public abstract class Player extends GameObject {
     public void setArmor(Armor armor){
         this.equippedArmor = armor;
         System.out.println("Equipped armor: " + armor.getName());
+
+        //adjust health based on armor
+        int bonus = 0;
+        String name = armor.getName().toLowerCase();
+        if(name.contains("bronze")) bonus = 10;
+        else if (name.contains("iron")) bonus = 20;
+        else if (name.contains("diamond")) bonus = 30;
+
+        setMaxHealth(100 + bonus);
+        setCurrentHealth(getMaxHealth());
     }
     public void removeArmor() {
         if ( equippedArmor != null){
             System.out.println("Unequipped armor: " + equippedArmor.getName());
             this.equippedArmor = null;
+            setMaxHealth(100);
+            setCurrentHealth(Math.min(getCurrentHealth(), getMaxHealth()));
         }
     }
     public Armor getEquippedArmor(){
@@ -423,18 +532,25 @@ public abstract class Player extends GameObject {
     public void draw(GraphicsHandler graphicsHandler) {
 
         super.draw(graphicsHandler);
+
         if (equippedArmor != null && equippedArmor.getSprite() != null){
             Sprite armorSprite = equippedArmor.getSprite();
-            armorSprite.setX(getX());
-            armorSprite.setY(getY());
+
+            float baseX = getX();
+            float baseY = getY();
+
             armorSprite.setScale(getScale());
 
-            float offsetX = 0;
-            float offsetY = -97;
-            
-            armorSprite.setX(getX() + offsetX);
-            armorSprite.setY(getY() + offsetY);
-            armorSprite.setScale(getScale());
+            float armorOffsetX = 5f;
+            float armorOffsetY = -25f;
+
+            if(facingDirection == Direction.LEFT){
+                armorOffsetX = -armorOffsetX;
+
+            }
+            armorSprite.setX(baseX + armorOffsetX);
+            armorSprite.setY(baseY + armorOffsetY);
+
 
             armorSprite.draw(graphicsHandler);
 
@@ -449,6 +565,17 @@ public abstract class Player extends GameObject {
     }
     public int getMaxHealth(){
         return maxHealth;
+    }
+    public void setCurrentHealth(int health){
+        this.currentHealth = Math.max(0, Math.min(health, maxHealth));
+
+    }
+    public void setMaxHealth(int health){
+        this.maxHealth = health;
+        if(currentHealth > maxHealth) currentHealth = maxHealth;
+    }
+    public void heal(int amount){
+        setCurrentHealth(currentHealth + amount);
     }
     public void takeDamage(int amount){
         currentHealth -= amount;
