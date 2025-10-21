@@ -12,7 +12,7 @@ import NPCs.Walrus;
 
 //
 //>>>>>>> 13a7320d62f92095bf8dc9c9716bb8773bb9a4d4//
-import Tilesets.CommonTileset;
+import Tilesets.CommonTileset2;
 import Utils.Direction;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class TestMap extends Map {
 
     public TestMap() {
-        super("test_map.txt", new CommonTileset());
+        super("test_map.txt", new CommonTileset2());
         this.playerStartPosition = getMapTile(2, 11).getLocation();
     }
 
