@@ -33,6 +33,7 @@ public class LevelClearedScreen extends Screen {
             ScreenManager.getScreenHeight(),
             Color.BLACK
         );
+
         winMessage.draw(graphicsHandler);
     }
 }
