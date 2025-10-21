@@ -408,11 +408,23 @@ public abstract class Player extends GameObject {
     public void setArmor(Armor armor){
         this.equippedArmor = armor;
         System.out.println("Equipped armor: " + armor.getName());
+
+        //adjust health based on armor
+        int bonus = 0;
+        String name = armor.getName().toLowerCase();
+        if(name.contains("bronze")) bonus = 10;
+        else if (name.contains("iron")) bonus = 20;
+        else if (name.contains("diamond")) bonus = 30;
+
+        setMaxHealth(100 + bonus);
+        setCurrentHealth(getMaxHealth());
     }
     public void removeArmor() {
         if ( equippedArmor != null){
             System.out.println("Unequipped armor: " + equippedArmor.getName());
             this.equippedArmor = null;
+            setMaxHealth(100);
+            setCurrentHealth(Math.min(getCurrentHealth(), getMaxHealth()));
         }
     }
     public Armor getEquippedArmor(){
@@ -423,18 +435,25 @@ public abstract class Player extends GameObject {
     public void draw(GraphicsHandler graphicsHandler) {
 
         super.draw(graphicsHandler);
+
         if (equippedArmor != null && equippedArmor.getSprite() != null){
             Sprite armorSprite = equippedArmor.getSprite();
-            armorSprite.setX(getX());
-            armorSprite.setY(getY());
+
+            float baseX = getX();
+            float baseY = getY();
+
             armorSprite.setScale(getScale());
 
-            float offsetX = 0;
-            float offsetY = -97;
-            
-            armorSprite.setX(getX() + offsetX);
-            armorSprite.setY(getY() + offsetY);
-            armorSprite.setScale(getScale());
+            float armorOffsetX = 5f;
+            float armorOffsetY = -25f;
+
+            if(facingDirection == Direction.LEFT){
+                armorOffsetX = -armorOffsetX;
+
+            }
+            armorSprite.setX(baseX + armorOffsetX);
+            armorSprite.setY(baseY + armorOffsetY);
+
 
             armorSprite.draw(graphicsHandler);
 
@@ -449,6 +468,17 @@ public abstract class Player extends GameObject {
     }
     public int getMaxHealth(){
         return maxHealth;
+    }
+    public void setCurrentHealth(int health){
+        this.currentHealth = Math.max(0, Math.min(health, maxHealth));
+
+    }
+    public void setMaxHealth(int health){
+        this.maxHealth = health;
+        if(currentHealth > maxHealth) currentHealth = maxHealth;
+    }
+    public void heal(int amount){
+        setCurrentHealth(currentHealth + amount);
     }
     public void takeDamage(int amount){
         currentHealth -= amount;

@@ -71,22 +71,20 @@ public class CampaignScreen extends Screen implements PlayerListener {
         }
         
 
-        //this.map = loadMapForIndex(levelIndex);
+        this.map = loadMapForIndex(levelIndex);
 
         // define/setup map
-        this.map = new TestMap();
         Point startPos = map.getPlayerStartPosition(); 
         
-        int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+        int selectedPlayerType = 0; 
 
-        if(selectedPlayerType == 0){
-            this.player = new JackSparrow(startPos.x, startPos.y); 
+        if(pickPlayerScreen != null){
+            selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
         }
-        else if(selectedPlayerType == 1) {
-            this.player = new WillTurner(startPos.x, startPos.y); 
-        }
-        else { 
+        if(selectedPlayerType ==0){
             this.player = new JackSparrow(startPos.x, startPos.y);
+        }else {
+            this.player = new WillTurner(startPos.x, startPos.y);
         }
 
         this.player.setMap(map);

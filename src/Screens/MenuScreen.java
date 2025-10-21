@@ -122,7 +122,7 @@ public class MenuScreen extends Screen {
                 new File(SAVE_FILE).delete();
                 screenCoordinator.setGameState(GameState.PLAYER);
             } else if (menuItemSelected == 1 && hasSave){
-                screenCoordinator.setGameState(GameState.PLAYER);
+                screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1 && !hasSave || (menuItemSelected == 2)) {
                 screenCoordinator.setGameState(GameState.PLAYER);
             }
