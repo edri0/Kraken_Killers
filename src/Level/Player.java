@@ -163,7 +163,7 @@ public abstract class Player extends GameObject {
         System.out.println("loaded animations:" + animations.keySet());
         this.currentFrameIndex = 0;
         this.currentFrame = animations.get(currentAnimationName)[0];
-        this.sprite = new Sprite(this.currentFrame.getImage());
+        
     }
 
     // add gravity to player, which is a downward force
