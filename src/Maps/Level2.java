@@ -5,10 +5,15 @@ import EnhancedMapTiles.EndLevelBox;
 import Level.*;
 import NPCs.Chest;
 import Tilesets.CommonTileset;
+import Utils.Direction;
+
 //import Utils.Direction;
 import java.util.ArrayList;
 //import Engine.ImageLoader;
 //import GameObject.Rectangle;
+
+import Enemies.RangeEnemy;
+import Enemies.SwordPirate;
 
 
 
@@ -18,15 +23,32 @@ public class Level2 extends Map {
         super("level2.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(2, 11).getLocation(); // starting tile
     }
+    // @Override
+    // public ArrayList<Enemy> loadEnemies() {
+    //     ArrayList<Enemy> enemies = new ArrayList<>();
+
+    //    // BugEnemy bugEnemy = new BugEnemy(getMapTile(16, 10).getLocation().subtractY(25), Direction.LEFT);
+    //    // enemies.add(bugEnemy);
+
+    //    // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+    //    // enemies.add(dinosaurEnemy);
+
+    //     return enemies;
+    // }
+
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-       // BugEnemy bugEnemy = new BugEnemy(getMapTile(16, 10).getLocation().subtractY(25), Direction.LEFT);
-       // enemies.add(bugEnemy);
+       SwordPirate swordDude = new SwordPirate(getMapTile(10, 17).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+       //getMapTile(16, 10).getLocation().subtractY(25)
+       enemies.add(swordDude);
 
-       // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-       // enemies.add(dinosaurEnemy);
+        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+        enemies.add(rangedPirate);
+
+        //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+       // enemies.add(SwordPirate);
 
         return enemies;
     }
