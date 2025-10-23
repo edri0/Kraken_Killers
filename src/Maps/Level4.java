@@ -1,19 +1,19 @@
 package Maps;
 
 import EnhancedMapTiles.EndLevelBox;
-import EnhancedMapTiles.HorizontalMovingPlatform;
+//import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import Tilesets.CommonTileset;
 import Utils.Direction;
 import java.util.ArrayList;
-import Engine.ImageLoader;
-import GameObject.Rectangle;
+//import Engine.ImageLoader;
+//import GameObject.Rectangle;
 
 public class Level4 extends Map{
 
     public Level4(){
         super("level4.txt", new CommonTileset());
-        this.playerStartPosition = getMapTile(2, 11).getLocation();
+        this.playerStartPosition = getMapTile(4, 11).getLocation();
     }
     
 
@@ -46,7 +46,7 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     
     enhancedMapTiles.add(hmp);
 */
-    EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 9).getLocation());
+    EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 8).getLocation());
     enhancedMapTiles.add(endLevelBox);
 
     return enhancedMapTiles;

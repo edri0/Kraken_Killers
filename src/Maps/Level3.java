@@ -34,7 +34,7 @@ public ArrayList<Enemy> loadEnemies() {
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-    HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
+    /*HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
             ImageLoader.load("GreenPlatform.png"),
             getMapTile(24, 6).getLocation(),
             getMapTile(27, 6).getLocation(),
@@ -45,6 +45,7 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     );
     
     enhancedMapTiles.add(hmp);
+*/
 
     EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 12).getLocation());
     enhancedMapTiles.add(endLevelBox);

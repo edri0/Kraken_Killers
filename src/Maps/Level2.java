@@ -1,13 +1,13 @@
 package Maps;
 
 import EnhancedMapTiles.EndLevelBox;
-import EnhancedMapTiles.HorizontalMovingPlatform;
+// import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import Tilesets.CommonTileset;
-import Utils.Direction;
+//import Utils.Direction;
 import java.util.ArrayList;
-import Engine.ImageLoader;
-import GameObject.Rectangle;
+//import Engine.ImageLoader;
+//import GameObject.Rectangle;
 
 
 
@@ -34,7 +34,7 @@ public class Level2 extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
+       /* HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
                 getMapTile(24, 6).getLocation(),
                 getMapTile(27, 6).getLocation(),
@@ -45,6 +45,7 @@ public class Level2 extends Map {
         );
         
         enhancedMapTiles.add(hmp);
+*/ 
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 19).getLocation());
         enhancedMapTiles.add(endLevelBox);

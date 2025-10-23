@@ -13,7 +13,7 @@ public class Level5 extends Map{
 
     public Level5(){
         super("level5.txt", new CommonTileset());
-        this.playerStartPosition = getMapTile(2, 11).getLocation();
+        this.playerStartPosition = getMapTile(4, 9).getLocation();
     }
     
 
@@ -33,11 +33,11 @@ public ArrayList<Enemy> loadEnemies() {
 @Override
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-
+/* 
     HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
             ImageLoader.load("GreenPlatform.png"),
-            getMapTile(24, 6).getLocation(),
-            getMapTile(27, 6).getLocation(),
+            getMapTile(40, 10).getLocation(),
+            getMapTile(38, 10).getLocation(),
             TileType.JUMP_THROUGH_PLATFORM,
             3,
             new Rectangle(0, 6,16,4),
@@ -45,6 +45,9 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     );
     
     enhancedMapTiles.add(hmp);
+*/
+
+   
 
     EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 7).getLocation());
     enhancedMapTiles.add(endLevelBox);
