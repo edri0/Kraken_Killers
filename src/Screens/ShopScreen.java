@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
+
 import java.awt.image.BufferedImage;
 
 import Engine.GraphicsHandler;

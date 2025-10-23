@@ -14,11 +14,15 @@ import Inventory.PlayerInventory;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
-//import Maps.Level2;
+import Maps.Level2;
+import Maps.Level3;
+import Maps.Level4;
+import Maps.Level5;
 import Maps.TestMap;
 import Players.JackSparrow;
 import Players.WillTurner;
 import Utils.Point;
+import java.util.Random; 
 
 // This class is for when the platformer game is actually being played
 public class ArcadeScreen extends Screen implements PlayerListener {
@@ -37,6 +41,7 @@ public class ArcadeScreen extends Screen implements PlayerListener {
 
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
+    private static final Random random = new Random(); 
 
     public ArcadeScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory, PickPlayerScreen pickPlayerScreen) {
         this.screenCoordinator = screenCoordinator;
@@ -46,7 +51,25 @@ public class ArcadeScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
-        this.map = new TestMap();
+
+        int mapIndex = random.nextInt(4); 
+        switch (mapIndex) { 
+            case 0: 
+            this.map = new Level2(); 
+            break;
+            case 1: 
+            this.map = new Level3(); 
+            break;
+            case 2: 
+            this.map = new Level4(); 
+            break;
+            case 3: 
+            this.map = new Level5(); 
+            break; 
+            default: 
+            this.map = new TestMap(); 
+            break; 
+        }
 
         // setup player
         Point playerStart = map.getPlayerStartPosition(); 
@@ -63,6 +86,7 @@ public class ArcadeScreen extends Screen implements PlayerListener {
         }
 
 
+
         this.player.setMap(map);
         this.player.addListener(this);
 
@@ -74,6 +98,11 @@ public class ArcadeScreen extends Screen implements PlayerListener {
             
 
         this.arcadeScreenState = ArcadeScreenState.RUNNING;
+
+        System.out.println("Level Index: " + mapIndex);
+        System.out.println("Selected Player: " + selectedPlayerType);
+        System.out.println("Map Class: " + map.getClass().getSimpleName());
+        System.out.println("Player Start Position: " + playerStart.x + "," + playerStart.y);
     }
 
     public void update() {

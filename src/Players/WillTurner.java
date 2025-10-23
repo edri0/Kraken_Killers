@@ -3,11 +3,15 @@ package Players;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Game.ArmorType;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Player;
+import Utils.Direction;
+import Game.ArmorType;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 // This is the class for the Cat player character
@@ -39,7 +43,7 @@ public class WillTurner extends Player {
             put("STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
@@ -47,26 +51,26 @@ public class WillTurner extends Player {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
             put("WALK_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
@@ -74,29 +78,29 @@ public class WillTurner extends Player {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
             put("JUMP_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(2, 0))
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
@@ -104,14 +108,14 @@ public class WillTurner extends Player {
                     new FrameBuilder(spriteSheet.getSprite(2, 0))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
             put("FALL_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(3, 0))
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
@@ -119,7 +123,7 @@ public class WillTurner extends Player {
                     new FrameBuilder(spriteSheet.getSprite(3, 0))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
@@ -168,7 +172,7 @@ public class WillTurner extends Player {
             put("SWIM_STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(6, 0))
                             .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
 
@@ -176,10 +180,11 @@ public class WillTurner extends Player {
                     new FrameBuilder(spriteSheet.getSprite(6, 0))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(14, 22, 8, 9)
                             .build()
             });
         }};
     }
+
 }
 

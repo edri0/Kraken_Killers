@@ -92,22 +92,26 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
         this.healthBar = new HealthBar(player); 
 
-
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
 
         this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
-        
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
+
+
+        System.out.println("Level Index: " + levelIndex);
+        System.out.println("Selected Player: " + selectedPlayerType);
+        System.out.println("Map Class: " + map.getClass().getSimpleName());
+        System.out.println("Player Start Position: " + startPos.x + "," + startPos.y);
 
     }
 
     //Campaign
     public void update() {
-        
+        //DO NOT CHANGE THIS PLEASE-Nicky
         // based on screen state, perform specific actions
         switch (campaignScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
@@ -156,6 +160,9 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     this.player.setMap(map); 
                     this.player.addListener(this); 
                     this.campaignScreenState = CampaignScreenState.RUNNING;
+                    if(playerInventory.getEquippedArmor()instanceof Inventory.Armor armor){
+                        armor.equip(this.player);
+                    }
 
                     // Load next level dynamically
                     Map nextMap = loadMapForIndex(levelIndex);
@@ -164,7 +171,6 @@ public class CampaignScreen extends Screen implements PlayerListener {
                         screenCoordinator.setGameState(GameState.MENU);
                         return;
                     }
-
                     this.map = nextMap;
                     this.player.setMap(map);
                     this.player.addListener(this);
@@ -173,8 +179,8 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 }
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
-                    levelCompletedStateChangeStart = false;
-                    map = new Level2();
+                    levelCompletedStateChangeStart = false; 
+                    map = loadMapForIndex(levelIndex);
                     Point levelStartPos = map.getPlayerStartPosition(); 
                     int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
                     if(selectedPlayerType == 0){
@@ -196,6 +202,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
            
                 
         }
+        //DO NOT CHANGE THIS PLEASE-Nicky
     }
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
@@ -250,7 +257,7 @@ public void onLevelCompleted() {
     }
 
     public void resetLevel() {
-        this.map = loadMapForIndex(levelIndex);
+        this.map = loadMapForIndex(levelIndex);  //This is needed for the levels to work
         Point resetStartPos = map.getPlayerStartPosition(); 
         int selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
         if(selectedPlayerType == 0){
@@ -262,8 +269,9 @@ public void onLevelCompleted() {
         this.player.setMap(map);
         this.player.addListener(this);
         this.healthBar = new HealthBar(player); 
-
+        
         campaignScreenState = CampaignScreenState.RUNNING;
+        
         levelCompletedStateChangeStart = false;
     }
 

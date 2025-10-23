@@ -7,14 +7,16 @@ import Engine.KeyLocker;
 import Engine.Keyboard;
 import Game.ArmorType;
 import Game.GameState;
+import GameObject.Frame;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
 import Utils.AirGroundState;
 import Utils.Direction;
-
 import java.awt.Color;
+
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class Player extends GameObject {
@@ -64,31 +66,52 @@ public abstract class Player extends GameObject {
     private int maxHealth;
 
 
+    private SpriteSheet spriteSheet;
+
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
         
             
-        
-            public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
-                super(spriteSheet, x, y, startingAnimationName);
-                facingDirection = Direction.RIGHT;
-                airGroundState = AirGroundState.AIR;
-                previousAirGroundState = airGroundState;
-                playerState = PlayerState.STANDING;
-                previousPlayerState = playerState;
-                levelState = LevelState.RUNNING;
-                this.maxHealth = 100;
-                this.currentHealth = maxHealth;
-            }
-        
-            public void updateSpriteSteet(){
-                String avatarName = avatarType.name().toLowerCase();
-                String armorName = armorType.name().toLowerCase();
-        
-                String path = String.format("Resources/%s_%s.png", avatarType.name().toLowerCase(), armorType.name().toLowerCase());
-        
                 
-    }
+        
+        public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
+             super(spriteSheet, x, y, startingAnimationName);
+             facingDirection = Direction.RIGHT;
+             airGroundState = AirGroundState.AIR;
+             previousAirGroundState = airGroundState;
+             playerState = PlayerState.STANDING;
+             previousPlayerState = playerState;
+             levelState = LevelState.RUNNING;
+             this.maxHealth = 100;
+             this.currentHealth = maxHealth;
+            }
+            
+            public void updatePlayerSprite(String playerName, ArmorType armorType){
+                   
+                    String fileName = playerName;
+                    switch (armorType){
+                        case NONE:
+                        fileName += ".png";
+                        break;
+                        case BRONZE:
+                        fileName += "Bronze.png";
+                        break;
+                        case IRON:
+                        fileName += "Iron.png";
+                        break;
+                        case DIAMOND:
+                        fileName += "Diamond.png";
+                        break;
+                    }
+                    System.out.println("switching to armor sprite" + fileName);
+                    BufferedImage image = ImageLoader.load(fileName);
+                    SpriteSheet newSheet = new SpriteSheet(image,32,32);
+                    
+                    reloadAnimations(newSheet);
+
+                }
+                
+    
 
 
     public void update() {
@@ -131,6 +154,13 @@ public abstract class Player extends GameObject {
         else if (levelState == LevelState.PLAYER_DEAD) {
             updatePlayerDead();
         }
+    }
+    public void reloadAnimations(SpriteSheet newSheet){
+        this.spriteSheet = newSheet;
+        this.animations = this.loadAnimations(newSheet);
+        this.currentAnimationName = facingDirection == Direction.RIGHT ?  "STAND_RIGHT" : "STAND_LEFT";
+        this.currentFrameIndex = 0;
+        this.currentFrame = animations.get(currentAnimationName)[0];
     }
 
     // add gravity to player, which is a downward force
@@ -530,32 +560,9 @@ public abstract class Player extends GameObject {
     // Uncomment this to have game draw player's bounds to make it easier to visualize
    
     public void draw(GraphicsHandler graphicsHandler) {
-
         super.draw(graphicsHandler);
 
-        if (equippedArmor != null && equippedArmor.getSprite() != null){
-            Sprite armorSprite = equippedArmor.getSprite();
-
-            float baseX = getX();
-            float baseY = getY();
-
-            armorSprite.setScale(getScale());
-
-            float armorOffsetX = 5f;
-            float armorOffsetY = -25f;
-
-            if(facingDirection == Direction.LEFT){
-                armorOffsetX = -armorOffsetX;
-
-            }
-            armorSprite.setX(baseX + armorOffsetX);
-            armorSprite.setY(baseY + armorOffsetY);
-
-
-            armorSprite.draw(graphicsHandler);
-
-
-        }
+        
         
        
     }
@@ -581,6 +588,14 @@ public abstract class Player extends GameObject {
         currentHealth -= amount;
         if(currentHealth < 0) {
             currentHealth = 0;
+        }
+    }
+
+    public String getAvatarTypeName() {
+        if( avatarType == GameState.JACK){
+            return "JackSparrow";
+        }else{
+            return "WillTurner";
         }
     }
 

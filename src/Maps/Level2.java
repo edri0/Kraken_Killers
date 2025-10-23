@@ -46,7 +46,7 @@ public class Level2 extends Map {
         
         enhancedMapTiles.add(hmp);
 
-        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 7).getLocation());
+        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 19).getLocation());
         enhancedMapTiles.add(endLevelBox);
 
         return enhancedMapTiles;

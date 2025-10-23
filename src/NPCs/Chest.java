@@ -19,6 +19,7 @@ public class Chest extends NPC {
          textboxOffsetX = -4;
         textboxOffsetY = -34;
         
+        
     }
 
     public void update(Player player){

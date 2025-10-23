@@ -125,17 +125,16 @@ public class PickPlayerScreen extends Screen {
 
             if (menuItemSelected == 0 ) {
                 selectedPlayer = 0;
-                new File(SAVE_FILE).delete(); 
                 screenCoordinator.setGameState(GameState.LEVEL);
             } 
-            else if (menuItemSelected == 1 && hasSave){
-                selectedPlayer = 0;
-                screenCoordinator.setGameState(GameState.LEVEL);
-            } 
-            else if ((menuItemSelected == 1 && !hasSave) || (menuItemSelected == 2)){
+            else if (menuItemSelected == 1){
                 selectedPlayer = 1;
-                screenCoordinator.setGameState(GameState.ARCADE);
+                screenCoordinator.setGameState(GameState.LEVEL);
             } 
+            // else if ((menuItemSelected == 1 && !hasSave) || (menuItemSelected == 2)){
+            //     selectedPlayer = 1;
+            //     screenCoordinator.setGameState(GameState.ARCADE);
+            // } 
 
         }
     }

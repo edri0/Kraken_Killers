@@ -69,11 +69,25 @@ public class SwordPirate extends Enemy {
                 facingDirection = Direction.RIGHT;
             }
 
+        if (this.intersects(player)){
+            if(currentAnimationName == "WALK_LEFT"){
+                currentAnimationName = "HIT_ENEMY_LEFT";
+            }else{
+                currentAnimationName = "HIT_ENEMY_RIGHT";
+            }
+        }
+
         super.update(player);
     }
 
     @Override
     public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
+
+    }
+
+    
+    @Override
+    public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
 
     }
 
