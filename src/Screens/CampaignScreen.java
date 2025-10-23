@@ -92,14 +92,12 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
         this.healthBar = new HealthBar(player); 
 
-
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
 
         this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
-        
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
 
@@ -162,6 +160,9 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     this.player.setMap(map); 
                     this.player.addListener(this); 
                     this.campaignScreenState = CampaignScreenState.RUNNING;
+                    if(playerInventory.getEquippedArmor()instanceof Inventory.Armor armor){
+                        armor.equip(this.player);
+                    }
 
                     // Load next level dynamically
                     Map nextMap = loadMapForIndex(levelIndex);
@@ -178,7 +179,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 }
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
-                    levelCompletedStateChangeStart = false;
+                    levelCompletedStateChangeStart = false; 
                     map = loadMapForIndex(levelIndex);
                     Point levelStartPos = map.getPlayerStartPosition(); 
                     int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
@@ -268,8 +269,9 @@ public void onLevelCompleted() {
         this.player.setMap(map);
         this.player.addListener(this);
         this.healthBar = new HealthBar(player); 
-
+        
         campaignScreenState = CampaignScreenState.RUNNING;
+        
         levelCompletedStateChangeStart = false;
     }
 

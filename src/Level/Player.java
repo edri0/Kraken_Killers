@@ -86,7 +86,7 @@ public abstract class Player extends GameObject {
              this.currentHealth = maxHealth;
             }
             
-                public void updatePlayerSprite(String playerName, ArmorType armorType){
+            public void updatePlayerSprite(String playerName, ArmorType armorType){
                    
                     String fileName = playerName;
                     switch (armorType){
@@ -157,8 +157,8 @@ public abstract class Player extends GameObject {
     }
     public void reloadAnimations(SpriteSheet newSheet){
         this.spriteSheet = newSheet;
-        this.animations = loadAnimations(newSheet);
-        this.currentAnimationName = "STAND_RIGHT";
+        this.animations = this.loadAnimations(newSheet);
+        this.currentAnimationName = facingDirection == Direction.RIGHT ?  "STAND_RIGHT" : "STAND_LEFT";
         this.currentFrameIndex = 0;
         this.currentFrame = animations.get(currentAnimationName)[0];
     }
@@ -560,33 +560,9 @@ public abstract class Player extends GameObject {
     // Uncomment this to have game draw player's bounds to make it easier to visualize
    
     public void draw(GraphicsHandler graphicsHandler) {
-
         super.draw(graphicsHandler);
 
-        if (equippedArmor != null && equippedArmor.getSprite() != null){
-            Sprite armorSprite = equippedArmor.getSprite();
-            
-
-            float baseX = getX();
-            float baseY = getY();
-
-            armorSprite.setScale(getScale());
-
-            float armorOffsetX = 5f;
-            float armorOffsetY = -25f;
-
-            if(facingDirection == Direction.LEFT){
-                armorOffsetX = -armorOffsetX;
-
-            }
-            armorSprite.setX(baseX + armorOffsetX);
-            armorSprite.setY(baseY + armorOffsetY);
-
-
-            
-
-
-        }
+        
         
        
     }

@@ -3,11 +3,14 @@ package Players;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Game.ArmorType;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Player;
+import Utils.Direction;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 // This is the class for the Cat player character
@@ -194,4 +197,5 @@ public class JackSparrow extends Player {
             });
         }};
     }
+ 
 }
