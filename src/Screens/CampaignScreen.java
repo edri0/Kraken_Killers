@@ -103,6 +103,12 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
 
+
+        System.out.println("Level Index: " + levelIndex);
+        System.out.println("Selected Player: " + selectedPlayerType);
+        System.out.println("Map Class: " + map.getClass().getSimpleName());
+        System.out.println("Player Start Position: " + startPos.x + "," + startPos.y);
+
     }
 
     //Campaign
@@ -164,7 +170,6 @@ public class CampaignScreen extends Screen implements PlayerListener {
                         screenCoordinator.setGameState(GameState.MENU);
                         return;
                     }
-
                     this.map = nextMap;
                     this.player.setMap(map);
                     this.player.addListener(this);

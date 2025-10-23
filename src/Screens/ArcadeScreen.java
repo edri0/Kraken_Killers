@@ -86,6 +86,7 @@ public class ArcadeScreen extends Screen implements PlayerListener {
         }
 
 
+
         this.player.setMap(map);
         this.player.addListener(this);
 
@@ -97,6 +98,11 @@ public class ArcadeScreen extends Screen implements PlayerListener {
             
 
         this.arcadeScreenState = ArcadeScreenState.RUNNING;
+
+        System.out.println("Level Index: " + mapIndex);
+        System.out.println("Selected Player: " + selectedPlayerType);
+        System.out.println("Map Class: " + map.getClass().getSimpleName());
+        System.out.println("Player Start Position: " + playerStart.x + "," + playerStart.y);
     }
 
     public void update() {
