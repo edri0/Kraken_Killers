@@ -3,6 +3,7 @@ package Maps;
 import EnhancedMapTiles.EndLevelBox;
 // import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
+import NPCs.Chest;
 import Tilesets.CommonTileset;
 //import Utils.Direction;
 import java.util.ArrayList;
@@ -57,10 +58,12 @@ public class Level2 extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        //Walrus walrus = new Walrus(getMapTile(30, 10).getLocation().subtractY(13));
-        //npcs.add(walrus);
+        Chest chest = new Chest(getMapTile(49, 28).getLocation().subtractY(13));
+        npcs.add(chest);
 
         return npcs;
         
     }
-}
+        
+    }
+

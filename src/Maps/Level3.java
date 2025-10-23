@@ -1,13 +1,15 @@
 package Maps;
 
 import EnhancedMapTiles.EndLevelBox;
-import EnhancedMapTiles.HorizontalMovingPlatform;
+// import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
+import NPCs.Chest;
 import Tilesets.CommonTileset;
-import Utils.Direction;
+//import Utils.Direction;
 import java.util.ArrayList;
-import Engine.ImageLoader;
-import GameObject.Rectangle;
+//import Engine.ImageLoader;
+//import GameObject.Rectangle;
+
 
 public class Level3 extends Map{
 
@@ -54,14 +56,15 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 } 
 
 //@Override
-public ArrayList<NPC> loadNPCs() {
-    ArrayList<NPC> npcs = new ArrayList<>();
+    public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
 
-    //Walrus walrus = new Walrus(getMapTile(30, 10).getLocation().subtractY(13));
-    //npcs.add(walrus);
+        Chest chest = new Chest(getMapTile(45, 13).getLocation().subtractY(13));
+        npcs.add(chest);
 
-    return npcs;
-    
+        return npcs;
+        
+    }
 }
-}
+
 
