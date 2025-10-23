@@ -56,6 +56,18 @@ public class Armor extends Item{
             player.updatePlayerSprite(player.getAvatarTypeName(), ArmorType.NONE);
         }
     }
+    public void forceEquip(Player player){
+        equipped = true;
+        player.setArmor(this);
+        String avatarName = player.getAvatarTypeName();
+        ArmorType armorType;
+        
+        if(name.toLowerCase().contains("bronze")) armorType = ArmorType.BRONZE;
+        else if (name.toLowerCase().contains("iron")) armorType = ArmorType.IRON;
+        else if (name.toLowerCase().contains("diamond")) armorType = ArmorType.DIAMOND;
+        else armorType = ArmorType.NONE;
+        player.updatePlayerSprite(avatarName, armorType);
+    }
 
 }
 

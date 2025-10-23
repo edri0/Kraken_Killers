@@ -108,6 +108,7 @@ public abstract class Player extends GameObject {
                     SpriteSheet newSheet = new SpriteSheet(image,32,32);
                     
                     reloadAnimations(newSheet);
+                   
 
                 }
                 
@@ -159,8 +160,10 @@ public abstract class Player extends GameObject {
         this.spriteSheet = newSheet;
         this.animations = this.loadAnimations(newSheet);
         this.currentAnimationName = facingDirection == Direction.RIGHT ?  "STAND_RIGHT" : "STAND_LEFT";
+        System.out.println("loaded animations:" + animations.keySet());
         this.currentFrameIndex = 0;
         this.currentFrame = animations.get(currentAnimationName)[0];
+        this.sprite = new Sprite(this.currentFrame.getImage());
     }
 
     // add gravity to player, which is a downward force
@@ -558,11 +561,11 @@ public abstract class Player extends GameObject {
         return equippedArmor;
     }
     // Uncomment this to have game draw player's bounds to make it easier to visualize
-   
+
     public void draw(GraphicsHandler graphicsHandler) {
+        
         super.draw(graphicsHandler);
 
-        
         
        
     }
@@ -598,6 +601,9 @@ public abstract class Player extends GameObject {
             return "WillTurner";
         }
     }
+  
+
+    
 
     
     
