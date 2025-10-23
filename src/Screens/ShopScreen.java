@@ -115,7 +115,12 @@ public class ShopScreen extends Screen{
                         Item selected = inventory.getOwned().get(ownedIndex);
 
                         if(selected instanceof Armor armorItem){
+                            if(inventory.getEquippedArmor() instanceof Armor oldArmor){
+                                oldArmor.unequip(player);
+                                
+                            }
                             armorItem.equip(player);
+                           
                         } else{
                             inventory.equip(selected);
                         }

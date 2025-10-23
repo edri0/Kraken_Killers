@@ -134,6 +134,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 if(sDown && !sToggleLock){
                     sToggleLock = true;
                     campaignScreenState = CampaignScreenState.RUNNING;
+                
                 }
                 if (!sDown) sToggleLock = false;
                 break;
@@ -159,6 +160,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     }
                     this.player.setMap(map); 
                     this.player.addListener(this); 
+                    
                     this.campaignScreenState = CampaignScreenState.RUNNING;
                     
 
@@ -276,9 +278,7 @@ public void onLevelCompleted() {
         this.player.setMap(map);
         this.player.addListener(this);
 
-        if(savedArmor != null){
-            savedArmor.forceEquip(this.player);
-        }
+        
         
         this.healthBar = new HealthBar(player); 
         
@@ -327,6 +327,11 @@ public void onLevelCompleted() {
             case 3: return new Level4(); 
             case 4: return new Level5(); 
             default: return null; // no more levels yet
+        }
+    }
+    private void reapplyArmor(){
+        if(playerInventory.getEquippedArmor() instanceof Inventory.Armor armor){
+            armor.forceEquip(this.player);
         }
     }
     
