@@ -1,6 +1,7 @@
 package Maps;
 
 //import Enemies.BugEnemy;
+import Enemies.*;
 import Enemies.DinosaurEnemy;
 import Enemies.SwordPirate;
 import Engine.ImageLoader;
@@ -11,8 +12,7 @@ import Level.*;
 import NPCs.Chest;
 import NPCs.Walrus;
 
-//
-//>>>>>>> 13a7320d62f92095bf8dc9c9716bb8773bb9a4d4//
+
 import Tilesets.CommonTileset2;
 import Utils.Direction;
 
@@ -33,6 +33,9 @@ public class TestMap extends Map {
        SwordPirate swordDude = new SwordPirate(getMapTile(12, 10).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
        //getMapTile(16, 10).getLocation().subtractY(25)
        enemies.add(swordDude);
+
+        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+        enemies.add(rangedPirate);
 
         //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
        // enemies.add(SwordPirate);
