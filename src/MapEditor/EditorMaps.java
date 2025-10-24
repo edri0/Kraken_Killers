@@ -7,6 +7,9 @@ import Maps.Level2;
 import Maps.Level3;
 import Maps.Level4;
 import Maps.Level5;
+import Maps.Level6;
+import Maps.Level7;
+import Maps.FinalLevel;
 //import CommonTileset;
 
 import java.util.ArrayList;
@@ -41,13 +44,13 @@ public class EditorMaps {
             case "Level5":
                     return new Level5();
 
-            /*case "Level6":
+            case "Level6":
                     return new Level6();
             case "Level7":
                     return new Level7();
             case "FinalLevel":
                     return new FinalLevel();
-            */
+            
                     default:                   
                 throw new RuntimeException("Unrecognized map name");
         }

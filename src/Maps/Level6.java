@@ -1,15 +1,15 @@
-/*
+
 package Maps;
 
 import EnhancedMapTiles.EndLevelBox;
-// import EnhancedMapTiles.HorizontalMovingPlatform;
+ import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import NPCs.Chest;
 import Tilesets.CommonTileset;
-//import Utils.Direction;
+import Utils.Direction;
 import java.util.ArrayList;
-//import Engine.ImageLoader;
-//import GameObject.Rectangle;
+import Engine.ImageLoader;
+import GameObject.Rectangle;
 
 
 public class Level6 extends Map{
@@ -36,7 +36,7 @@ public ArrayList<Enemy> loadEnemies() {
 @Override
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-/* 
+
     HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
             ImageLoader.load("GreenPlatform.png"),
             getMapTile(40, 10).getLocation(),
@@ -70,4 +70,4 @@ return npcs;
 
 }
 
-*/
+
