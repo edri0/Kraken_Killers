@@ -23,6 +23,9 @@ public class EditorMaps {
             add("Level3");
             add("Level4");
             add("Level5");
+            add("Level6");
+            add("Level7");
+            add("FinalLevel");
                     }};
     }
 
