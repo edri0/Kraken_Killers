@@ -38,9 +38,10 @@ public class Armor extends Item{
             equipped = true;
             player.setArmor(this);
 
+
             String avatarName = player.getAvatarTypeName();
             ArmorType armorType;
-
+//applying armor based on what the type is
             if(name.toLowerCase().contains("bronze")) armorType = ArmorType.BRONZE;
             else if(name.toLowerCase().contains("iron")) armorType = ArmorType.IRON;
             else if(name.toLowerCase().contains("diamond")) armorType = ArmorType.DIAMOND;
@@ -50,7 +51,7 @@ public class Armor extends Item{
         
             player.updatePlayerSprite(avatarName, armorType);
     }
-    public void unequip( Player player){
+    public void unequip(Player player){
         if (equipped){
             equipped = false;
             player.removeArmor();

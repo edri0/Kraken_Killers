@@ -15,6 +15,8 @@ import Engine.Key;
 import Engine.Keyboard;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Inventory.Armor;
+import Inventory.Item;
 import Inventory.PlayerInventory;
 import Level.Map;
 import Level.Player;
@@ -150,20 +152,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 if (screenTimer <= 0) {
                     levelIndex++;
                     saveProgress();
-                    Point levelStartPos = map.getPlayerStartPosition();
-                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
-                    if(selectedPlayerType == 0){
-                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
-                    }
-                    else {
-                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
-                    }
-                    this.player.setMap(map); 
-                    this.player.addListener(this); 
                     
-                    this.campaignScreenState = CampaignScreenState.RUNNING;
-                    
-
                     // Load next level dynamically
                     Map nextMap = loadMapForIndex(levelIndex);
                     if (nextMap == null) {
@@ -172,32 +161,27 @@ public class CampaignScreen extends Screen implements PlayerListener {
                         return;
                     }
                     this.map = nextMap;
-                    this.player.setMap(map);
-                    this.player.addListener(this);
-                    if(playerInventory.getEquippedArmor()instanceof Inventory.Armor armor){
-                        armor.equip(this.player);
-                    }
-                    this.campaignScreenState = CampaignScreenState.RUNNING;
-                    }
-                }
-                if (levelCompletedStateChangeStart) {
-                    screenTimer = 130;
-                    levelCompletedStateChangeStart = false; 
-                    map = loadMapForIndex(levelIndex);
-                    Point levelStartPos = map.getPlayerStartPosition(); 
+
+                    Point levelStartPos = map.getPlayerStartPosition();
                     int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
+                   
                     if(selectedPlayerType == 0){
                         this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
                     }
                     else {
                         this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
                     }
+                   
                     this.player.setMap(map); 
                     this.player.addListener(this); 
+                    
+                    reapplyArmor();
+                    this.shopScreen.setPlayer(this.player);
                     this.campaignScreenState = CampaignScreenState.RUNNING;
-
                 }
-                break;
+            }
+            break;
+
             // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
             case LEVEL_LOSE:
                 levelLoseScreen.update();
@@ -261,10 +245,6 @@ public void onLevelCompleted() {
     }
 
     public void resetLevel() {
-        Inventory.Armor savedArmor = null;
-        if(playerInventory.getEquippedArmor() instanceof Inventory.Armor armor){
-            savedArmor = armor;
-        }
         this.map = loadMapForIndex(levelIndex);  //This is needed for the levels to work
         Point resetStartPos = map.getPlayerStartPosition(); 
         int selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
@@ -278,8 +258,11 @@ public void onLevelCompleted() {
         this.player.setMap(map);
         this.player.addListener(this);
 
-        
-        
+        //make sure armor functions through level changes
+        reapplyArmor();
+        this.shopScreen = new ShopScreen(playerInventory, player);
+        this.shopScreen.initialize();
+
         this.healthBar = new HealthBar(player); 
         
         campaignScreenState = CampaignScreenState.RUNNING;
@@ -330,8 +313,9 @@ public void onLevelCompleted() {
         }
     }
     private void reapplyArmor(){
-        if(playerInventory.getEquippedArmor() instanceof Inventory.Armor armor){
-            armor.forceEquip(this.player);
+        Armor armor = playerInventory.getEquippedArmor();
+        if (armor != null){
+            armor.equip(this.player);
         }
     }
     

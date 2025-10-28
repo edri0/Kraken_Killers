@@ -22,76 +22,82 @@ import Level.Player;
 
 public class ShopScreen extends Screen{
     private final PlayerInventory inventory;
-    private final Player player;
-    private final List<Item> shopItems = new ArrayList<>();
-    
-    private int shopIndex = 0;
-    private int ownedIndex = 0;
-    private boolean inShop = true;
-
-
-    private Rectangle panelShop;
-    private Rectangle panelOwned;
-    private Rectangle panelEquipped;
-    private Rectangle actionBox;
-
-    private int keyPressTimer = 0;
-
-
-
-    public ShopScreen(PlayerInventory inventory, Player player){
-        this.inventory = inventory;
-        this.player = player;
-        seedCatalog();
-
-    }
-    private void seedCatalog(){
-        BufferedImage bronzeImg = ImageLoader.load("Bronze_armor.png");
-        Sprite bronzeArmorSprite = new Sprite(bronzeImg);
-        shopItems.add(new Armor("Bronze Armor", 1500, 5, bronzeArmorSprite));
-
-
-        BufferedImage ironImg = ImageLoader.load("Iron_armor.png");
-        Sprite ironArmorSprite = new Sprite(ironImg);
-        shopItems.add(new Armor("Iron Armor", 1500, 5, ironArmorSprite));
-
-
-        BufferedImage diamondImg = ImageLoader.load("Diamond_armor.png");
-        Sprite diamondArmorSprite = new Sprite(diamondImg);
-        shopItems.add(new Armor("Diamond Armor", 1500, 5, diamondArmorSprite));
-
+    private Player player;
+        private final List<Item> shopItems = new ArrayList<>();
         
-        shopItems.add(new Item("Grappling hook", 1500, ItemType.WEAPON));
-        shopItems.add(new Item("Shield", 1500, ItemType.ARMOR));
-        shopItems.add(new Item("Underwater boots", 1500, ItemType.ARMOR));
-    }
-
-
-    public void initialize(){
-        int w = ScreenManager.getScreenWidth();
-        int h = ScreenManager.getScreenHeight();
-
-        panelOwned = new Rectangle(20, 80, w/2-40, h-260);
-        panelEquipped = new Rectangle(20, h-170, w/2-40, 90);
-        panelShop = new Rectangle(w/2+20, 80, w/2-40, h-180);
-        actionBox = new Rectangle(w/2+20, h-90, 220, 50);
-
-
+        private int shopIndex = 0;
+        private int ownedIndex = 0;
+        private boolean inShop = true;
+    
+    
+        private Rectangle panelShop;
+        private Rectangle panelOwned;
+        private Rectangle panelEquipped;
+        private Rectangle actionBox;
+    
+        private int keyPressTimer = 0;
+    
+    
+    
+        public ShopScreen(PlayerInventory inventory, Player player){
+            this.inventory = inventory;
+            this.player = player;
+            seedCatalog();
+    
+        }
+        private void seedCatalog(){
+            BufferedImage bronzeImg = ImageLoader.load("Bronze_armor.png");
+            Sprite bronzeArmorSprite = new Sprite(bronzeImg);
+            shopItems.add(new Armor("Bronze Armor", 1500, 5, bronzeArmorSprite));
+    
+    
+            BufferedImage ironImg = ImageLoader.load("Iron_armor.png");
+            Sprite ironArmorSprite = new Sprite(ironImg);
+            shopItems.add(new Armor("Iron Armor", 1500, 5, ironArmorSprite));
+    
+    
+            BufferedImage diamondImg = ImageLoader.load("Diamond_armor.png");
+            Sprite diamondArmorSprite = new Sprite(diamondImg);
+            shopItems.add(new Armor("Diamond Armor", 1500, 5, diamondArmorSprite));
+    
+            
+            //shopItems.add(new Item("Grappling hook", 1500, ItemType.WEAPON));
+            //shopItems.add(new Item("Shield", 1500, ItemType.ARMOR));
+            //shopItems.add(new Item("Underwater boots", 1500, ItemType.ARMOR));
+        }
+    
+    
+        public void initialize(){
+            int w = ScreenManager.getScreenWidth();
+            int h = ScreenManager.getScreenHeight();
+    
+            panelOwned = new Rectangle(20, 80, w/2-40, h-260);
+            panelEquipped = new Rectangle(20, h-190, w/2-40, 90);
+            panelShop = new Rectangle(w/2+20, 80, w/2-40, h-240);
+            actionBox = new Rectangle(w/2+20, h-100, 240, 50);
+    
+    
+        }
+        //making sure correct player is there when entering new map or respawns player
+        public void setPlayer(Player player){
+            this.player = player;
     }
     public void update(){
           if (keyPressTimer > 0) {
                keyPressTimer--;
                return;
          }
-        if( Keyboard.isKeyDown(Key.A) || Keyboard.isKeyDown(Key.LEFT)){
+         //left/right switches panels (arrow)
+        if(Keyboard.isKeyDown(Key.LEFT)){
             inShop = false;
             keyPressTimer = 14;
-         } else if (Keyboard.isKeyDown(Key.D) || Keyboard.isKeyDown(Key.RIGHT)){
+         } else if (Keyboard.isKeyDown(Key.RIGHT)){
             inShop = true;
             keyPressTimer = 14;
             
         }
-            if (Keyboard.isKeyDown(Key.W) || Keyboard.isKeyDown(Key.UP)) {
+        //up movements with lists (arrow)
+            if (Keyboard.isKeyDown(Key.UP)) {
                if (inShop)
                shopIndex = Math.max(0, shopIndex - 1);
                else    
@@ -107,6 +113,7 @@ public class ShopScreen extends Screen{
                     keyPressTimer = 14;
                     return;
                 }
+                //hit space or enter to buy/equip/unequip
                  if (Keyboard.isKeyDown(Key.SPACE) || Keyboard.isKeyDown(Key.ENTER)) {
                     if(inShop && !shopItems.isEmpty()){
                         inventory.buy(shopItems.get(shopIndex));
@@ -115,36 +122,40 @@ public class ShopScreen extends Screen{
                         Item selected = inventory.getOwned().get(ownedIndex);
 
                         if(selected instanceof Armor armorItem){
-                            if(inventory.getEquippedArmor() instanceof Armor oldArmor){
-                                oldArmor.unequip(player);
-                                
-                            }
-                            armorItem.equip(player);
-                           
-                        } else{
-                            inventory.equip(selected);
-                        }
+                            Armor currentlyEquipped = inventory.getEquippedArmor();
+                            
+                            if(currentlyEquipped == armorItem){
+                                armorItem.unequip(player);
+                                inventory.setEquippedArmor(null);
 
+                            } else {
+                                if(currentlyEquipped != null){
+                                    currentlyEquipped.unequip(player);
+                                }
+                                armorItem.equip(player);
+                                inventory.setEquippedArmor(armorItem);
+                               
+                            }
+                        }
                     }
                     keyPressTimer = 14;
-
+                    return;
                 }
-            }
-
+            }     
         public void draw(GraphicsHandler g) {
            int w = ScreenManager.getScreenWidth();
            int h = ScreenManager.getScreenHeight();
 
            g.drawFilledRectangle(0,0,w,h,new Color(0,0,0,170));
            
-           g.drawFilledRectangle(0,0,w,60, new Color(22,29,44));
-           g.drawString("SHOP and INVENTORY (WASD + ENTER, Press S to close)", 20, 40, new Font("Ariel", Font.BOLD, 24), Color.WHITE);
+           g.drawFilledRectangle(0,0,w,80, new Color(22,29,44));
+           g.drawString("SHOP & INVENTORY: ARROW KEYS to navigate | ENTER: Buy/Equip/Unequip | S: close", 20, 40, new Font("Ariel", Font.BOLD, 17), Color.WHITE);
            g.drawString("Cash: " + PlayerInventory.fmt(inventory.getMoneyCents()), actionBox.x + actionBox.width, actionBox.y +34, new Font("Ariel", Font.BOLD, 18), Color.WHITE);
 
 
-           drawPanel(g, panelOwned, "INVENTORY ( <- / -> to switch)", new Color(31,47,70));
+           drawPanel(g, panelOwned, "INVENTORY", new Color(31,47,70));
            drawPanel(g, panelEquipped, "EQUIPPED ITEMS", new Color(31,47,70));
-           drawPanel(g, panelShop, "Shop (click to select)", new Color(30,41,59));
+           drawPanel(g, panelShop, "SHOP", new Color(30,41,59));
            
            for (int i = 0; i< inventory.getOwned().size(); i++){
             Item it = inventory.getOwned().get(i);
@@ -164,7 +175,7 @@ public class ShopScreen extends Screen{
            }
 
            g.drawFilledRectangle(actionBox.x, actionBox.y, actionBox.width, actionBox.height, new Color(46,83,125));
-           g.drawString(inShop ? "BUY (ENTER)" : "EQUIP (ENTER)",  actionBox.x + 20, actionBox.y + 34, new Font("Arial", Font.BOLD, 22), Color.WHITE);
+           g.drawString(inShop ? "BUY (ENTER)" : "EQUIP/UNEQUIP (ENTER)",  actionBox.x + 20, actionBox.y + 34, new Font("Arial", Font.BOLD, 22), Color.WHITE);
         }
     
         private void drawPanel(GraphicsHandler g, Rectangle r, String title, Color bg){
@@ -184,4 +195,4 @@ public class ShopScreen extends Screen{
         }
 
     }
-    
+

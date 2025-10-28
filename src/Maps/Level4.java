@@ -39,7 +39,7 @@ public class Level4 extends Map{
    public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-       SwordPirate swordDude = new SwordPirate(getMapTile(10, 17).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+       SwordPirate swordDude = new SwordPirate(getMapTile(10, 11).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
        //getMapTile(16, 10).getLocation().subtractY(25)
        enemies.add(swordDude);
 

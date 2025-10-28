@@ -7,7 +7,7 @@ public class PlayerInventory{
     private int moneyCents = 20000;
     private final List<Item> owned = new ArrayList<>();
     private Item equippedWeapon;
-    private Item equippedArmor;
+    private Armor equippedArmor;
 
     public int getMoneyCents() { 
         return moneyCents;
@@ -22,7 +22,7 @@ public class PlayerInventory{
     public Item getEquippedWeapon(){
         return equippedWeapon;
     }
-    public Item getEquippedArmor(){
+    public Armor getEquippedArmor(){
         return equippedArmor;
     }
 
@@ -34,7 +34,7 @@ public class PlayerInventory{
                 equippedWeapon = item;
             }
             if (item.type == ItemType.ARMOR && equippedArmor == null){
-                equippedArmor = item;
+                equippedArmor = (Armor) item;
             }
             return true;
         }
@@ -48,13 +48,15 @@ public class PlayerInventory{
             equippedWeapon = item;
         }
         if (item.type == ItemType.ARMOR) {
-            equippedArmor = item;
+            equippedArmor = (Armor) item;
         }
 
     }
     public static String fmt(int cents){
         return String.format("$: %.2f", cents / 100.0);
     }
-
+    public void setEquippedArmor(Armor armorItem) {
+        this.equippedArmor = armorItem;
+    } 
 
 }
