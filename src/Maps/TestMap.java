@@ -37,9 +37,6 @@ public class TestMap extends Map {
         RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
 
-        //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-       // enemies.add(SwordPirate);
-
         return enemies;
     }
 

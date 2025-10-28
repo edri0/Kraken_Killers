@@ -6,8 +6,6 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
-//import Players.JackSparrow; 
-//import Players.WillTurner; 
 
 import java.awt.*;
 import java.io.File;
@@ -22,10 +20,7 @@ public class PickPlayerScreen extends Screen {
     protected Map background;
     protected int keyPressTimer;
     protected int pointerLocationX, pointerLocationY;
-    protected KeyLocker keyLocker = new KeyLocker();
-
-    // public pickPlayerScreen playerType = pickScreen.getSelectedPlayer();
-    // PickPlayerScreen pickScreen; 
+    protected KeyLocker keyLocker = new KeyLocker(); 
 
 
     private static final String SAVE_FILE = "campaign_level_save.txt" ;
@@ -131,10 +126,6 @@ public class PickPlayerScreen extends Screen {
                 selectedPlayer = 1;
                 screenCoordinator.setGameState(GameState.LEVEL);
             } 
-            // else if ((menuItemSelected == 1 && !hasSave) || (menuItemSelected == 2)){
-            //     selectedPlayer = 1;
-            //     screenCoordinator.setGameState(GameState.ARCADE);
-            // } 
 
         }
     }
