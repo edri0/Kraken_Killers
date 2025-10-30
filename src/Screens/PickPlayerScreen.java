@@ -36,11 +36,11 @@ public class PickPlayerScreen extends Screen {
     public void initialize() {
         hasSave = new File(SAVE_FILE).exists();
 
-        jack = new SpriteFont("JACK", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        jack = new SpriteFont("JACK", 200, 123, "Arial", 30, new Color(126, 23, 23));
         jack.setOutlineColor(Color.black);
         jack.setOutlineThickness(3);
 
-        will = new SpriteFont("WILL", 200, 173, "Arial", 30, new Color(49, 207, 240));
+        will = new SpriteFont("WILL", 200, 173, "Arial", 30, new Color(126, 23, 23));
         will.setOutlineColor(Color.black);
         will.setOutlineThickness(3);
 
@@ -83,27 +83,27 @@ public class PickPlayerScreen extends Screen {
 
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
-            jack.setColor(new Color(255, 215, 0));
-            will.setColor(new Color(49, 207, 240));
+            jack.setColor(new Color(213, 207, 181));
+            will.setColor(new Color(126, 23, 23));
             pointerLocationX = 170;
             pointerLocationY = 130;
         } else if (currentMenuItemHovered == 1) {
             if (hasSave) {
-                jack.setColor(new Color(49, 207, 240));
-                will.setColor(new Color(255,215,0));
+                jack.setColor(new Color(126, 23, 23));
+                will.setColor(new Color(213, 207, 181));
                 pointerLocationX = 170;
                 pointerLocationY = 180;
             } else {
-                jack.setColor(new Color(49, 207, 240));
-                will.setColor(new Color(255, 215, 0));
+                jack.setColor(new Color(126, 23, 23));
+                will.setColor(new Color(213, 207, 181));
                 pointerLocationX = 170;
                 pointerLocationY = 230;
 
             }
             
         } else if (currentMenuItemHovered == 2 && hasSave){
-            jack.setColor( new Color(49, 207, 240));
-            will.setColor(new Color(49, 207, 240));
+            jack.setColor( new Color(126, 23, 23));
+            will.setColor(new Color(126, 23, 23));
             pointerLocationX = 170;
             pointerLocationY = 230;
         }
