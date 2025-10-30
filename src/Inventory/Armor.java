@@ -10,6 +10,7 @@ public class Armor extends Item{
     private boolean equipped;
     private Sprite sprite;
     private ArmorType armorType;
+    
 
     public Armor(String name, int costCents, int hpValue, Sprite sprite){
         super(name, costCents, ItemType.ARMOR);
@@ -70,6 +71,6 @@ public class Armor extends Item{
         else armorType = ArmorType.NONE;
         player.updatePlayerSprite(avatarName, armorType);
     }
-
+   
 }
 

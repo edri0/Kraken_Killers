@@ -36,6 +36,11 @@ public class ShopScreen extends Screen{
         private Rectangle actionBox;
     
         private int keyPressTimer = 0;
+
+        //insuffucient funds
+        private String notificationText="";
+        private int notificationTimer=0;
+
     
     
     
@@ -48,17 +53,17 @@ public class ShopScreen extends Screen{
         private void seedCatalog(){
             BufferedImage bronzeImg = ImageLoader.load("Bronze_armor.png");
             Sprite bronzeArmorSprite = new Sprite(bronzeImg);
-            shopItems.add(new Armor("Bronze Armor", 1500, 5, bronzeArmorSprite));
+            shopItems.add(new Armor("Bronze Armor", 1500, 10, bronzeArmorSprite));
     
     
             BufferedImage ironImg = ImageLoader.load("Iron_armor.png");
             Sprite ironArmorSprite = new Sprite(ironImg);
-            shopItems.add(new Armor("Iron Armor", 1500, 5, ironArmorSprite));
+            shopItems.add(new Armor("Iron Armor", 5000,20, ironArmorSprite));
     
     
             BufferedImage diamondImg = ImageLoader.load("Diamond_armor.png");
             Sprite diamondArmorSprite = new Sprite(diamondImg);
-            shopItems.add(new Armor("Diamond Armor", 1500, 5, diamondArmorSprite));
+            shopItems.add(new Armor("Diamond Armor", 10000, 30, diamondArmorSprite));
     
             
             //shopItems.add(new Item("Grappling hook", 1500, ItemType.WEAPON));
@@ -116,7 +121,17 @@ public class ShopScreen extends Screen{
                 //hit space or enter to buy/equip/unequip
                  if (Keyboard.isKeyDown(Key.SPACE) || Keyboard.isKeyDown(Key.ENTER)) {
                     if(inShop && !shopItems.isEmpty()){
-                        inventory.buy(shopItems.get(shopIndex));
+                        //insuffient funds logic
+                        Item selected = shopItems.get(shopIndex);
+                        boolean success = inventory.buy(selected);
+                        if(!success){
+                            notificationText = "Insufficient Funds!";
+                            notificationTimer = 90;
+                        } else{
+                            notificationText = "Purchase Successful!";
+                            notificationTimer = 90;
+
+                        }
 
                     } else if(!inShop && !inventory.getOwned().isEmpty()){
                         Item selected = inventory.getOwned().get(ownedIndex);
@@ -175,8 +190,14 @@ public class ShopScreen extends Screen{
            }
 
            g.drawFilledRectangle(actionBox.x, actionBox.y, actionBox.width, actionBox.height, new Color(46,83,125));
-           g.drawString(inShop ? "BUY (ENTER)" : "EQUIP/UNEQUIP (ENTER)",  actionBox.x + 20, actionBox.y + 34, new Font("Arial", Font.BOLD, 22), Color.WHITE);
+           g.drawString(inShop ? "BUY (ENTER)" : "EQUIP (ENTER)",  actionBox.x + 20, actionBox.y + 34, new Font("Arial", Font.BOLD, 22), Color.WHITE);
+
+           //notifications for money/purchases
+        if(notificationTimer > 0 && notificationText != null && !notificationText.isEmpty()){
+            notificationTimer--;
+            g.drawString(notificationText, 200, 225, new Font("Arial", Font.BOLD, 35), Color.RED);
         }
+    }
     
         private void drawPanel(GraphicsHandler g, Rectangle r, String title, Color bg){
             g.drawFilledRectangle(r.x,r.y,r.width,r.height, bg);

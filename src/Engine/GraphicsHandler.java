@@ -123,4 +123,24 @@ public class GraphicsHandler {
         g.setStroke(originalStroke);
         g.setRenderingHints(originalHints);
     }
+    //draw armor timer at top of screen
+    public void drawArmorTimer(int screenWidth, int yPosition, int remainingSeconds){
+        if (remainingSeconds <= 0) 
+        return;
+        String text = "Armor Active: " + remainingSeconds + "s";
+        Font font = new Font("Arial", Font.BOLD, 22);
+
+        Color color;
+        if(remainingSeconds <= 10) color = Color.RED;
+        else if (remainingSeconds <= 20) color = Color.YELLOW;
+        else color = Color.GREEN;
+
+        FontMetrics fm = g.getFontMetrics(font);
+        int textWidth = fm.stringWidth(text);
+
+        g.setFont(font);
+        g.setColor(color);
+        g.drawString(text, (screenWidth- textWidth) / 2, yPosition);
+
+    }
 }

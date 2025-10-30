@@ -1,5 +1,6 @@
 package Level;
 
+import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Key;
@@ -15,6 +16,7 @@ import Inventory.Armor;
 import Utils.AirGroundState;
 import Utils.Direction;
 import java.awt.Color;
+import Game.ArmorTimer;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ public abstract class Player extends GameObject {
     private GameState avatarType = GameState.JACK;
     protected boolean isTouchingLeftWall = false;
     protected boolean isTouchingRightWall = false; 
+
+    private static ArmorTimer armorTimer = new ArmorTimer();
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -144,6 +148,12 @@ public abstract class Player extends GameObject {
 
             // update player's animation
             super.update();
+
+            //check if armor timer is done
+            if(equippedArmor != null && !armorTimer.isActive()){
+                removeArmor();
+                System.out.println("armor expired");
+            }
         }
 
         // if player has beaten level
@@ -490,6 +500,7 @@ public abstract class Player extends GameObject {
                 currentAnimationName = "DEATH_LEFT";
             }
             super.update();
+
         }
         // if death animation not on last frame yet, continue to play out death animation
         else if (currentFrameIndex != getCurrentAnimation().length - 1) {
@@ -540,14 +551,14 @@ public abstract class Player extends GameObject {
         System.out.println("Equipped armor: " + armor.getName());
 
         //adjust health based on armor
-        int bonus = 0;
-        String name = armor.getName().toLowerCase();
-        if(name.contains("bronze")) bonus = 10;
-        else if (name.contains("iron")) bonus = 20;
-        else if (name.contains("diamond")) bonus = 30;
-
+        int bonus = armor.getHpValue();
         setMaxHealth(100 + bonus);
         setCurrentHealth(getMaxHealth());
+
+        // start armor timer
+        //for now only from shop as chest is not fully implemented
+        armorTimer.start(30);
+        System.out.println("Armor timer started for 30s.");
     }
     public void removeArmor() {
         if ( equippedArmor != null){
@@ -565,6 +576,10 @@ public abstract class Player extends GameObject {
     public void draw(GraphicsHandler graphicsHandler) {
         
         super.draw(graphicsHandler);
+        if (armorTimer.isActive()){
+            graphicsHandler.drawArmorTimer(Config.GAME_WINDOW_WIDTH,40,armorTimer.getReamianingSeconds());
+
+        }
 
         
        
