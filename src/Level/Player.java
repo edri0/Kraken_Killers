@@ -13,6 +13,7 @@ import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
+import UI.HealthBar;
 import Utils.AirGroundState;
 import Utils.Direction;
 import java.awt.Color;
@@ -46,11 +47,13 @@ public abstract class Player extends GameObject {
     protected LevelState levelState;
     private Armor equippedArmor;
     private SpriteSheet playSpriteSheet;
+    private HealthBar healthBar;
 
     private ArmorType armorType = ArmorType.NONE;
     private GameState avatarType = GameState.JACK;
     protected boolean isTouchingLeftWall = false;
     protected boolean isTouchingRightWall = false; 
+
 
     private static ArmorTimer armorTimer = new ArmorTimer();
 
@@ -66,8 +69,9 @@ public abstract class Player extends GameObject {
     protected Key CLIMB_KEY = Key.C; 
 
     //health bar
-    private int currentHealth;
+    private int currentHealth = 100;
     private int maxHealth;
+    
 
 
     private SpriteSheet spriteSheet;
@@ -88,6 +92,7 @@ public abstract class Player extends GameObject {
              levelState = LevelState.RUNNING;
              this.maxHealth = 100;
              this.currentHealth = maxHealth;
+             this.healthBar = new HealthBar(this);
             }
             
             public void updatePlayerSprite(String playerName, ArmorType armorType){
@@ -146,6 +151,11 @@ public abstract class Player extends GameObject {
 
             updateLockedKeys();
 
+            if(healthBar != null){
+                healthBar.update();
+            }
+
+
             // update player's animation
             super.update();
 
@@ -165,6 +175,7 @@ public abstract class Player extends GameObject {
         else if (levelState == LevelState.PLAYER_DEAD) {
             updatePlayerDead();
         }
+
     }
     public void reloadAnimations(SpriteSheet newSheet){
         this.spriteSheet = newSheet;
@@ -454,11 +465,8 @@ public abstract class Player extends GameObject {
 
     // other entities can call this method to hurt the player
     public void hurtPlayer(MapEntity mapEntity) {
-        if (!isInvincible) {
-            // if map entity is an enemy, kill player on touch
-            if (mapEntity instanceof Enemy) {
-                levelState = LevelState.PLAYER_DEAD;
-            }
+        if (mapEntity instanceof Enemy){
+                takeDamage(20);
         }
     }
 
@@ -576,13 +584,11 @@ public abstract class Player extends GameObject {
     public void draw(GraphicsHandler graphicsHandler) {
         
         super.draw(graphicsHandler);
+        healthBar.draw(graphicsHandler);
         if (armorTimer.isActive()){
             graphicsHandler.drawArmorTimer(Config.GAME_WINDOW_WIDTH,40,armorTimer.getReamianingSeconds());
 
-        }
-
-        
-       
+        }   
     }
 
     public int getCurrentHealth() {
@@ -603,9 +609,16 @@ public abstract class Player extends GameObject {
         setCurrentHealth(currentHealth + amount);
     }
     public void takeDamage(int amount){
-        currentHealth -= amount;
-        if(currentHealth < 0) {
-            currentHealth = 0;
+        if( currentHealth <= amount){
+            //he dies
+            setCurrentHealth(0);
+            levelState = LevelState.PLAYER_DEAD;
+            System.out.println("Player died");
+
+        } else {
+            //he takes damage
+            setCurrentHealth(currentHealth - amount);
+            System.out.println("player took: " + amount + "damage");
         }
     }
 

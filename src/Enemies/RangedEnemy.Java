@@ -45,7 +45,6 @@ public class RangedEnemy extends Enemy{
     public void initialize(){
         super.initialize();
         pirateState = DinosaurState.WALK;
-        previousPirateState = pirateState;
         facingDirection = startFacingDirection;
         if (facingDirection == Direction.RIGHT){
             currentAnimationName = "WALK_RIGHT";
