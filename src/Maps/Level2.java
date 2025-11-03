@@ -69,6 +69,21 @@ public class Level2 extends Map {
         
         enhancedMapTiles.add(hmp);
 */ 
+/*@Override
+public ArrayList<Enemy> loadEnemies() {
+    ArrayList<Enemy> enemies = new ArrayList<>();
+
+   SwordPirate swordDude = new SwordPirate(getMapTile(12, 10).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+   //getMapTile(16, 10).getLocation().subtractY(25)
+   enemies.add(swordDude);
+
+    RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+    enemies.add(rangedPirate);
+
+    return enemies;
+}
+    */
+
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 19).getLocation());
         enhancedMapTiles.add(endLevelBox);
