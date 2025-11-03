@@ -6,6 +6,7 @@ import Engine.ImageLoader;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import Engine.SoundPlayer;
 import Game.ArmorType;
 import Game.GameState;
 import GameObject.Frame;
@@ -20,6 +21,7 @@ import java.awt.Color;
 import Game.ArmorTimer;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 public abstract class Player extends GameObject {
@@ -218,6 +220,7 @@ public abstract class Player extends GameObject {
 
     // player STANDING state logic
     protected void playerStanding() {
+        SoundPlayer.stopMusic(); 
         // if walk left or walk right key is pressed, player enters WALKING state
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.WALKING;
@@ -247,15 +250,28 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
+            if (!SoundPlayer.isPlaying()){
+                    SoundPlayer.playMusic("Resources/walking.wav", true); 
+                    System.out.println("Music file exists: " + new File("Resources/walking.wav").exists());
+            }
         }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
+             if (!SoundPlayer.isPlaying()){
+                    SoundPlayer.playMusic("Resources/walking.wav", true); 
+                    System.out.println("Music file exists: " + new File("Resources/walking.wav").exists());
+            }
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
+            if (!SoundPlayer.isPlaying()){
+                    SoundPlayer.playMusic("Resources/walking.mp3", true); 
+                    System.out.println("Music file exists: " + new File("Resources/walking.wav").exists());
+            }
         }
+
 
         //if Climb key is pressed, 
         else if (Keyboard.isKeyDown(CLIMB_KEY) && (isTouchingLeftWall || isTouchingRightWall)) {
