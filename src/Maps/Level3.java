@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import Enemies.RangeEnemy;
 import Enemies.SwordPirate;
+import Engine.SoundPlayer;
 
 
 public class Level3 extends Map{
@@ -21,6 +22,7 @@ public class Level3 extends Map{
     public Level3(){
         super("level3.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(2, 11).getLocation();
+        SoundPlayer.stopMusic(); 
     }
     
 

@@ -10,12 +10,15 @@ import java.util.ArrayList;
 //import Engine.ImageLoader;
 //import GameObject.Rectangle;
 
+import Engine.SoundPlayer;
+
 
 public class Level5 extends Map{
 
     public Level5(){
         super("level5.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(4, 9).getLocation();
+        SoundPlayer.stopMusic(); 
     }
     
 

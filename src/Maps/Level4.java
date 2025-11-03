@@ -14,12 +14,14 @@ import java.util.ArrayList;
 
 import Enemies.RangeEnemy;
 import Enemies.SwordPirate;
+import Engine.SoundPlayer;
 
 public class Level4 extends Map{
 
     public Level4(){
         super("level4.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(4, 11).getLocation();
+        SoundPlayer.stopMusic(); 
     }
     
 

@@ -9,6 +9,7 @@ import Tilesets.CommonTileset;
 import Utils.Direction;
 import java.util.ArrayList;
 import Engine.ImageLoader;
+import Engine.SoundPlayer;
 import GameObject.Rectangle;
 
 
@@ -17,6 +18,8 @@ public class FinalLevel extends Map{
     public FinalLevel(){
         super("FinalLevel.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(4, 9).getLocation();
+        SoundPlayer.stopMusic(); 
+    
     }
     
 

@@ -10,6 +10,9 @@ import SpriteFont.SpriteFont;
 import java.awt.*;
 import java.io.File;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 // This is the class for the main menu screen
 public class MenuScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
@@ -51,6 +54,11 @@ public class MenuScreen extends Screen {
         keyPressTimer = 0;
         menuItemSelected = -1;
         keyLocker.lockKey(Key.SPACE);
+
+        if (!SoundPlayer.isPlaying()){
+            SoundPlayer.playMusic("Resources/POC.wav", true); 
+            System.out.println("Music file exists: " + new File("POC.wav").exists());
+        }
     }
 
     public void update() {
