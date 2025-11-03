@@ -3,10 +3,16 @@ package Level;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 
+import java.awt.Color;
 import java.util.HashMap;
+
+import Engine.GraphicsHandler;
 
 // This class is a base class for all enemies in the game -- all enemies should extend from it
 public class Enemy extends MapEntity {
+    protected int contactDamage = 20;
+    protected int damageCooldown = 0;
+    protected int damageCooldownMax = 60;
 
     public Enemy(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
@@ -35,13 +41,19 @@ public class Enemy extends MapEntity {
 
     public void update(Player player) {
         super.update();
-        if (intersects(player)) {
-            touchedPlayer(player);
+        if(damageCooldown > 0){
+            damageCooldown--;
         }
+
+        if (intersects(player) && damageCooldown == 0) {
+                touchedPlayer(player);
+                damageCooldown = damageCooldownMax;
+            }
     }
 
     // A subclass can override this method to specify what it does when it touches the player
     public void touchedPlayer(Player player) {
         player.hurtPlayer(this);
     }
+
 }

@@ -1,4 +1,5 @@
 package Inventory;
+import Game.ArmorTimer;
 import Game.ArmorType;
 import GameObject.Sprite;
 import Level.Player;
@@ -10,6 +11,7 @@ public class Armor extends Item{
     private boolean equipped;
     private Sprite sprite;
     private ArmorType armorType;
+    private ArmorTimer timer;
 
     public Armor(String name, int costCents, int hpValue, Sprite sprite){
         super(name, costCents, ItemType.ARMOR);
@@ -17,6 +19,7 @@ public class Armor extends Item{
         this.hpValue = hpValue;
         this.equipped = false;
         this.sprite = sprite;
+        this.timer = new ArmorTimer();
 
         String lowerName = name.toLowerCase();
         if(lowerName.contains("bronze")) armorType = ArmorType.BRONZE;
@@ -70,6 +73,6 @@ public class Armor extends Item{
         else armorType = ArmorType.NONE;
         player.updatePlayerSprite(avatarName, armorType);
     }
-
+   
 }
 

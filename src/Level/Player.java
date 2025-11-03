@@ -1,5 +1,6 @@
 package Level;
 
+import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Key;
@@ -12,9 +13,11 @@ import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
+import UI.HealthBar;
 import Utils.AirGroundState;
 import Utils.Direction;
 import java.awt.Color;
+import Game.ArmorTimer;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -44,11 +47,15 @@ public abstract class Player extends GameObject {
     protected LevelState levelState;
     private Armor equippedArmor;
     private SpriteSheet playSpriteSheet;
+    private HealthBar healthBar;
 
     private ArmorType armorType = ArmorType.NONE;
     private GameState avatarType = GameState.JACK;
     protected boolean isTouchingLeftWall = false;
     protected boolean isTouchingRightWall = false; 
+
+
+    private static ArmorTimer armorTimer = new ArmorTimer();
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -62,8 +69,9 @@ public abstract class Player extends GameObject {
     protected Key CLIMB_KEY = Key.C; 
 
     //health bar
-    private int currentHealth;
+    private int currentHealth = 100;
     private int maxHealth;
+    
 
 
     private SpriteSheet spriteSheet;
@@ -84,6 +92,7 @@ public abstract class Player extends GameObject {
              levelState = LevelState.RUNNING;
              this.maxHealth = 100;
              this.currentHealth = maxHealth;
+             this.healthBar = new HealthBar(this);
             }
             
             public void updatePlayerSprite(String playerName, ArmorType armorType){
@@ -142,8 +151,19 @@ public abstract class Player extends GameObject {
 
             updateLockedKeys();
 
+            if(healthBar != null){
+                healthBar.update();
+            }
+
+
             // update player's animation
             super.update();
+
+            //check if armor timer is done
+            if(equippedArmor != null && !armorTimer.isActive()){
+                removeArmor();
+                System.out.println("armor expired");
+            }
         }
 
         // if player has beaten level
@@ -155,6 +175,7 @@ public abstract class Player extends GameObject {
         else if (levelState == LevelState.PLAYER_DEAD) {
             updatePlayerDead();
         }
+
     }
     public void reloadAnimations(SpriteSheet newSheet){
         this.spriteSheet = newSheet;
@@ -444,11 +465,8 @@ public abstract class Player extends GameObject {
 
     // other entities can call this method to hurt the player
     public void hurtPlayer(MapEntity mapEntity) {
-        if (!isInvincible) {
-            // if map entity is an enemy, kill player on touch
-            if (mapEntity instanceof Enemy) {
-                levelState = LevelState.PLAYER_DEAD;
-            }
+        if (mapEntity instanceof Enemy){
+                takeDamage(20);
         }
     }
 
@@ -490,6 +508,7 @@ public abstract class Player extends GameObject {
                 currentAnimationName = "DEATH_LEFT";
             }
             super.update();
+
         }
         // if death animation not on last frame yet, continue to play out death animation
         else if (currentFrameIndex != getCurrentAnimation().length - 1) {
@@ -540,14 +559,14 @@ public abstract class Player extends GameObject {
         System.out.println("Equipped armor: " + armor.getName());
 
         //adjust health based on armor
-        int bonus = 0;
-        String name = armor.getName().toLowerCase();
-        if(name.contains("bronze")) bonus = 10;
-        else if (name.contains("iron")) bonus = 20;
-        else if (name.contains("diamond")) bonus = 30;
-
+        int bonus = armor.getHpValue();
         setMaxHealth(100 + bonus);
         setCurrentHealth(getMaxHealth());
+
+        // start armor timer
+        //for now only from shop as chest is not fully implemented
+        armorTimer.start(30);
+        System.out.println("Armor timer started for 30s.");
     }
     public void removeArmor() {
         if ( equippedArmor != null){
@@ -565,9 +584,11 @@ public abstract class Player extends GameObject {
     public void draw(GraphicsHandler graphicsHandler) {
         
         super.draw(graphicsHandler);
+        healthBar.draw(graphicsHandler);
+        if (armorTimer.isActive()){
+            graphicsHandler.drawArmorTimer(Config.GAME_WINDOW_WIDTH,40,armorTimer.getReamianingSeconds());
 
-        
-       
+        }   
     }
 
     public int getCurrentHealth() {
@@ -588,9 +609,16 @@ public abstract class Player extends GameObject {
         setCurrentHealth(currentHealth + amount);
     }
     public void takeDamage(int amount){
-        currentHealth -= amount;
-        if(currentHealth < 0) {
-            currentHealth = 0;
+        if( currentHealth <= amount){
+            //he dies
+            setCurrentHealth(0);
+            levelState = LevelState.PLAYER_DEAD;
+            System.out.println("Player died");
+
+        } else {
+            //he takes damage
+            setCurrentHealth(currentHealth - amount);
+            System.out.println("player took: " + amount + "damage");
         }
     }
 
