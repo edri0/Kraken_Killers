@@ -32,6 +32,7 @@ public class LevelClearedScreen extends Screen {
             ScreenManager.getScreenWidth(),
             ScreenManager.getScreenHeight(),
             Color.BLACK
+            //800w 600h
         );
 
         winMessage.draw(graphicsHandler);

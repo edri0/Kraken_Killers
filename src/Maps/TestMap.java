@@ -2,6 +2,8 @@ package Maps;
 
 //import Enemies.BugEnemy;
 import Enemies.*;
+//import Enemies.DinosaurEnemy;
+import Enemies.SwordPirate;
 import Engine.ImageLoader;
 import Engine.SoundPlayer;
 import EnhancedMapTiles.EndLevelBox;
@@ -9,7 +11,7 @@ import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
 import Level.*;
 import NPCs.Chest;
-import NPCs.Walrus;
+//import NPCs.Walrus;
 
 
 import Tilesets.CommonTileset2;
@@ -65,7 +67,7 @@ public class TestMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Chest chest = new Chest(getMapTile(30, 10).getLocation().subtractY(13));
+        Chest chest = new Chest(getMapTile(28, 12).getLocation().subtractY(13));
         npcs.add(chest);
 
         return npcs;
