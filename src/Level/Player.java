@@ -73,6 +73,8 @@ public abstract class Player extends GameObject {
     //health bar
     private int currentHealth = 100;
     private int maxHealth;
+
+    private boolean walkingSoundPlaying = false; 
     
 
 
@@ -246,30 +248,33 @@ public abstract class Player extends GameObject {
 
     // player WALKING state logic
     protected void playerWalking() {
+
+        boolean moving = false; 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
-            if (!SoundPlayer.isPlaying()){
-                    SoundPlayer.playMusic("Resources/walking.wav", true); 
-                    System.out.println("Music file exists: " + new File("Resources/walking.wav").exists());
-            }
+            moving = true; 
         }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
-             if (!SoundPlayer.isPlaying()){
-                    SoundPlayer.playMusic("Resources/walking.wav", true); 
-                    System.out.println("Music file exists: " + new File("Resources/walking.wav").exists());
-            }
-        } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
+             moving = true; 
+        } 
+        
+        else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
-            if (!SoundPlayer.isPlaying()){
-                    SoundPlayer.playMusic("Resources/walking.mp3", true); 
-                    System.out.println("Music file exists: " + new File("Resources/walking.wav").exists());
-            }
+        }
+
+        if (moving && !walkingSoundPlaying) {
+            SoundPlayer.playMusic("Resources/walking.wav", true); 
+            walkingSoundPlaying = true; 
+        }
+        else if(!moving && walkingSoundPlaying) {
+            SoundPlayer.stopMusic(); 
+            walkingSoundPlaying = false; 
         }
 
 
@@ -283,6 +288,8 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
+
+            SoundPlayer.playMusic("Resources/jump.wav", false); 
         }
 
         // if crouch key is pressed,
@@ -324,6 +331,7 @@ public abstract class Player extends GameObject {
                     jumpForce = 0;
                 }
             }
+            SoundPlayer.playMusic("Resources/jump.wav", false);
         }
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
