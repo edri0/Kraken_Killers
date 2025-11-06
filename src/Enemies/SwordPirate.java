@@ -58,7 +58,7 @@ public class SwordPirate extends Enemy {
             put("WALK_LEFT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
                             .withScale(3)
-                            .withBounds(4, 2, 10, 13)
+                            .withBounds(2,2,16,26)
                             .build()
             });
 
@@ -66,7 +66,7 @@ public class SwordPirate extends Enemy {
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 10, 13)
+                            .withBounds(2,2,16,26)
                             .build()
             });
         }};

@@ -45,14 +45,14 @@ public class Level2 extends Map {
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-       SwordPirate swordDude = new SwordPirate(getMapTile(20, 15).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+       SwordPirate swordDude = new SwordPirate(getMapTile(18, 15).getLocation().subtractY(25),getMapTile(22, 15).getLocation().subtractY(25), Direction.RIGHT);
        //getMapTile(16, 10).getLocation().subtractY(25)
        enemies.add(swordDude);
 
         RangeEnemy rangedPirate = new RangeEnemy(getMapTile(46, 18).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
 
-                Squidenemy squidenemy = new Squidenemy(getMapTile(34, 27).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+        Squidenemy squidenemy = new Squidenemy(getMapTile(34, 27).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
         enemies.add(squidenemy);
 
 

@@ -34,6 +34,7 @@ public class Fitz extends Enemy {
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
+        this.contactDamage = 20;
         this.initialize();
     }
 
@@ -46,20 +47,17 @@ public class Fitz extends Enemy {
 
     @Override
     public void update(Player player) {
-        float movementAmount = movementSpeed;
+        float moveX = (facingDirection == Direction.RIGHT) ? movementSpeed : -movementSpeed;
 
-        if (facingDirection == Direction.LEFT) {
-            this.x -= movementAmount;
-            if (x < startLocation.x) {
-                facingDirection = Direction.RIGHT;
-                currentAnimationName = "WALK_RIGHT";
-            }
-        } else {
-            this.x += movementAmount;
-            if (x > endLocation.x) {
-                facingDirection = Direction.LEFT;
-                currentAnimationName = "WALK_LEFT";
-            }
+        moveXHandleCollision(moveX);
+        moveYHandleCollision(0);
+
+        if (getX1() <= startLocation.x) {
+            facingDirection = Direction.RIGHT;
+            currentAnimationName = "WALK_RIGHT";
+        } else if (getX1() + getWidth() >= endLocation.x){
+            facingDirection = Direction.LEFT;
+            currentAnimationName = "WALK_LEFT";
         }
 
         super.update(player);
@@ -79,7 +77,7 @@ public class Fitz extends Enemy {
             put("WALK_LEFT", new Frame[]{
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
                     .withScale(3)
-                    .withBounds(4, 2, 5, 13)
+                    .withBounds(2,2,14,26)
                     .build(),
             });
 
@@ -87,7 +85,7 @@ public class Fitz extends Enemy {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
                     .withScale(3)
                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                    .withBounds(4, 2, 5, 13)
+                    .withBounds(2,2,14,26)
                     .build(),
             });
         }};

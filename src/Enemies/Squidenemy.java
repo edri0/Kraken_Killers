@@ -37,8 +37,10 @@ public class Squidenemy extends Enemy {
     @Override
     public void update(Player player) {
         float moveX = (facingDirection == Direction.RIGHT) ? movementSpeed : -movementSpeed;
+        float moveY = .5f;
+
+        moveYHandleCollision(moveY);
         moveXHandleCollision(moveX);
-        moveYHandleCollision(0);
 
 
          if (getX1() + getWidth() >= endLocation.x){
@@ -47,7 +49,8 @@ public class Squidenemy extends Enemy {
          } else if (getX1() <= startLocation.x){
             facingDirection = Direction.RIGHT;
          }
-         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
+         currentAnimationName = (facingDirection == Direction.RIGHT) ? "WALK_RIGHT" : "WALK_LEFT";
+         
          super.update(player);
     }
 
