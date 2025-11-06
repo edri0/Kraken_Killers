@@ -2,15 +2,15 @@
 package Maps;
 
 import EnhancedMapTiles.EndLevelBox;
- import EnhancedMapTiles.HorizontalMovingPlatform;
+//import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import NPCs.Chest;
 import Tilesets.CommonTileset;
-import Utils.Direction;
+//import Utils.Direction;
 import java.util.ArrayList;
-import Engine.ImageLoader;
+//import Engine.ImageLoader;
 import Engine.SoundPlayer;
-import GameObject.Rectangle;
+//import GameObject.Rectangle;
 
 
 public class Level6 extends Map{
@@ -32,7 +32,6 @@ public ArrayList<Enemy> loadEnemies() {
    // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
    // enemies.add(dinosaurEnemy);
 
-   npcs.add(new Chest(getMapTile(49,28).getLocation()));
 
     return enemies;
 }
@@ -41,7 +40,7 @@ public ArrayList<Enemy> loadEnemies() {
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-    HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
+    /*HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
             ImageLoader.load("GreenPlatform.png"),
             getMapTile(40, 10).getLocation(),
             getMapTile(38, 10).getLocation(),
@@ -52,10 +51,10 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     );
     
     enhancedMapTiles.add(hmp);
-
+ */
    
 
-EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 7).getLocation());
+EndLevelBox endLevelBox = new EndLevelBox(getMapTile(34, 14).getLocation());
 enhancedMapTiles.add(endLevelBox);
 
 return enhancedMapTiles;
@@ -63,14 +62,14 @@ return enhancedMapTiles;
 
 //@Override
 public ArrayList<NPC> loadNPCs() {
-ArrayList<NPC> npcs = new ArrayList<>();
-
-Chest chest = new Chest(getMapTile(30, 7).getLocation().subtractY(13));
-npcs.add(chest);
-
-return npcs;
-
-}
+    ArrayList<NPC> npcs = new ArrayList<>();
+    
+    Chest chest = new Chest(getMapTile(16, 17).getLocation().subtractY(13));
+    npcs.add(chest);
+    
+    return npcs;
+    
+    }
 
 }
 

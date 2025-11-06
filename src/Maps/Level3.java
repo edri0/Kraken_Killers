@@ -50,7 +50,7 @@ public class Level3 extends Map{
         RangeEnemy rangedPirate = new RangeEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
 
-        npcs.add(new Chest(getMapTile(47,17).getLocation()));
+
 
         //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
        // enemies.add(SwordPirate);
@@ -82,14 +82,14 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 } 
 
 //@Override
-    public ArrayList<NPC> loadNPCs() {
-        ArrayList<NPC> npcs = new ArrayList<>();
-
-        Chest chest = new Chest(getMapTile(45, 13).getLocation().subtractY(13));
-        npcs.add(chest);
-
-        return npcs;
-        
+public ArrayList<NPC> loadNPCs() {
+    ArrayList<NPC> npcs = new ArrayList<>();
+    
+    Chest chest = new Chest(getMapTile(10, 17).getLocation().subtractY(13));
+     npcs.add(chest);
+    
+    return npcs;
+    
     }
 }
 
