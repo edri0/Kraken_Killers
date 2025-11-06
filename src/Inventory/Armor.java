@@ -62,7 +62,7 @@ public class Armor extends Item{
             player.removeArmor();
             player.updatePlayerSprite(player.getAvatarTypeName(), ArmorType.NONE);
         }
-    }
+    
     public void forceEquip(Player player){
         equipped = true;
         player.setArmor(this);

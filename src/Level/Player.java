@@ -597,7 +597,7 @@ public abstract class Player extends GameObject {
         //adjust health based on armor
         int bonus = armor.getHpValue();
 
-        /his.maxHealth += bonus;
+        this.maxHealth += bonus;
         this.currentHealth = Math.min(this.currentHealth + bonus, this.maxHealth);
 
 
