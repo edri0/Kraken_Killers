@@ -53,7 +53,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
     private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
-    private HealthBar healthBar;
+    //private HealthBar healthBar;
 
 
     private int levelIndex = 0;
@@ -101,7 +101,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
         this.player.setMap(map);
         this.player.addListener(this);
 
-        this.healthBar = new HealthBar(player); 
+        player.getHealthBar().update();
 
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
@@ -140,7 +140,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
                 player.update();
                 map.update(player);
-                healthBar.update();
+                player.getHealthBar().update();
                 break;
             case SHOP: {
                 shopScreen.update();
@@ -151,9 +151,8 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     System.out.println("leaving shop, playerHealth = " + player.getCurrentHealth());
 
                    Armor equipped = playerInventory.getEquippedArmor();
-                    if (equipped != null){
-                       player.setArmor(equipped);
-                      healthBar = new HealthBar(player);
+                    if (equipped != null && player.getEquippedArmor() != equipped){
+                       equipped.equip(player);
                     }
                 campaignScreenState = CampaignScreenState.RUNNING;
                 
@@ -218,7 +217,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
-                healthBar.draw(graphicsHandler);
+                player.getHealthBar().draw(graphicsHandler);
 
                 String money = PlayerInventory.fmt(playerInventory.getMoneyCents());
                 int w = ScreenManager.getScreenWidth();
@@ -283,7 +282,7 @@ public void onLevelCompleted() {
         this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
 
-        this.healthBar = new HealthBar(player); 
+        player.getHealthBar().update();
         
         campaignScreenState = CampaignScreenState.RUNNING;
         levelCompletedStateChangeStart = false;

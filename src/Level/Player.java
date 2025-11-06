@@ -51,6 +51,9 @@ public abstract class Player extends GameObject {
     private SpriteSheet playSpriteSheet;
     private HealthBar healthBar;
 
+    private int preArmorHealth = -1;
+    private int preArmorMaxHealth = -1;
+
     private ArmorType armorType = ArmorType.NONE;
     private GameState avatarType = GameState.JACK;
     protected boolean isTouchingLeftWall = false;
@@ -84,6 +87,7 @@ public abstract class Player extends GameObject {
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
+    public Object getHealthBar;
         
             
                 
@@ -593,12 +597,17 @@ public abstract class Player extends GameObject {
         if (this.equippedArmor == armor){
             return;
         }
-        
-        //adjust health based on armor
+        preArmorHealth = this.currentHealth;
+        preArmorMaxHealth = this.maxHealth;
         int bonus = armor.getHpValue();
 
-        /his.maxHealth += bonus;
-        this.currentHealth = Math.min(this.currentHealth + bonus, this.maxHealth);
+
+        this.maxHealth += bonus;
+        this.currentHealth += bonus;
+
+        if(this.currentHealth > this.maxHealth){
+            this.currentHealth = this.maxHealth;
+        }
 
 
         this.equippedArmor = armor;
@@ -607,22 +616,21 @@ public abstract class Player extends GameObject {
         //for now only from shop as chest is not fully implemented
         armorTimer.start(30);
         System.out.println("Armor timer started for 30s.");
-        System.out.println("Armor equipped: +" + bonus + " HP boost → "
-        + currentHealth + "/" + maxHealth);
+        
     }
     public void removeArmor() {
-        if ( this.equippedArmor == null) return;
+        if (equippedArmor == null) return;
 
-            int bonus = this.equippedArmor.getHpValue();
+        if (preArmorHealth != -1 && preArmorMaxHealth != -1){
+            this.currentHealth = preArmorHealth;
+            this.maxHealth = preArmorMaxHealth;
 
-            this.maxHealth -= bonus;
-            this.currentHealth = Math.max(this.currentHealth - bonus, 0);
-
-            this.equippedArmor = null;
-            System.out.println("Armor removed: +" + bonus + " HP boost → "
-            + currentHealth + "/" + maxHealth);
+        }
         
-
+        preArmorHealth = -1;
+        preArmorMaxHealth = -1;
+        equippedArmor = null;
+         
         }
     
     public Armor getEquippedArmor(){
@@ -679,6 +687,10 @@ public abstract class Player extends GameObject {
         }else{
             return "WillTurner";
         }
+    }
+
+    public HealthBar getHealthBar(){
+        return healthBar;
     }
   
 
