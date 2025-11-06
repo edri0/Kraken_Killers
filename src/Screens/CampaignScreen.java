@@ -82,16 +82,22 @@ public class CampaignScreen extends Screen implements PlayerListener {
         Point startPos = map.getPlayerStartPosition(); 
         
         int selectedPlayerType = 0; 
-
         if(pickPlayerScreen != null){
             selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
         }
-        if(selectedPlayerType ==0){
-            this.player = new JackSparrow(startPos.x, startPos.y);
-        }else {
-            this.player = new WillTurner(startPos.x, startPos.y);
-        }
+        
 
+        if(this.player == null){
+            if(selectedPlayerType ==0){
+                this.player = new JackSparrow(startPos.x, startPos.y);
+            }else {
+                this.player = new WillTurner(startPos.x, startPos.y);
+            }
+        } else {
+            this.player.setMap(map);
+            this.player.setX(startPos.x);
+            this.player.setY(startPos.y);
+        }
         this.player.setMap(map);
         this.player.addListener(this);
 
@@ -101,8 +107,12 @@ public class CampaignScreen extends Screen implements PlayerListener {
         levelLoseScreen = new LevelLoseScreen(this);
 
 
-        this.shopScreen = new ShopScreen(playerInventory, player);
-        this.shopScreen.initialize();
+        if(this.shopScreen == null){
+            this.shopScreen = new ShopScreen(playerInventory, player);
+            this.shopScreen.initialize();
+        }else {
+            this.shopScreen.setPlayer(this.player);
+        }
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
 
@@ -138,7 +148,14 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 sDown = Keyboard.isKeyDown(Key.S);
                 if(sDown && !sToggleLock){
                     sToggleLock = true;
-                    campaignScreenState = CampaignScreenState.RUNNING;
+                    System.out.println("leaving shop, playerHealth = " + player.getCurrentHealth());
+
+                   Armor equipped = playerInventory.getEquippedArmor();
+                    if (equipped != null){
+                       player.setArmor(equipped);
+                      healthBar = new HealthBar(player);
+                    }
+                campaignScreenState = CampaignScreenState.RUNNING;
                 
                 }
                 if (!sDown) sToggleLock = false;

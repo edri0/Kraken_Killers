@@ -19,7 +19,6 @@ public class SwordPirate extends Enemy {
     //This class is for the Sword pirate enemy, It's meant to be kinda like the dinosaur Enemy (meant to walk between 2 points)
     //but if it collides with the player it will swing it's sword and deal damage (maybe 20% hp?) 
     protected Point startLocation, endLocation;
-
     private float gravity = .5f;
     protected Float movementSpeed = 1.3f;
     protected Direction startFacingDirection;
@@ -51,6 +50,7 @@ public class SwordPirate extends Enemy {
          currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
          super.update(player);
     }
+   
 
      @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {

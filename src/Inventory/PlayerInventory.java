@@ -33,9 +33,7 @@ public class PlayerInventory{
             if (item.type == ItemType.WEAPON && equippedWeapon == null){
                 equippedWeapon = item;
             }
-            if (item.type == ItemType.ARMOR && equippedArmor == null){
-                equippedArmor = (Armor) item;
-            }
+           
             return true;
         }
         return false;

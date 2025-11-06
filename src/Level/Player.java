@@ -56,6 +56,8 @@ public abstract class Player extends GameObject {
     protected boolean isTouchingLeftWall = false;
     protected boolean isTouchingRightWall = false; 
 
+   
+
 
     private static ArmorTimer armorTimer = new ArmorTimer();
 
@@ -97,6 +99,7 @@ public abstract class Player extends GameObject {
              this.maxHealth = 100;
              this.currentHealth = maxHealth;
              this.healthBar = new HealthBar(this);
+
             }
             
             public void updatePlayerSprite(String playerName, ArmorType armorType){
@@ -134,7 +137,7 @@ public abstract class Player extends GameObject {
 
         isTouchingLeftWall = map.collidesWithTileOnLeft(this);
         isTouchingRightWall = map.collidesWithTileOnRight(this);
-
+        
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
             applyGravity();
@@ -165,7 +168,8 @@ public abstract class Player extends GameObject {
 
             //check if armor timer is done
             if(equippedArmor != null && !armorTimer.isActive()){
-                removeArmor();
+                equippedArmor.unequip(this);
+                equippedArmor = null;
                 System.out.println("armor expired");
             }
         }
@@ -490,7 +494,14 @@ public abstract class Player extends GameObject {
     // other entities can call this method to hurt the player
     public void hurtPlayer(MapEntity mapEntity) {
         if (mapEntity instanceof Enemy){
-                takeDamage(20);
+                int damage = 20;
+            
+                if(mapEntity.getClass().getSimpleName().equals("Fireball")){
+                    damage = 30;
+                }
+            takeDamage(damage);
+
+
         }
     }
 
@@ -579,27 +590,41 @@ public abstract class Player extends GameObject {
         listeners.add(listener);
     }
     public void setArmor(Armor armor){
-        this.equippedArmor = armor;
-        System.out.println("Equipped armor: " + armor.getName());
-
+        if (this.equippedArmor == armor){
+            return;
+        }
+        
         //adjust health based on armor
         int bonus = armor.getHpValue();
-        setMaxHealth(100 + bonus);
-        setCurrentHealth(getMaxHealth());
+
+        /his.maxHealth += bonus;
+        this.currentHealth = Math.min(this.currentHealth + bonus, this.maxHealth);
+
+
+        this.equippedArmor = armor;
 
         // start armor timer
         //for now only from shop as chest is not fully implemented
         armorTimer.start(30);
         System.out.println("Armor timer started for 30s.");
+        System.out.println("Armor equipped: +" + bonus + " HP boost → "
+        + currentHealth + "/" + maxHealth);
     }
     public void removeArmor() {
-        if ( equippedArmor != null){
-            System.out.println("Unequipped armor: " + equippedArmor.getName());
+        if ( this.equippedArmor == null) return;
+
+            int bonus = this.equippedArmor.getHpValue();
+
+            this.maxHealth -= bonus;
+            this.currentHealth = Math.max(this.currentHealth - bonus, 0);
+
             this.equippedArmor = null;
-            setMaxHealth(100);
-            setCurrentHealth(Math.min(getCurrentHealth(), getMaxHealth()));
+            System.out.println("Armor removed: +" + bonus + " HP boost → "
+            + currentHealth + "/" + maxHealth);
+        
+
         }
-    }
+    
     public Armor getEquippedArmor(){
         return equippedArmor;
     }
@@ -633,6 +658,8 @@ public abstract class Player extends GameObject {
         setCurrentHealth(currentHealth + amount);
     }
     public void takeDamage(int amount){
+        if (levelState != LevelState.RUNNING) return;
+
         if( currentHealth <= amount){
             //he dies
             setCurrentHealth(0);
