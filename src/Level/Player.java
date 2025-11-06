@@ -340,7 +340,8 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
             keyLocker.lockKey(ATTACK_KEY); 
             playerState = PlayerState.ATTACKING; 
-            // SoundPlayer.playMusic("Resources/attack.wav", false); 
+            SoundPlayer.playMusic("Resources/swords.wav", false); 
+            System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
             return; 
         }
 
@@ -475,6 +476,8 @@ public abstract class Player extends GameObject {
                     break;
                 }
             }
+            SoundPlayer.playMusic("Resources/swords.wav", false); 
+            System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
         }
     
     

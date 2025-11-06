@@ -14,7 +14,7 @@ import javax.sound.sampled.LineEvent;
 public class SoundPlayer {
     private static HashMap<String, Clip> soundClips = new HashMap<>(); 
     private static Clip currentMusic; 
-
+    
     public static void playMusic(String filePath, boolean loop) {
         try{
             if (currentMusic != null) {
