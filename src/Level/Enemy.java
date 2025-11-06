@@ -21,6 +21,8 @@ public class Enemy extends MapEntity {
 
     protected boolean isTinvincible = false; 
 
+
+
     public Enemy(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
         this.maxHealth = 100;
@@ -105,6 +107,10 @@ public class Enemy extends MapEntity {
             setCurrentHealth(currentHealth - amount);
             System.out.println("player took: " + amount + "damage");
         }
+    }
+
+    public int getContactDamage(){
+        return contactDamage; 
     }
 
 }
