@@ -3,6 +3,7 @@ import Game.ArmorTimer;
 import Game.ArmorType;
 import GameObject.Sprite;
 import Level.Player;
+import NPCs.Chest;
 
 
 public class Armor extends Item{

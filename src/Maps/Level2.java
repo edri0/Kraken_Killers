@@ -13,6 +13,7 @@ import java.util.ArrayList;
 //import GameObject.Rectangle;
 
 import Enemies.RangeEnemy;
+import Enemies.Squidenemy;
 import Enemies.SwordPirate;
 import Engine.SoundPlayer;
 
@@ -44,12 +45,16 @@ public class Level2 extends Map {
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-       SwordPirate swordDude = new SwordPirate(getMapTile(10, 17).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+       SwordPirate swordDude = new SwordPirate(getMapTile(20, 15).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
        //getMapTile(16, 10).getLocation().subtractY(25)
        enemies.add(swordDude);
 
-        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(46, 18).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
+
+                Squidenemy squidenemy = new Squidenemy(getMapTile(34, 27).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+        enemies.add(squidenemy);
+
 
         //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
        // enemies.add(SwordPirate);
@@ -90,7 +95,7 @@ public ArrayList<Enemy> loadEnemies() {
 
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 19).getLocation());
-        enhancedMapTiles.add(endLevelBox);
+       enhancedMapTiles.add(endLevelBox);
 
         return enhancedMapTiles;
     } 
@@ -98,13 +103,13 @@ public ArrayList<Enemy> loadEnemies() {
     //@Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-
-        Chest chest = new Chest(getMapTile(49, 28).getLocation().subtractY(13));
-        npcs.add(chest);
-
+        
+        //Chest chest = new Chest(getMapTile(49, 28).getLocation().subtractY(13));
+        //npcs.add(chest);
+        
         return npcs;
         
-    }
+        }
         
     }
 

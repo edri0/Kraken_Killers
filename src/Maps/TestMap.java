@@ -39,6 +39,9 @@ public class TestMap extends Map {
         RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
 
+        //Squidenemy squidenemy = new Squidenemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+        //enemies.add(squidenemy);
+
         return enemies;
     }
 

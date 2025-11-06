@@ -2,21 +2,27 @@ package Screens;
 
 import Engine.*;
 import SpriteFont.SpriteFont;
-
+import java.awt.image.BufferedImage;
 import java.awt.*;
 
 // This is the class for the level lose screen
 public class LevelLoseScreen extends Screen {
-    protected SpriteFont loseMessage;
+    protected Boolean hasInitialized = false;
     protected SpriteFont instructions;
     protected KeyLocker keyLocker = new KeyLocker();
     protected CampaignScreen campaignScreen;
-    protected ArcadeScreen arcadeScreen;
+    protected ArcadeScreen arcadeScreen;   
+    
+    protected SpriteFont loseMessage;
+    protected BufferedImage levelLoseImage;
 
     public LevelLoseScreen(CampaignScreen campaignScreen) {
         this.campaignScreen = campaignScreen;
         this.arcadeScreen = null;
         initialize();
+        initialize();
+        hasInitialized = true;
+        levelLoseImage = ImageLoader.load("LevelLose.png");
     }
     public LevelLoseScreen(ArcadeScreen arcadeScreen) {
         this.arcadeScreen = arcadeScreen;
@@ -26,8 +32,8 @@ public class LevelLoseScreen extends Screen {
 
     @Override
     public void initialize() {
-        loseMessage = new SpriteFont("You lose!", 350, 239, "Arial", 30, Color.white);
-        instructions = new SpriteFont("Press Space to try again or Escape to go back to the main menu", 120, 279,"Arial", 20, Color.white);
+        loseMessage = new SpriteFont("", 110, 200, "Black Goth", 25, Color.WHITE);
+        instructions = new SpriteFont("Press Space to try again or Escape to go back to the main menu matey", 120, 279,"Arial", 20, Color.white);
         keyLocker.lockKey(Key.SPACE);
         keyLocker.lockKey(Key.ESC);
     }
@@ -58,8 +64,18 @@ public class LevelLoseScreen extends Screen {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), Color.black);
+       /*  graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), Color.black);
         loseMessage.draw(graphicsHandler);
         instructions.draw(graphicsHandler);
     }
+        */
+
+    graphicsHandler.drawImage(levelLoseImage, 0, 0, 800, 600); 
+
+    loseMessage.draw(graphicsHandler);
+}
+
+public Boolean hasInitialized(){
+    return hasInitialized;
+}
 }

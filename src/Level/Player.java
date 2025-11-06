@@ -19,6 +19,7 @@ import Utils.AirGroundState;
 import Utils.Direction;
 import java.awt.Color;
 import Game.ArmorTimer;
+import NPCs.Chest;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

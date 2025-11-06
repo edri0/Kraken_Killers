@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import Enemies.RangeEnemy;
 import Enemies.SwordPirate;
+import Enemies.Fitz;
 import Engine.SoundPlayer;
 
 
@@ -47,8 +48,11 @@ public class Level3 extends Map{
        //getMapTile(16, 10).getLocation().subtractY(25)
        enemies.add(swordDude);
 
-        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(45, 13).getLocation().addY(2), getMapTile(44, 12).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
+
+    Fitz fitzEnemy = new Fitz(getMapTile(36, 14).getLocation().addY(2), getMapTile(34, 14).getLocation().addY(2), Direction.RIGHT);
+    enemies.add(fitzEnemy);
 
         //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
        // enemies.add(SwordPirate);
@@ -80,14 +84,14 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 } 
 
 //@Override
-    public ArrayList<NPC> loadNPCs() {
-        ArrayList<NPC> npcs = new ArrayList<>();
-
-        Chest chest = new Chest(getMapTile(45, 13).getLocation().subtractY(13));
-        npcs.add(chest);
-
-        return npcs;
-        
+public ArrayList<NPC> loadNPCs() {
+    ArrayList<NPC> npcs = new ArrayList<>();
+    
+    //Chest chest = new Chest(getMapTile(10, 17).getLocation().subtractY(13));
+    // npcs.add(chest);
+    
+    return npcs;
+    
     }
 }
 

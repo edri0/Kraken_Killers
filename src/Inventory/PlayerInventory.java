@@ -8,6 +8,7 @@ public class PlayerInventory{
     private final List<Item> owned = new ArrayList<>();
     private Item equippedWeapon;
     private Armor equippedArmor;
+    private Item addItem;
 
     public int getMoneyCents() { 
         return moneyCents;
@@ -24,6 +25,9 @@ public class PlayerInventory{
     }
     public Armor getEquippedArmor(){
         return equippedArmor;
+    }
+    public Item getaddItem(Armor rewardArmor){
+        return addItem;
     }
 
     public boolean buy(Item item){
@@ -55,6 +59,6 @@ public class PlayerInventory{
     }
     public void setEquippedArmor(Armor armorItem) {
         this.equippedArmor = armorItem;
-    } 
+    }
 
 }
