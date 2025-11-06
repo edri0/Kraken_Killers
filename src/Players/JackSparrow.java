@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class JackSparrow extends Player {
 
     public JackSparrow(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("JackSparrow.png"), 32, 32), x, y, "STAND_RIGHT");
+        super(new SpriteSheet(ImageLoader.load("JackSparrow2.png"), 32, 32), x, y, "STAND_RIGHT");
         gravity = .5f;
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
@@ -197,6 +197,20 @@ public class JackSparrow extends Player {
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                            .withBounds(14, 22, 8, 9)
+                            .build()
+            });
+            put("ATTACK_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 1))
+                            .withScale(3)
+                        .withBounds(14, 22, 8, 9)
+                            .build()
+            });
+
+            put("ATTACK_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 1))
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                           .withBounds(14,22, 8, 9)
                             .build()
             });
         }};
