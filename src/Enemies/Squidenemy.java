@@ -1,7 +1,7 @@
 package Enemies;
 
 import Level.Enemy;
-import Level.MapEntity;
+//import Level.MapEntity;
 import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
@@ -15,19 +15,19 @@ import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 
-public class SwordPirate extends Enemy {
+public class Squidenemy extends Enemy {
     //This class is for the Sword pirate enemy, It's meant to be kinda like the dinosaur Enemy (meant to walk between 2 points)
     //but if it collides with the player it will swing it's sword and deal damage (maybe 20% hp?) 
     protected Point startLocation, endLocation;
-    private float gravity = .5f;
+
     protected Float movementSpeed = 1.3f;
     protected Direction startFacingDirection;
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
 
 
-    public SwordPirate(Point startLocation, Point endLocation, Direction facingDirection) {
-        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("enemySpriteSheet.png"), 32, 32), "WALK_RIGHT");
+    public Squidenemy(Point startLocation, Point endLocation, Direction facingDirection) {
+        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("Squidward.png"), 32, 32), "WALK_RIGHT");
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
@@ -37,8 +37,10 @@ public class SwordPirate extends Enemy {
     @Override
     public void update(Player player) {
         float moveX = (facingDirection == Direction.RIGHT) ? movementSpeed : -movementSpeed;
+        float moveY = .5f;
+
+        moveYHandleCollision(moveY);
         moveXHandleCollision(moveX);
-        moveYHandleCollision(0);
 
 
          if (getX1() + getWidth() >= endLocation.x){
@@ -47,10 +49,10 @@ public class SwordPirate extends Enemy {
          } else if (getX1() <= startLocation.x){
             facingDirection = Direction.RIGHT;
          }
-         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
+         currentAnimationName = (facingDirection == Direction.RIGHT) ? "WALK_RIGHT" : "WALK_LEFT";
+         
          super.update(player);
     }
-   
 
      @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
@@ -58,20 +60,12 @@ public class SwordPirate extends Enemy {
             put("WALK_LEFT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
                             .withScale(3)
-                            .withBounds(2,2,16,26)
+                            .withBounds(4, 2, 10, 13)
                             .build()
             });
 
             put("WALK_RIGHT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(2,2,16,26)
-                            .build()
-            });
-
-            put("DIE", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(4, 2, 10, 13)

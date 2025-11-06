@@ -32,6 +32,7 @@ public ArrayList<Enemy> loadEnemies() {
    // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
    // enemies.add(dinosaurEnemy);
 
+
     return enemies;
 }
 
@@ -61,15 +62,16 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 } 
 
 //@Override
-public ArrayList<NPC> loadNPCs() {
-    ArrayList<NPC> npcs = new ArrayList<>();
 
-    Chest chest = new Chest(getMapTile(30, 7).getLocation().subtractY(13));
-    npcs.add(chest);
-
-    return npcs;
-    
-}
+    public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+        
+        //Chest chest = new Chest(getMapTile(35, 11).getLocation().subtractY(13));
+        //npcs.add(chest);
+        
+        return npcs;
+        
+        }
     
 }
 

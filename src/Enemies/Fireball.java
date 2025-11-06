@@ -26,6 +26,7 @@ public class Fireball extends Enemy {
 
         // how long the fireball will exist for before disappearing
         this.existenceFrames = existenceFrames;
+        this.contactDamage = 30;
 
         initialize();
     }

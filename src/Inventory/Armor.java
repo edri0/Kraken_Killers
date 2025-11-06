@@ -3,6 +3,7 @@ import Game.ArmorTimer;
 import Game.ArmorType;
 import GameObject.Sprite;
 import Level.Player;
+import NPCs.Chest;
 
 
 public class Armor extends Item{
@@ -38,13 +39,14 @@ public class Armor extends Item{
         return equipped;
     }
     public void equip(Player player){
+            if (equipped) return;
             equipped = true;
+
             player.setArmor(this);
 
-
-            String avatarName = player.getAvatarTypeName();
             ArmorType armorType;
-//applying armor based on what the type is
+             //applying armor based on what the type is
+            String lower = name.toLowerCase();
             if(name.toLowerCase().contains("bronze")) armorType = ArmorType.BRONZE;
             else if(name.toLowerCase().contains("iron")) armorType = ArmorType.IRON;
             else if(name.toLowerCase().contains("diamond")) armorType = ArmorType.DIAMOND;
@@ -52,15 +54,15 @@ public class Armor extends Item{
 
             System.out.println("applying new armor sprite: " + armorType);
         
-            player.updatePlayerSprite(avatarName, armorType);
+            player.updatePlayerSprite(player.getAvatarTypeName(), armorType);
     }
     public void unequip(Player player){
-        if (equipped){
+        if (!equipped) return;
             equipped = false;
             player.removeArmor();
             player.updatePlayerSprite(player.getAvatarTypeName(), ArmorType.NONE);
         }
-    }
+    
     public void forceEquip(Player player){
         equipped = true;
         player.setArmor(this);

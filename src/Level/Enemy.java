@@ -11,7 +11,7 @@ import Engine.GraphicsHandler;
 
 // This class is a base class for all enemies in the game -- all enemies should extend from it
 public class Enemy extends MapEntity {
-    protected int contactDamage = 20;
+    protected int contactDamage; // given value in each of the enemy classes
     protected int damageCooldown = 0;
     protected int damageCooldownMax = 60;
     protected LevelState levelState;
@@ -54,10 +54,12 @@ public class Enemy extends MapEntity {
     @Override
     public void initialize() {
         super.initialize();
+        damageCooldown = 0;
     }
 
     public void update(Player player) {
         super.update();
+        
         if(damageCooldown > 0){
             damageCooldown--;
         }

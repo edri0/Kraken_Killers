@@ -53,7 +53,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
     private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
-    private HealthBar healthBar;
+
 
 
     private int levelIndex = 0;
@@ -82,27 +82,39 @@ public class CampaignScreen extends Screen implements PlayerListener {
         Point startPos = map.getPlayerStartPosition(); 
         
         int selectedPlayerType = 0; 
-
         if(pickPlayerScreen != null){
             selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
         }
-        if(selectedPlayerType ==0){
-            this.player = new JackSparrow(startPos.x, startPos.y);
-        }else {
-            this.player = new WillTurner(startPos.x, startPos.y);
-        }
+        
 
+        if(this.player == null){
+            if(selectedPlayerType ==0){
+                this.player = new JackSparrow(startPos.x, startPos.y);
+            }else {
+                this.player = new WillTurner(startPos.x, startPos.y);
+            }
+        } else {
+            this.player.setMap(map);
+            this.player.setX(startPos.x);
+            this.player.setY(startPos.y);
+        }
         this.player.setMap(map);
         this.player.addListener(this);
 
-        this.healthBar = new HealthBar(player); 
+        player.getArmorTimer().stop();
+
+        player.getHealthBar().update();
 
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
 
-        this.shopScreen = new ShopScreen(playerInventory, player);
-        this.shopScreen.initialize();
+        if(this.shopScreen == null){
+            this.shopScreen = new ShopScreen(playerInventory, player);
+            this.shopScreen.initialize();
+        }else {
+            this.shopScreen.setPlayer(this.player);
+        }
 
         this.campaignScreenState = CampaignScreenState.RUNNING;
 
@@ -130,7 +142,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
                 player.update();
                 map.update(player);
-                healthBar.update();
+                player.getHealthBar().update();
                 break;
             case SHOP: {
                 shopScreen.update();
@@ -138,7 +150,13 @@ public class CampaignScreen extends Screen implements PlayerListener {
                 sDown = Keyboard.isKeyDown(Key.S);
                 if(sDown && !sToggleLock){
                     sToggleLock = true;
-                    campaignScreenState = CampaignScreenState.RUNNING;
+                    System.out.println("leaving shop, playerHealth = " + player.getCurrentHealth());
+
+                   Armor equipped = playerInventory.getEquippedArmor();
+                    if (equipped != null && player.getEquippedArmor() != equipped){
+                       equipped.equip(player);
+                    }
+                campaignScreenState = CampaignScreenState.RUNNING;
                 
                 }
                 if (!sDown) sToggleLock = false;
@@ -201,7 +219,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
-                healthBar.draw(graphicsHandler);
+                player.getHealthBar().draw(graphicsHandler);
 
                 String money = PlayerInventory.fmt(playerInventory.getMoneyCents());
                 int w = ScreenManager.getScreenWidth();
@@ -266,7 +284,7 @@ public void onLevelCompleted() {
         this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
 
-        this.healthBar = new HealthBar(player); 
+        player.getHealthBar().update();
         
         campaignScreenState = CampaignScreenState.RUNNING;
         levelCompletedStateChangeStart = false;
