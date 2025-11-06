@@ -29,6 +29,8 @@ public ArrayList<Enemy> loadEnemies() {
    // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
    // enemies.add(dinosaurEnemy);
 
+   npcs.add(new Chest(getMapTile(49,28).getLocation()));
+
     return enemies;
 }
 

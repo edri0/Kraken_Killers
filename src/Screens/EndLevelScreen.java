@@ -1,29 +1,23 @@
 package Screens;
 
 import Engine.GraphicsHandler;
-import Engine.ImageLoader;
 import Engine.Screen;
 import Engine.ScreenManager;
 import SpriteFont.SpriteFont;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 // Simple automatic Level Cleared screen — no keypress needed
-public class LevelClearedScreen extends Screen {
+public class EndLevelScreen extends Screen {
 
     private SpriteFont winMessage;
-    protected BufferedImage levelClearedImage;
-    protected Boolean hasInitialized = false;
 
-    public LevelClearedScreen() {
+    public EndLevelScreen() {
         initialize();
-        hasInitialized = true;
-        levelClearedImage = ImageLoader.load("LevelClear.png");
     }
 
     @Override
     public void initialize() {
-      winMessage = new SpriteFont("", 110, 200, "Black Goth", 25, Color.WHITE);
+        winMessage = new SpriteFont("THIS IS EITHER MADNESS OR BRILLIANCE!", 300, 200, "Black Goth", 30, Color.red);
     }
 
     @Override
@@ -33,20 +27,14 @@ public class LevelClearedScreen extends Screen {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        /*graphicsHandler.drawFilledRectangle(
+        graphicsHandler.drawFilledRectangle(
             0, 0,
             ScreenManager.getScreenWidth(),
             ScreenManager.getScreenHeight(),
             Color.BLACK
             //800w 600h
-        );*/
-
-       graphicsHandler.drawImage(levelClearedImage, 0, 0, 800, 600); 
+        );
 
         winMessage.draw(graphicsHandler);
-    }
-
-    public Boolean hasInitialized(){
-        return hasInitialized;
     }
 }

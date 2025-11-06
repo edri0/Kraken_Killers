@@ -18,6 +18,7 @@ import Utils.AirGroundState;
 import Utils.Direction;
 import java.awt.Color;
 import Game.ArmorTimer;
+import NPCs.Chest;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -558,6 +559,7 @@ public abstract class Player extends GameObject {
         this.equippedArmor = armor;
         System.out.println("Equipped armor: " + armor.getName());
 
+
         //adjust health based on armor
         int bonus = armor.getHpValue();
         setMaxHealth(100 + bonus);
@@ -566,7 +568,6 @@ public abstract class Player extends GameObject {
         // start armor timer
         //for now only from shop as chest is not fully implemented
         armorTimer.start(30);
-        System.out.println("Armor timer started for 30s.");
     }
     public void removeArmor() {
         if ( equippedArmor != null){

@@ -3,6 +3,7 @@ import Game.ArmorTimer;
 import Game.ArmorType;
 import GameObject.Sprite;
 import Level.Player;
+import NPCs.Chest;
 
 
 public class Armor extends Item{
@@ -61,6 +62,7 @@ public class Armor extends Item{
             player.updatePlayerSprite(player.getAvatarTypeName(), ArmorType.NONE);
         }
     }
+
     public void forceEquip(Player player){
         equipped = true;
         player.setArmor(this);
