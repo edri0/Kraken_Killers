@@ -5,6 +5,7 @@ import Enemies.*;
 //import Enemies.DinosaurEnemy;
 import Enemies.SwordPirate;
 import Engine.ImageLoader;
+import Engine.SoundPlayer;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import GameObject.Rectangle;
@@ -24,6 +25,7 @@ public class TestMap extends Map {
     public TestMap() {
         super("test_map.txt", new CommonTileset2());
         this.playerStartPosition = getMapTile(2, 11).getLocation();
+        SoundPlayer.stopMusic(); 
     }
 
     @Override

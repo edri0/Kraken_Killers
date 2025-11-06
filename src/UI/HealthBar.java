@@ -7,7 +7,6 @@ import Engine.GraphicsHandler;
 import Engine.ScreenManager;
 import Level.Player;
 
-// not losing hp yet due to damage becuase enemies do not cause damage yet
 
 public class HealthBar {
     private final Player player;

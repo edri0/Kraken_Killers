@@ -40,6 +40,8 @@ public abstract class Map {
     // location player should start on when this map is first loaded
     protected Point playerStartPosition;
 
+    
+
     // the location of the "mid point" of the screen
     // this is what tells the game that the player has reached the center of the screen, therefore the camera should move instead of the player
     // this goes into creating that "map scrolling" effect
@@ -333,6 +335,11 @@ public abstract class Map {
             adjustMovementY(player);
             adjustMovementX(player);
         }
+        for(Enemy enemy : getActiveEnemies()) {
+            enemy.update(player);
+            
+        }
+        
         camera.update(player);
     }
 
@@ -394,6 +401,8 @@ public abstract class Map {
         setupMap();
     }
 
+   
+    
     public void draw(GraphicsHandler graphicsHandler) {
         camera.draw(graphicsHandler);
     }

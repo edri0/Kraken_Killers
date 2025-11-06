@@ -3,6 +3,7 @@ package NPCs;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Engine.SoundPlayer;
 import GameObject.Frame;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;

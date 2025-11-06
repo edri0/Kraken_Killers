@@ -37,18 +37,21 @@ public class Enemy extends MapEntity {
     @Override
     public void initialize() {
         super.initialize();
+        damageCooldown = 0;
     }
 
     public void update(Player player) {
         super.update();
+        
         if(damageCooldown > 0){
             damageCooldown--;
         }
 
-        if (intersects(player) && damageCooldown == 0) {
-                touchedPlayer(player);
-                damageCooldown = damageCooldownMax;
-            }
+       if (player != null && intersects(player) && damageCooldown ==0){
+           player.hurtPlayer(this);
+           damageCooldown = 60;
+
+        }
     }
 
     // A subclass can override this method to specify what it does when it touches the player

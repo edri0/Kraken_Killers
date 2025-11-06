@@ -9,6 +9,7 @@ import Tilesets.CommonTileset;
 import Utils.Direction;
 import java.util.ArrayList;
 import Engine.ImageLoader;
+import Engine.SoundPlayer;
 import GameObject.Rectangle;
 
 
@@ -17,6 +18,7 @@ public class Level7 extends Map{
     public Level7(){
         super("level7.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(4, 9).getLocation();
+        SoundPlayer.stopMusic(); 
     }
     
 

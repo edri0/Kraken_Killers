@@ -6,6 +6,7 @@ import Engine.ImageLoader;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import Engine.SoundPlayer;
 import Game.ArmorType;
 import Game.GameState;
 import GameObject.Frame;
@@ -21,6 +22,7 @@ import Game.ArmorTimer;
 import NPCs.Chest;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 public abstract class Player extends GameObject {
@@ -55,6 +57,8 @@ public abstract class Player extends GameObject {
     protected boolean isTouchingLeftWall = false;
     protected boolean isTouchingRightWall = false; 
 
+   
+
 
     private static ArmorTimer armorTimer = new ArmorTimer();
 
@@ -72,6 +76,8 @@ public abstract class Player extends GameObject {
     //health bar
     private int currentHealth = 100;
     private int maxHealth;
+
+    private boolean walkingSoundPlaying = false; 
     
 
 
@@ -94,6 +100,7 @@ public abstract class Player extends GameObject {
              this.maxHealth = 100;
              this.currentHealth = maxHealth;
              this.healthBar = new HealthBar(this);
+
             }
             
             public void updatePlayerSprite(String playerName, ArmorType armorType){
@@ -131,7 +138,7 @@ public abstract class Player extends GameObject {
 
         isTouchingLeftWall = map.collidesWithTileOnLeft(this);
         isTouchingRightWall = map.collidesWithTileOnRight(this);
-
+        
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
             applyGravity();
@@ -162,7 +169,8 @@ public abstract class Player extends GameObject {
 
             //check if armor timer is done
             if(equippedArmor != null && !armorTimer.isActive()){
-                removeArmor();
+                equippedArmor.unequip(this);
+                equippedArmor = null;
                 System.out.println("armor expired");
             }
         }
@@ -219,6 +227,7 @@ public abstract class Player extends GameObject {
 
     // player STANDING state logic
     protected void playerStanding() {
+        SoundPlayer.stopMusic(); 
         // if walk left or walk right key is pressed, player enters WALKING state
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.WALKING;
@@ -244,19 +253,35 @@ public abstract class Player extends GameObject {
 
     // player WALKING state logic
     protected void playerWalking() {
+
+        boolean moving = false; 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
+            moving = true; 
         }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
-        } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
+             moving = true; 
+        } 
+        
+        else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
         }
+
+        if (moving && !walkingSoundPlaying) {
+            SoundPlayer.playMusic("Resources/walking.wav", true); 
+            walkingSoundPlaying = true; 
+        }
+        else if(!moving && walkingSoundPlaying) {
+            SoundPlayer.stopMusic(); 
+            walkingSoundPlaying = false; 
+        }
+
 
         //if Climb key is pressed, 
         else if (Keyboard.isKeyDown(CLIMB_KEY) && (isTouchingLeftWall || isTouchingRightWall)) {
@@ -268,6 +293,8 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
+
+            SoundPlayer.playMusic("Resources/jump.wav", false); 
         }
 
         // if crouch key is pressed,
@@ -309,6 +336,7 @@ public abstract class Player extends GameObject {
                     jumpForce = 0;
                 }
             }
+            SoundPlayer.playMusic("Resources/jump.wav", false);
         }
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
@@ -467,7 +495,14 @@ public abstract class Player extends GameObject {
     // other entities can call this method to hurt the player
     public void hurtPlayer(MapEntity mapEntity) {
         if (mapEntity instanceof Enemy){
-                takeDamage(20);
+                int damage = 20;
+            
+                if(mapEntity.getClass().getSimpleName().equals("Fireball")){
+                    damage = 30;
+                }
+            takeDamage(damage);
+
+
         }
     }
 
@@ -559,24 +594,35 @@ public abstract class Player extends GameObject {
         this.equippedArmor = armor;
         System.out.println("Equipped armor: " + armor.getName());
 
-
         //adjust health based on armor
         int bonus = armor.getHpValue();
-        setMaxHealth(100 + bonus);
-        setCurrentHealth(getMaxHealth());
+
+        /his.maxHealth += bonus;
+        this.currentHealth = Math.min(this.currentHealth + bonus, this.maxHealth);
+
+
+        this.equippedArmor = armor;
 
         // start armor timer
         //for now only from shop as chest is not fully implemented
         armorTimer.start(30);
+        System.out.println("Armor timer started for 30s.");
     }
     public void removeArmor() {
-        if ( equippedArmor != null){
-            System.out.println("Unequipped armor: " + equippedArmor.getName());
+        if ( this.equippedArmor == null) return;
+
+            int bonus = this.equippedArmor.getHpValue();
+
+            this.maxHealth -= bonus;
+            this.currentHealth = Math.max(this.currentHealth - bonus, 0);
+
             this.equippedArmor = null;
-            setMaxHealth(100);
-            setCurrentHealth(Math.min(getCurrentHealth(), getMaxHealth()));
+            System.out.println("Armor removed: +" + bonus + " HP boost → "
+            + currentHealth + "/" + maxHealth);
+        
+
         }
-    }
+    
     public Armor getEquippedArmor(){
         return equippedArmor;
     }
@@ -610,6 +656,8 @@ public abstract class Player extends GameObject {
         setCurrentHealth(currentHealth + amount);
     }
     public void takeDamage(int amount){
+        if (levelState != LevelState.RUNNING) return;
+
         if( currentHealth <= amount){
             //he dies
             setCurrentHealth(0);
