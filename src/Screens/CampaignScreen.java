@@ -53,7 +53,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
     private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
-    //private HealthBar healthBar;
+
 
 
     private int levelIndex = 0;
@@ -100,6 +100,8 @@ public class CampaignScreen extends Screen implements PlayerListener {
         }
         this.player.setMap(map);
         this.player.addListener(this);
+
+        player.getArmorTimer().stop();
 
         player.getHealthBar().update();
 

@@ -64,7 +64,7 @@ public abstract class Player extends GameObject {
    
 
 
-    private static ArmorTimer armorTimer = new ArmorTimer();
+    private ArmorTimer armorTimer = new ArmorTimer();
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -499,13 +499,9 @@ public abstract class Player extends GameObject {
 
     // other entities can call this method to hurt the player
     public void hurtPlayer(MapEntity mapEntity) {
-        if (mapEntity instanceof Enemy){
-                int damage = 20;
-            
-                if(mapEntity.getClass().getSimpleName().equals("Fireball")){
-                    damage = 30;
-                }
-            takeDamage(damage);
+        if (mapEntity instanceof Enemy enemy){
+                int damage = enemy.getContactDamage();
+                takeDamage(damage);
 
 
         }
@@ -628,7 +624,7 @@ public abstract class Player extends GameObject {
             this.maxHealth = preArmorMaxHealth;
 
         }
-        
+        armorTimer.stop();
         preArmorHealth = -1;
         preArmorMaxHealth = -1;
         equippedArmor = null;
@@ -637,6 +633,9 @@ public abstract class Player extends GameObject {
     
     public Armor getEquippedArmor(){
         return equippedArmor;
+    }
+    public ArmorTimer getArmorTimer(){
+        return armorTimer;
     }
     // Uncomment this to have game draw player's bounds to make it easier to visualize
 

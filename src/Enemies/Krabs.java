@@ -21,12 +21,15 @@ public class Krabs extends Enemy {
     private Direction startFacingDirection;
     private Direction facingDirection;
     private AirGroundState airGroundState;
+    
+    
 
     public Krabs(Point location, Direction facingDirection) {
         super(location.x, location.y,
               new SpriteSheet(ImageLoader.load("Krabs.png"), 30, 31), //  Corrected frame size
               "WALK_RIGHT");
         this.startFacingDirection = facingDirection;
+        this.contactDamage = 20;
         this.initialize();
     }
 

@@ -10,9 +10,9 @@ import Engine.GraphicsHandler;
 
 // This class is a base class for all enemies in the game -- all enemies should extend from it
 public class Enemy extends MapEntity {
-    protected int contactDamage = 20;
+    protected int contactDamage; // given value in each of the enemy classes
     protected int damageCooldown = 0;
-    protected int damageCooldownMax = 60;
+    protected int damageCooldownMax = 30;
 
     public Enemy(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
@@ -49,7 +49,7 @@ public class Enemy extends MapEntity {
 
        if (player != null && intersects(player) && damageCooldown ==0){
            player.hurtPlayer(this);
-           damageCooldown = 60;
+           damageCooldown = damageCooldownMax;
 
         }
     }
@@ -57,6 +57,10 @@ public class Enemy extends MapEntity {
     // A subclass can override this method to specify what it does when it touches the player
     public void touchedPlayer(Player player) {
         player.hurtPlayer(this);
+    }
+
+    public int getContactDamage() {
+        return contactDamage;
     }
 
 }
