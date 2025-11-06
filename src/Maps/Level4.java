@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import Enemies.RangeEnemy;
 import Enemies.SwordPirate;
 import Engine.SoundPlayer;
+import Enemies.Krabs;
 
 public class Level4 extends Map{
 
@@ -48,6 +49,11 @@ public class Level4 extends Map{
         RangeEnemy rangedPirate = new RangeEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
 
+        Krabs krabsEnemy = new Krabs(getMapTile(13, 6).getLocation().subtractY(25), Direction.RIGHT);
+        enemies.add(krabsEnemy);
+
+        //Krabs krabsEnemy = new Krabs(getMapTile(27, 6).getLocation().subtractY(25), Direction.LEFT);
+       // enemies.add(krabsEnemy);
 
 
         //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
@@ -82,8 +88,8 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 public ArrayList<NPC> loadNPCs() {
     ArrayList<NPC> npcs = new ArrayList<>();
     
-    Chest chest = new Chest(getMapTile(24, 8).getLocation().subtractY(13));
-    npcs.add(chest);
+    //Chest chest = new Chest(getMapTile(24, 8).getLocation().subtractY(13));
+    //npcs.add(chest);
     
     return npcs;
     
