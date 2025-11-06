@@ -14,6 +14,7 @@ import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
+import Inventory.PlayerInventory;
 import UI.HealthBar;
 import Utils.AirGroundState;
 import Utils.Direction;
@@ -693,6 +694,8 @@ public abstract class Player extends GameObject {
     public HealthBar getHealthBar(){
         return healthBar;
     }
+
+    public abstract PlayerInventory getInventory();
   
 
     
