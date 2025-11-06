@@ -51,7 +51,7 @@ public class Level3 extends Map{
         RangeEnemy rangedPirate = new RangeEnemy(getMapTile(45, 13).getLocation().addY(2), getMapTile(44, 12).getLocation().addY(2), Direction.RIGHT);
         enemies.add(rangedPirate);
 
-    Fitz fitzEnemy = new Fitz(getMapTile(36, 14).getLocation().addY(2), getMapTile(34, 14).getLocation().addY(2), Direction.RIGHT);
+    Fitz fitzEnemy = new Fitz(getMapTile(35, 16).getLocation().addY(2), getMapTile(34, 16).getLocation().addY(2), Direction.RIGHT);
     enemies.add(fitzEnemy);
 
         //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
