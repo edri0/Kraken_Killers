@@ -48,8 +48,8 @@ public class Chest extends NPC {
             rewardArmor.equip(player);
             inventory.setEquippedArmor(rewardArmor);
 
-            // Start chest armor timer (15 seconds)
-            armorTimer.start(15);
+            // Start chest armor timer (20 seconds)
+            armorTimer.start(20);
         }
 
         // Update chest animation

@@ -592,20 +592,19 @@ public abstract class Player extends GameObject {
         listeners.add(listener);
     }
     public void setArmor(Armor armor){
-        if (this.equippedArmor == armor){
-            return;
-        }
+        if (this.equippedArmor == armor) return;
+        
         preArmorHealth = this.currentHealth;
         preArmorMaxHealth = this.maxHealth;
         int bonus = armor.getHpValue();
 
-
+    //apply armor bonus
         this.maxHealth += bonus;
         this.currentHealth += bonus;
 
-        if(this.currentHealth > this.maxHealth){
-            this.currentHealth = this.maxHealth;
-        }
+        if(this.currentHealth > this.maxHealth)   
+        this.currentHealth = this.maxHealth;
+        
 
 
         this.equippedArmor = armor;
@@ -619,14 +618,22 @@ public abstract class Player extends GameObject {
     public void removeArmor() {
         if (equippedArmor == null) return;
 
-        if (preArmorHealth != -1 && preArmorMaxHealth != -1){
-            this.currentHealth = preArmorHealth;
-            this.maxHealth = preArmorMaxHealth;
+        int bonus = equippedArmor.getHpValue();
 
-        }
-        armorTimer.stop();
+        this.maxHealth -= bonus;
+        this.currentHealth -= bonus;
+        
+        if(this.currentHealth > this.maxHealth)
+         this.currentHealth = this.maxHealth;
+
+        if(this.currentHealth < 0)
+        this.currentHealth = 0;
+
+       
         preArmorHealth = -1;
         preArmorMaxHealth = -1;
+        
+        armorTimer.stop();
         equippedArmor = null;
          
         }
