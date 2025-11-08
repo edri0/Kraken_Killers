@@ -341,7 +341,7 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(ATTACK_KEY); 
             playerState = PlayerState.ATTACKING; 
             SoundPlayer.playMusic("Resources/swords.wav", false); 
-            System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
             return; 
         }
 
@@ -477,7 +477,7 @@ public abstract class Player extends GameObject {
                 }
             }
             SoundPlayer.playMusic("Resources/swords.wav", false); 
-            System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
         }
     
     

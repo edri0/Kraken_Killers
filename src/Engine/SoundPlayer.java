@@ -12,18 +12,30 @@ import java.io.IOException;
 import javax.sound.sampled.LineEvent;
 
 public class SoundPlayer {
-    private static HashMap<String, Clip> soundClips = new HashMap<>(); 
+    private static HashMap<String, Clip> preloadedSound = new HashMap<>(); 
     private static Clip currentMusic; 
+
+    public static void preloadSounds(String... filePaths){
+        for(String path : filePaths){
+            if(!preloadedSound.containsKey(path)) {
+                try{
+                    File file = new File(path); 
+                    AudioInputStream audioStream = AudioSystem.getAudioInputStream(file); 
+                    Clip clip = AudioSystem.getClip(); 
+                    clip.open(audioStream); 
+                    preloadedSound.put(path, clip);
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.err.println("Failed to preload sound: " + path);
+                e.printStackTrace();
+                }
+            }
+        }
+    }
     
     public static void playMusic(String filePath, boolean loop) {
         try{
             if (currentMusic != null) {
-                if (getFileName(currentMusic).equals(filePath)){
-                    return; 
-                }
-                else {
                     stopMusic(); 
-                }
             }
 
     File file = new File(filePath); 
@@ -52,17 +64,23 @@ public class SoundPlayer {
     }
     public static void playSoundEffect(String filePath) {
         try{ 
-            File file = new File(filePath); 
+            Clip clip; 
+            if(preloadedSound.containsKey(filePath)){
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file); 
-            Clip clip = AudioSystem.getClip(); 
+            clip = AudioSystem.getClip(); 
             clip.open(audioStream); 
-            clip.start(); 
-            soundClips.put(filePath, clip); 
+            }
+            else {
+                File file = new File(filePath); 
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(file); 
+                clip = AudioSystem.getClip(); 
+                clip.open(audioStream); 
+            }
 
+            clip.start(); 
             clip.addLineListener(event -> {
                 if(event.getType() == LineEvent.Type.STOP) {
-                    clip.close(); 
-                    soundClips.remove(filePath); 
+                    clip.close();  
                 }
             });  
         
@@ -73,10 +91,6 @@ public class SoundPlayer {
 
     public static boolean isPlaying() {
         return currentMusic != null && currentMusic.isRunning(); 
-    }
-
-    private static String getFileName(Clip clip) {
-        return clip == null ? "" : clip.toString(); 
     }
 
 }
