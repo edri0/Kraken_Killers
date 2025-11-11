@@ -16,8 +16,8 @@ public class WillTurner extends Player {
     private PlayerInventory inventory = new PlayerInventory();
 
     public WillTurner(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("JackSparrow.png"), 32, 32), x, y, "STAND_RIGHT");
-        gravity = 0.5f;
+        super(new SpriteSheet(ImageLoader.load("WillTurnerSpriteSheet2.png"), 32, 32), x, y, "STAND_RIGHT");
+        gravity = .5f;
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
         jumpDegrade = 0.5f;
@@ -110,18 +110,48 @@ public class WillTurner extends Player {
                 new FrameBuilder(spriteSheet.getSprite(5, 2), -1).withScale(3).build()
             });
 
-            put("DEATH_LEFT", new Frame[]{
-                new FrameBuilder(spriteSheet.getSprite(5, 0), 8).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 1), 8).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 2), -1).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).build()
+            put("DEATH_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(5, 0), 8)
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(5, 1), 8)
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(5, 2), -1)
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .build()
             });
 
-            put("SWIM_STAND_RIGHT", new Frame[]{
-                new FrameBuilder(spriteSheet.getSprite(6, 0)).withScale(3).withBounds(14, 22, 8, 9).build()
+            put("SWIM_STAND_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 0))
+                            .withScale(3)
+                            .withBounds(14, 22, 8, 9)
+                            .build()
             });
 
-            put("SWIM_STAND_LEFT", new Frame[]{
-                new FrameBuilder(spriteSheet.getSprite(6, 0)).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(14, 22, 8, 9).build()
+            put("SWIM_STAND_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 0))
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(14, 22, 8, 9)
+                            .build()
+            });
+            put("ATTACK_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 1))
+                            .withScale(3)
+                        .withBounds(14, 22, 8, 9)
+                            .build()
+            });
+
+            put("ATTACK_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 1))
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                           .withBounds(14,22, 8, 9)
+                            .build()
             });
         }};
     }

@@ -25,6 +25,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
+import Level.Map; 
+
 public abstract class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
@@ -34,6 +36,12 @@ public abstract class Player extends GameObject {
     protected float jumpDegrade = 0;
     protected float terminalVelocityY = 0;
     protected float momentumYIncrease = 0;
+
+    protected int attackDamage = 25;
+    protected int attackCooldown = 0;
+    protected int attackCooldownMax = 30;
+    protected int attackRange = 40; 
+    protected boolean hasDealtDamageThisAttack = false; 
 
     // values used to handle player movement
     protected float jumpForce = 0;
@@ -68,6 +76,8 @@ public abstract class Player extends GameObject {
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
 
+    protected ArrayList<Enemy> enemies;
+
     // define keys
     protected KeyLocker keyLocker = new KeyLocker();
     protected Key JUMP_KEY = Key.UP;
@@ -75,6 +85,7 @@ public abstract class Player extends GameObject {
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
     protected Key CLIMB_KEY = Key.C; 
+    protected Key ATTACK_KEY = Key.A; 
 
     //health bar
     private int currentHealth = 100;
@@ -101,6 +112,7 @@ public abstract class Player extends GameObject {
              playerState = PlayerState.STANDING;
              previousPlayerState = playerState;
              levelState = LevelState.RUNNING;
+             playerState = PlayerState.ATTACKING;
              this.maxHealth = 100;
              this.currentHealth = maxHealth;
              this.healthBar = new HealthBar(this);
@@ -177,6 +189,10 @@ public abstract class Player extends GameObject {
                 equippedArmor = null;
                 System.out.println("armor expired");
             }
+
+            if (playerState == PlayerState.ATTACKING) {
+                updateAttack(map.getActiveEnemies()); 
+            }
         }
 
         // if player has beaten level
@@ -187,6 +203,11 @@ public abstract class Player extends GameObject {
         // if player has lost level
         else if (levelState == LevelState.PLAYER_DEAD) {
             updatePlayerDead();
+        }
+
+        //attack logic
+        else if (playerState == PlayerState.ATTACKING) {
+            // updateAttack();
         }
 
     }
@@ -226,6 +247,9 @@ public abstract class Player extends GameObject {
             case CLIMBING:
                 playerClimbing();
                 break;
+            case ATTACKING:
+                playerAttacking();
+                break;
         }
     }
 
@@ -252,6 +276,12 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CLIMB_KEY) && (isTouchingLeftWall || isTouchingRightWall)) {
             playerState = PlayerState.CLIMBING;
             momentumY = 0; 
+        }
+
+        else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
+            keyLocker.lockKey(ATTACK_KEY); 
+            playerState = PlayerState.ATTACKING; 
+            return; 
         }
     }
 
@@ -304,6 +334,14 @@ public abstract class Player extends GameObject {
         // if crouch key is pressed,
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
+        }
+         
+        else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
+            keyLocker.lockKey(ATTACK_KEY); 
+            playerState = PlayerState.ATTACKING; 
+            SoundPlayer.playMusic("Resources/swords.wav", false); 
+            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            return; 
         }
 
     }
@@ -411,7 +449,54 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.JUMPING;
             applyGravity();
         }
-     }
+    }
+
+    public void updateAttack(ArrayList<Enemy> enemies){
+        super.update(); 
+        System.out.println("Updating");
+        if(attackCooldown > 0){
+            attackCooldown--;
+        }
+
+        for (Enemy enemy : enemies){
+        if (intersects(enemy) && attackCooldown == 0) {
+                touchedEnemy(enemy);
+                System.out.println("Enemy Touched"); 
+                attackCooldown = attackCooldownMax;
+            }
+        }
+
+        if(playerState == PlayerState.ATTACKING && !hasDealtDamageThisAttack){
+            for(Enemy enemy : enemies){
+                if(intersects(enemy))
+                    enemy.takeDamage(attackDamage); 
+                    hasDealtDamageThisAttack = true; 
+                    System.out.println("Enemy hit! " + attackDamage + "damage"); 
+                    break;
+                }
+            }
+            SoundPlayer.playMusic("Resources/swords.wav", false); 
+            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+        }
+    
+    
+
+
+    
+    public void touchedEnemy(Enemy enemy) {
+        enemy.hurtEnemy(this);
+    }
+
+    protected void playerAttacking() {
+        if(attackCooldown == 0){
+            hasDealtDamageThisAttack = false; 
+            attackCooldown = attackCooldownMax; 
+        }
+        if(Keyboard.isKeyUp(ATTACK_KEY)){
+            keyLocker.unlockKey(ATTACK_KEY); 
+            playerState = PlayerState.STANDING; 
+        }
+    }
 
    
    
@@ -460,6 +545,10 @@ public abstract class Player extends GameObject {
             } else {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "FALL_RIGHT" : "FALL_LEFT";
             }
+        }
+        else if (playerState == PlayerState.ATTACKING) {
+            // sets animation to a WALK animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
         }
     }
 

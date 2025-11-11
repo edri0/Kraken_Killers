@@ -68,6 +68,14 @@ public class SwordPirate extends Enemy {
                             .withBounds(2,2,16,26)
                             .build()
             });
+
+            put("DIE", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 10, 13)
+                            .build()
+            });
         }};
     }
 }
