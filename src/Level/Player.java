@@ -9,7 +9,6 @@ import Engine.Keyboard;
 import Engine.SoundPlayer;
 import Game.ArmorType;
 import Game.GameState;
-import GameObject.Frame;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
