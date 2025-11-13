@@ -307,11 +307,11 @@ public abstract class Player extends GameObject {
         }
 
         if (moving && !walkingSoundPlaying) {
-            SoundPlayer.playMusic("Resources/walking.wav", true); 
+            //SoundPlayer.playMusic("Resources/walking.wav", true); 
             walkingSoundPlaying = true; 
         }
         else if(!moving && walkingSoundPlaying) {
-            SoundPlayer.stopMusic(); 
+            //SoundPlayer.stopMusic(); 
             walkingSoundPlaying = false; 
         }
 
@@ -327,7 +327,7 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
 
-            SoundPlayer.playMusic("Resources/jump.wav", false); 
+            //SoundPlayer.playMusic("Resources/jump.wav", false); 
         }
 
         // if crouch key is pressed,
@@ -378,7 +378,7 @@ public abstract class Player extends GameObject {
                     jumpForce = 0;
                 }
             }
-            SoundPlayer.playMusic("Resources/jump.wav", false);
+            //SoundPlayer.playMusic("Resources/jump.wav", false);
         }
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
