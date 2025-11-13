@@ -335,8 +335,15 @@ public abstract class Map {
             adjustMovementY(player);
             adjustMovementX(player);
         }
-        for(Enemy enemy : getActiveEnemies()) {
+        for(int i = enemies.size() - 1; i >= 0; i--){
+            Enemy enemy = enemies.get(i);
+
             enemy.update(player);
+
+            if(enemy.isDead()){
+                enemies.remove(i);
+                System.out.println("enemy removed from map");
+        }
             
         }
         

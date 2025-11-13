@@ -37,9 +37,7 @@ public abstract class Player extends GameObject {
     protected float terminalVelocityY = 0;
     protected float momentumYIncrease = 0;
 
-    protected int attackDamage = 25;
-    protected int attackCooldown = 0;
-    protected int attackCooldownMax = 30;
+    protected int attackDamage = 1;
     protected int attackRange = 40; 
     protected boolean hasDealtDamageThisAttack = false; 
 
@@ -136,7 +134,7 @@ public abstract class Player extends GameObject {
                         fileName += "Diamond.png";
                         break;
                     }
-                    System.out.println("switching to armor sprite" + fileName);
+                    //System.out.println("switching to armor sprite" + fileName);
                     BufferedImage image = ImageLoader.load(fileName);
                     SpriteSheet newSheet = new SpriteSheet(image,32,32);
                     
@@ -187,7 +185,7 @@ public abstract class Player extends GameObject {
             if(equippedArmor != null && !armorTimer.isActive()){
                 equippedArmor.unequip(this);
                 equippedArmor = null;
-                System.out.println("armor expired");
+                //System.out.println("armor expired");
             }
 
             if (playerState == PlayerState.ATTACKING) {
@@ -281,6 +279,7 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
             keyLocker.lockKey(ATTACK_KEY); 
             playerState = PlayerState.ATTACKING; 
+            hasDealtDamageThisAttack = false;
             return; 
         }
     }
@@ -339,6 +338,7 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
             keyLocker.lockKey(ATTACK_KEY); 
             playerState = PlayerState.ATTACKING; 
+            hasDealtDamageThisAttack = false;
             SoundPlayer.playMusic("Resources/swords.wav", false); 
             //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
             return; 
@@ -452,29 +452,22 @@ public abstract class Player extends GameObject {
     }
 
     public void updateAttack(ArrayList<Enemy> enemies){
-        super.update(); 
-        System.out.println("Updating");
-        if(attackCooldown > 0){
-            attackCooldown--;
+
+        if (playerState != PlayerState.ATTACKING){
+            return;
+        }
+        if (hasDealtDamageThisAttack){
+            return;
         }
 
-        for (Enemy enemy : enemies){
-        if (intersects(enemy) && attackCooldown == 0) {
-                touchedEnemy(enemy);
-                System.out.println("Enemy Touched"); 
-                attackCooldown = attackCooldownMax;
+         for(Enemy enemy : enemies){
+              if(intersects(enemy)){
+                enemy.takeDamage(attackDamage);  // should be just 1 hp 
+                hasDealtDamageThisAttack = true; 
+                System.out.println("Enemy hit! " + attackDamage + "damage"); 
+                break;
             }
-        }
-
-        if(playerState == PlayerState.ATTACKING && !hasDealtDamageThisAttack){
-            for(Enemy enemy : enemies){
-                if(intersects(enemy))
-                    enemy.takeDamage(attackDamage); 
-                    hasDealtDamageThisAttack = true; 
-                    System.out.println("Enemy hit! " + attackDamage + "damage"); 
-                    break;
-                }
-            }
+         }
             SoundPlayer.playMusic("Resources/swords.wav", false); 
             //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
         }
@@ -488,10 +481,6 @@ public abstract class Player extends GameObject {
     }
 
     protected void playerAttacking() {
-        if(attackCooldown == 0){
-            hasDealtDamageThisAttack = false; 
-            attackCooldown = attackCooldownMax; 
-        }
         if(Keyboard.isKeyUp(ATTACK_KEY)){
             keyLocker.unlockKey(ATTACK_KEY); 
             playerState = PlayerState.STANDING; 

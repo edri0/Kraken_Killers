@@ -146,7 +146,7 @@ public class ShopScreen extends Screen{
                                     currentlyEquipped.unequip(player);
                                 }
                                 armorItem.equip(player);
-                                System.out.println("after equip player health = " + player.getCurrentHealth());
+                                //System.out.println("after equip player health = " + player.getCurrentHealth());
                                 inventory.setEquippedArmor(armorItem);
                                
                             }

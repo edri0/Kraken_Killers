@@ -14,41 +14,38 @@ public class Enemy extends MapEntity {
     protected int damageCooldown = 0;
     protected int damageCooldownMax = 60;
     protected LevelState levelState;
-
-    private int currentHealth = 100;
+    private int currentHealth = 3;
     private int maxHealth;
-
     protected boolean isTinvincible = false; 
-
-
+    private boolean dead = false;
 
     public Enemy(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
-        this.maxHealth = 100;
+        this.maxHealth = 3;
         this.currentHealth = maxHealth;
     }
 
     public Enemy(float x, float y, HashMap<String, Frame[]> animations, String startingAnimation) {
         super(x, y, animations, startingAnimation);
-        this.maxHealth = 100;
+        this.maxHealth = 3;
         this.currentHealth = maxHealth;
     }
 
     public Enemy(float x, float y, Frame[] frames) {
         super(x, y, frames);
-        this.maxHealth = 100;
+        this.maxHealth = 3;
         this.currentHealth = maxHealth;
     }
 
     public Enemy(float x, float y, Frame frame) {
         super(x, y, frame);
-        this.maxHealth = 100;
+        this.maxHealth = 3;
         this.currentHealth = maxHealth;
     }
 
     public Enemy(float x, float y) {
         super(x, y);
-        this.maxHealth = 100;
+        this.maxHealth = 3;
         this.currentHealth = maxHealth;
     }
 
@@ -59,6 +56,9 @@ public class Enemy extends MapEntity {
     }
 
     public void update(Player player) {
+        if (dead) {
+            return;
+        }
         super.update();
         
         if(damageCooldown > 0){
@@ -72,7 +72,7 @@ public class Enemy extends MapEntity {
     }
     public void hurtEnemy(GameObject gameObject) {
         if (gameObject instanceof Player){
-                takeDamage(20);
+                takeDamage(1);
         }
     }
 
@@ -93,23 +93,30 @@ public class Enemy extends MapEntity {
         this.currentHealth = Math.max(0, Math.min(health, maxHealth));
 
     }
+    public boolean isDead(){
+        return dead;
+    }
 
     public void takeDamage(int amount){
+        System.out.println("enemy hp before" + currentHealth);
         if( currentHealth <= amount){
             //he dies
             setCurrentHealth(0);
+            dead = true;
             levelState = LevelState.ENEMY_DEAD;
             System.out.println("Enemy died");
 
         } else {
             //he takes damage
             setCurrentHealth(currentHealth - amount);
-            System.out.println("player took: " + amount + "damage");
+            System.out.println("enemy took: " + amount + "damage");
         }
+        System.out.println("enemy hp after" + currentHealth);
     }
 
     public int getContactDamage(){
         return contactDamage; 
     }
+    
 
 }
