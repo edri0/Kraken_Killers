@@ -4,7 +4,6 @@ import GameObject.Frame;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
 
-import java.awt.Color;
 import java.util.HashMap;
 
 import Engine.GraphicsHandler;

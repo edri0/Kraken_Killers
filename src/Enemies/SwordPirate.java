@@ -1,7 +1,6 @@
 package Enemies;
 
 import Level.Enemy;
-import Level.MapEntity;
 import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
