@@ -56,8 +56,8 @@ public class MenuScreen extends Screen {
         keyLocker.lockKey(Key.SPACE);
 
         if (!SoundPlayer.isPlaying()){
-            //SoundPlayer.playMusic("Resources/POC.wav", true); 
-            //System.out.println("Music file exists: " + new File("POC.wav").exists());
+            SoundPlayer.playMusic("Resources/POC.wav", true); 
+            System.out.println("Music file exists: " + new File("POC.wav").exists());
         }
     }
 

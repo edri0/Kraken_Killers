@@ -3,6 +3,7 @@ package Game;
 import Engine.DefaultScreen;
 import Engine.GraphicsHandler;
 import Engine.Screen;
+import Engine.SoundPlayer;
 import Inventory.PlayerInventory;
 import Screens.ArcadeScreen;
 import Screens.MenuScreen;
@@ -40,6 +41,7 @@ public class ScreenCoordinator extends Screen {
 	public void initialize() {
 		// start game off with Menu Screen
 		gameState = GameState.MENU;
+		SoundPlayer.preloadSounds("Resources/POC.wav", "Resources/walking.wav", "Resources/jump.wav", "Resources/swords.wav");
 	}
 
 	@Override

@@ -94,6 +94,11 @@ public abstract class Player extends GameObject {
     private boolean walkingSoundPlaying = false; 
     
 
+    public static final String walkFile = "Resources/walking.wav"; 
+    public static final String jumpFile = "Resources/jump.wav"; 
+    public static final String swordFile = "Resources/swords.wav"; 
+
+
 
     private SpriteSheet spriteSheet;
 
@@ -294,6 +299,10 @@ public abstract class Player extends GameObject {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
             moving = true; 
+            if (!SoundPlayer.isPlaying()) {
+                SoundPlayer.playMusic(walkFile, false); 
+            }
+
         }
 
         // if walk right key is pressed, move player to the right
@@ -301,20 +310,24 @@ public abstract class Player extends GameObject {
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
              moving = true; 
+            if (!SoundPlayer.isPlaying()) {
+                SoundPlayer.playMusic(walkFile, false); 
+            }
+
         } 
         
         else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
         }
 
-        if (moving && !walkingSoundPlaying) {
-            //SoundPlayer.playMusic("Resources/walking.wav", true); 
-            walkingSoundPlaying = true; 
-        }
-        else if(!moving && walkingSoundPlaying) {
-            //SoundPlayer.stopMusic(); 
-            walkingSoundPlaying = false; 
-        }
+        // if (moving && !walkingSoundPlaying) {
+        //     SoundPlayer.playMusic(walkFile, false); 
+        //     walkingSoundPlaying = true; 
+        // }
+        // else if(!moving && walkingSoundPlaying) {
+        //     SoundPlayer.stopMusic(); 
+        //     walkingSoundPlaying = false; 
+        // }
 
 
         //if Climb key is pressed, 
@@ -328,7 +341,7 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
 
-            //SoundPlayer.playMusic("Resources/jump.wav", false); 
+            SoundPlayer.playMusic(jumpFile, false); 
         }
 
         // if crouch key is pressed,
@@ -339,8 +352,8 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
             keyLocker.lockKey(ATTACK_KEY); 
             playerState = PlayerState.ATTACKING; 
-            //SoundPlayer.playMusic("Resources/swords.wav", false); 
-            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            SoundPlayer.playMusic(swordFile, false); 
+            System.out.println("Music file exists: " + new File(swordFile).exists());
             return; 
         }
 
@@ -378,7 +391,7 @@ public abstract class Player extends GameObject {
                     jumpForce = 0;
                 }
             }
-            //SoundPlayer.playMusic("Resources/jump.wav", false);
+            SoundPlayer.playMusic(jumpFile, false);
         }
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
@@ -475,8 +488,8 @@ public abstract class Player extends GameObject {
                     break;
                 }
             }
-            //SoundPlayer.playMusic("Resources/swords.wav", false); 
-            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            SoundPlayer.playMusic(swordFile, false); 
+            System.out.println("Music file exists: " + new File(swordFile).exists());
         }
     
     
