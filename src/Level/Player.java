@@ -97,11 +97,6 @@ public abstract class Player extends GameObject {
     public static final String swordFile = "Resources/swords.wav"; 
 
 
-    public static final String walkFile = "Resources/walking.wav"; 
-    public static final String jumpFile = "Resources/jump.wav"; 
-    public static final String swordFile = "Resources/swords.wav"; 
-
-
 
     private SpriteSheet spriteSheet;
 
@@ -477,15 +472,10 @@ public abstract class Player extends GameObject {
             return;
         }
 
-        for (Enemy enemy : enemies){
-        if (intersects(enemy) && attackCooldown == 0) {
-                touchedEnemy(enemy);
-                System.out.println("Enemy Touched"); 
-                attackCooldown = attackCooldownMax;
-            }
+        if (hasDealtDamageThisAttack){
+            return; 
         }
 
-        if(playerState == PlayerState.ATTACKING && !hasDealtDamageThisAttack){
             for(Enemy enemy : enemies){
                 if(intersects(enemy))
                     enemy.takeDamage(attackDamage); 
@@ -493,23 +483,9 @@ public abstract class Player extends GameObject {
                     System.out.println("Enemy hit! " + attackDamage + "damage"); 
                     break;
                 }
-            }
+
             SoundPlayer.playMusic(swordFile, false); 
             System.out.println("Music file exists: " + new File(swordFile).exists());
-        if (hasDealtDamageThisAttack){
-            return;
-        }
-
-         for(Enemy enemy : enemies){
-              if(intersects(enemy)){
-                enemy.takeDamage(attackDamage);  // should be just 1 hp 
-                hasDealtDamageThisAttack = true; 
-                System.out.println("Enemy hit! " + attackDamage + "damage"); 
-                break;
-            }
-         }
-            SoundPlayer.playMusic("Resources/swords.wav", false); 
-            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
         }
     
     

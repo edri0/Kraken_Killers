@@ -9,6 +9,7 @@ import Screens.ArcadeScreen;
 import Screens.MenuScreen;
 import Screens.CampaignScreen;
 import Screens.PickPlayerScreen; 
+import Screens.ControlsScreen;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
@@ -64,6 +65,9 @@ public class ScreenCoordinator extends Screen {
 					case ARCADE:
 						currentScreen = new ArcadeScreen(this, sharedInventory, pickPlayerScreen);
 						break;
+					case CONTROLS:
+						currentScreen = new ControlsScreen(this);
+						break; 
 				}
 				currentScreen.initialize();
 			}

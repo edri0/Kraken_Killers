@@ -72,7 +72,7 @@ public class CampaignScreen extends Screen implements PlayerListener {
         if (new File(SAVE_FILE).exists()) {
             loadProgress();
         } else {
-            levelIndex = 0;
+            levelIndex = 1;
         }
         
 
