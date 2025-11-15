@@ -5,7 +5,7 @@ import EnhancedMapTiles.EndLevelBox;
 //import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import NPCs.Chest;
-import Tilesets.L8CommonTileset;
+import Tilesets.L8CommmonTileset;
 //import Utils.Direction;
 import java.util.ArrayList;
 //import Engine.ImageLoader;
@@ -16,7 +16,7 @@ import Engine.SoundPlayer;
 public class FinalLevel extends Map{
 
     public FinalLevel(){
-        super("FinalLevel.txt", new L8CommonTileset());
+        super("FinalLevel.txt", new L8CommmonTileset());
         this.playerStartPosition = getMapTile(4, 9).getLocation();
         SoundPlayer.stopMusic(); 
     

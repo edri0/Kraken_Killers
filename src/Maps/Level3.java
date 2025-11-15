@@ -87,8 +87,8 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 public ArrayList<NPC> loadNPCs() {
     ArrayList<NPC> npcs = new ArrayList<>();
     
-    //Chest chest = new Chest(getMapTile(10, 17).getLocation().subtractY(13));
-    // npcs.add(chest);
+    //Chest chest = new Chest(getMapTile(48, 17).getLocation().subtractY(13));
+     //npcs.add(chest);
     
     return npcs;
     

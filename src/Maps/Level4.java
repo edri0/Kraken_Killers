@@ -4,7 +4,7 @@ import EnhancedMapTiles.EndLevelBox;
 // import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import NPCs.Chest;
-import Tilesets.CommonTileset;
+import Tilesets.CommonTileset5;
 import Utils.Direction;
 
 //import Utils.Direction;
@@ -20,7 +20,7 @@ import Enemies.Krabs;
 public class Level4 extends Map{
 
     public Level4(){
-        super("level4.txt", new CommonTileset());
+        super("level4.txt", new CommonTileset5());
         this.playerStartPosition = getMapTile(4, 11).getLocation();
         SoundPlayer.stopMusic(); 
     }
