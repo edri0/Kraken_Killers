@@ -12,9 +12,7 @@ import GameObject.Rectangle;
 import Level.*;
 import NPCs.Chest;
 //import NPCs.Walrus;
-
-
-import Tilesets.CommonTileset2;
+import Tilesets.CommonTileset3;
 import Utils.Direction;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ import java.util.ArrayList;
 public class TestMap extends Map {
 
     public TestMap() {
-        super("test_map.txt", new CommonTileset2());
+        super("test_map.txt", new CommonTileset3());
         this.playerStartPosition = getMapTile(2, 11).getLocation();
         SoundPlayer.stopMusic(); 
     }

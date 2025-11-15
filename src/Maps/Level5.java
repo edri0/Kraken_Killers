@@ -4,7 +4,7 @@ import EnhancedMapTiles.EndLevelBox;
 // import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import NPCs.Chest;
-import Tilesets.CommonTileset;
+import Tilesets.CommonTileset5;
 //import Utils.Direction;
 import java.util.ArrayList;
 //import Engine.ImageLoader;
@@ -16,7 +16,7 @@ import Engine.SoundPlayer;
 public class Level5 extends Map{
 
     public Level5(){
-        super("level5.txt", new CommonTileset());
+        super("level5.txt", new CommonTileset5());
         this.playerStartPosition = getMapTile(4, 9).getLocation();
         SoundPlayer.stopMusic(); 
     }

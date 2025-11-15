@@ -1,5 +1,5 @@
 package Tilesets;
-
+//For test map and title screen
 import Builders.FrameBuilder;
 import Builders.MapTileBuilder;
 import Engine.ImageLoader;
@@ -7,15 +7,15 @@ import GameObject.Frame;
 //import GameObject.ImageEffect;
 import Level.TileType;
 import Level.Tileset;
-//import Utils.SlopeTileLayoutUtils;
+import Utils.SlopeTileLayoutUtils;
 
 import java.util.ArrayList;
 
 // This class represents a "common" tileset of standard tiles defined in the CommonTileset.png file
-public class CommonTileset extends Tileset {
+public class L8CommmonTileset extends Tileset {
 
-    public CommonTileset() {
-        super(ImageLoader.load("CommonTileSet4.png"), 16, 16, 3);
+    public  L8CommmonTileset() {
+        super(ImageLoader.load("L8CT2.png"), 16, 16, 3);
         
     }
 
@@ -23,7 +23,7 @@ public class CommonTileset extends Tileset {
     public ArrayList<MapTileBuilder> defineTiles() {
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
 
-      //  Kraken Killers
+     //  Kraken Killers
 
         // sand
         Frame sandFrame = new FrameBuilder(getSubImage(4, 3))
@@ -449,7 +449,7 @@ MapTileBuilder Barrel2Tile = new MapTileBuilder(Barrel2Frame)
 mapTiles.add(Barrel2Tile);
 
 // WOOD
-Frame WoodFrame = new FrameBuilder(getSubImage(6, 0))  // column = 5, row = 3
+Frame WoodFrame = new FrameBuilder(getSubImage(5, 0))  // column = 5, row = 3
    .withScale(tileScale)
    .build();
 
@@ -459,7 +459,7 @@ MapTileBuilder WoodTile = new MapTileBuilder(WoodFrame)
 mapTiles.add(WoodTile);
 
 // GRASS
-Frame GRASSFrame = new FrameBuilder(getSubImage(6, 1))  // column = 5, row = 3
+Frame GRASSFrame = new FrameBuilder(getSubImage(5, 1))  // column = 5, row = 3
    .withScale(tileScale)
    .build();
 
@@ -469,7 +469,7 @@ MapTileBuilder GRASSTile = new MapTileBuilder(GRASSFrame)
 mapTiles.add(GRASSTile);
 
 // FIRE1
-Frame FIRE1Frame = new FrameBuilder(getSubImage(6, 2))  // column = 5, row = 3
+Frame FIRE1Frame = new FrameBuilder(getSubImage(5, 2))  // column = 5, row = 3
    .withScale(tileScale)
    .build();
 
@@ -479,7 +479,7 @@ MapTileBuilder FIRE1Tile = new MapTileBuilder(FIRE1Frame)
 mapTiles.add(FIRE1Tile);
 
 // FIRE2
-Frame FIRE2Frame = new FrameBuilder(getSubImage(6, 3))  // column = 5, row = 3
+Frame FIRE2Frame = new FrameBuilder(getSubImage(5, 3))  // column = 5, row = 3
    .withScale(tileScale)
    .build();
 
@@ -489,7 +489,7 @@ MapTileBuilder FIRE2Tile = new MapTileBuilder(FIRE2Frame)
 mapTiles.add(FIRE2Tile);
 
 // M5
-Frame M5Frame = new FrameBuilder(getSubImage(6, 4))  // column = 5, row = 3
+Frame M5Frame = new FrameBuilder(getSubImage(5, 4))  // column = 5, row = 3
    .withScale(tileScale)
    .build();
 
@@ -499,7 +499,7 @@ MapTileBuilder M5Tile = new MapTileBuilder(M5Frame)
 mapTiles.add(M5Tile);
 
 // M6
-Frame M6Frame = new FrameBuilder(getSubImage(6, 5))  // column = 5, row = 3
+Frame M6Frame = new FrameBuilder(getSubImage(5, 5))  // column = 5, row = 3
    .withScale(tileScale)
    .build();
 
@@ -519,102 +519,6 @@ MapTileBuilder M7Tile = new MapTileBuilder(M7Frame)
 mapTiles.add(M7Tile);
 
         return mapTiles;
-
-
-        //Commented Code w/ Animations 
-        /* // sun
-        Frame[] sunFrames = new Frame[]{
-                new FrameBuilder(getSubImage(2, 0))
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(2, 1))
-                        .withScale(tileScale)
-                        .build()
-        };
-
-
-        MapTileBuilder sunTile = new MapTileBuilder(sunFrames);
-
-        mapTiles.add(sunTile);
-        */
-
-             /*   // yellow flower
-        Frame[] yellowFlowerFrames = new Frame[] {
-                new FrameBuilder(getSubImage(1, 2), 65)
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(1, 3), 65)
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(1, 2), 65)
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(1, 4), 65)
-                        .withScale(tileScale)
-                        .build()
-        };
-
-        MapTileBuilder yellowFlowerTile = new MapTileBuilder(yellowFlowerFrames);
-
-        mapTiles.add(yellowFlowerTile);
-
-        // purple flower
-        Frame[] purpleFlowerFrames = new Frame[] {
-                new FrameBuilder(getSubImage(0, 3), 65)
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(0, 4), 65)
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(0, 3), 65)
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(0, 5), 65)
-                        .withScale(tileScale)
-                        .build()
-        };
-
-        MapTileBuilder purpleFlowerTile = new MapTileBuilder(purpleFlowerFrames);
-
-        mapTiles.add(purpleFlowerTile);
-        */
-        
-        /*        // left end branch
-        Frame leftEndBranchFrame = new FrameBuilder(getSubImage(1, 5))
-                .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
-                .build();
-
-        MapTileBuilder leftEndBranchTile = new MapTileBuilder(leftEndBranchFrame)
-                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
-
-        mapTiles.add(leftEndBranchTile);
-         */
-
-         /*        // right end branch
-        Frame rightEndBranchFrame = new FrameBuilder(getSubImage(1, 5))
-                .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
-                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                .build();
-
-        MapTileBuilder rightEndBranchTile = new MapTileBuilder(rightEndBranchFrame)
-                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
-
-        mapTiles.add(rightEndBranchTile);
-        */
-
-        /*        // middle branch
-        Frame middleBranchFrame = new FrameBuilder(getSubImage(2, 3))
-                .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
-                .build();
-
-        MapTileBuilder middleBranchTile = new MapTileBuilder(middleBranchFrame)
-                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
-
-        mapTiles.add(middleBranchTile);
-         */
 
     }
 }
