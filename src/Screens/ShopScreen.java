@@ -66,9 +66,8 @@ public class ShopScreen extends Screen{
             shopItems.add(new Armor("Diamond Armor", 10000, 30, diamondArmorSprite));
     
             
-            //shopItems.add(new Item("Grappling hook", 1500, ItemType.WEAPON));
-            //shopItems.add(new Item("Shield", 1500, ItemType.ARMOR));
-            //shopItems.add(new Item("Underwater boots", 1500, ItemType.ARMOR));
+            //shopItems.add(new Item("One-Shot pistol", 1500, ItemType.WEAPON));
+        
         }
     
     
@@ -118,20 +117,19 @@ public class ShopScreen extends Screen{
                     keyPressTimer = 14;
                     return;
                 }
-                //hit space or enter to buy/equip/unequip
-                 if (Keyboard.isKeyDown(Key.SPACE) || Keyboard.isKeyDown(Key.ENTER)) {
-                    if(inShop && !shopItems.isEmpty()){
-                        //insuffient funds logic
-                        Item selected = shopItems.get(shopIndex);
-                        boolean success = inventory.buy(selected);
-                        if(!success){
-                            notificationText = "Insufficient Funds!";
-                            notificationTimer = 90;
-                        } else{
-                            notificationText = "Purchase Successful!";
-                            notificationTimer = 90;
-
-                        }
+             //hit space or enter to buy/equip/unequip
+            if (Keyboard.isKeyDown(Key.SPACE) || Keyboard.isKeyDown(Key.ENTER)) {
+                if(inShop && !shopItems.isEmpty()){
+                     //insuffient funds logic
+                    Item selected = shopItems.get(shopIndex);
+                    boolean success = inventory.buy(selected);
+                    if(!success){
+                         notificationText = "Insufficient Funds!";
+                         notificationTimer = 90;
+                    } else{
+                        notificationText = "Purchase Successful!";
+                        notificationTimer = 90;
+                    }
 
                     } else if(!inShop && !inventory.getOwned().isEmpty()){
                         Item selected = inventory.getOwned().get(ownedIndex);
@@ -148,7 +146,7 @@ public class ShopScreen extends Screen{
                                     currentlyEquipped.unequip(player);
                                 }
                                 armorItem.equip(player);
-                                System.out.println("after equip player health = " + player.getCurrentHealth());
+                                //System.out.println("after equip player health = " + player.getCurrentHealth());
                                 inventory.setEquippedArmor(armorItem);
                                
                             }

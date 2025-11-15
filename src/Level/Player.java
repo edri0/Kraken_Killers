@@ -9,7 +9,6 @@ import Engine.Keyboard;
 import Engine.SoundPlayer;
 import Game.ArmorType;
 import Game.GameState;
-import GameObject.Frame;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
@@ -26,6 +25,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
+import Level.Map; 
+
 public abstract class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
@@ -35,6 +36,10 @@ public abstract class Player extends GameObject {
     protected float jumpDegrade = 0;
     protected float terminalVelocityY = 0;
     protected float momentumYIncrease = 0;
+
+    protected int attackDamage = 1;
+    protected int attackRange = 40; 
+    protected boolean hasDealtDamageThisAttack = false; 
 
     // values used to handle player movement
     protected float jumpForce = 0;
@@ -69,6 +74,8 @@ public abstract class Player extends GameObject {
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
 
+    protected ArrayList<Enemy> enemies;
+
     // define keys
     protected KeyLocker keyLocker = new KeyLocker();
     protected Key JUMP_KEY = Key.UP;
@@ -76,6 +83,7 @@ public abstract class Player extends GameObject {
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
     protected Key CLIMB_KEY = Key.C; 
+    protected Key ATTACK_KEY = Key.A; 
 
     //health bar
     private int currentHealth = 100;
@@ -83,6 +91,11 @@ public abstract class Player extends GameObject {
 
     private boolean walkingSoundPlaying = false; 
     
+
+    public static final String walkFile = "Resources/walking.wav"; 
+    public static final String jumpFile = "Resources/jump.wav"; 
+    public static final String swordFile = "Resources/swords.wav"; 
+
 
 
     private SpriteSheet spriteSheet;
@@ -102,6 +115,7 @@ public abstract class Player extends GameObject {
              playerState = PlayerState.STANDING;
              previousPlayerState = playerState;
              levelState = LevelState.RUNNING;
+             playerState = PlayerState.ATTACKING;
              this.maxHealth = 100;
              this.currentHealth = maxHealth;
              this.healthBar = new HealthBar(this);
@@ -125,7 +139,7 @@ public abstract class Player extends GameObject {
                         fileName += "Diamond.png";
                         break;
                     }
-                    System.out.println("switching to armor sprite" + fileName);
+                    //System.out.println("switching to armor sprite" + fileName);
                     BufferedImage image = ImageLoader.load(fileName);
                     SpriteSheet newSheet = new SpriteSheet(image,32,32);
                     
@@ -176,7 +190,11 @@ public abstract class Player extends GameObject {
             if(equippedArmor != null && !armorTimer.isActive()){
                 equippedArmor.unequip(this);
                 equippedArmor = null;
-                System.out.println("armor expired");
+                //System.out.println("armor expired");
+            }
+
+            if (playerState == PlayerState.ATTACKING) {
+                updateAttack(map.getActiveEnemies()); 
             }
         }
 
@@ -188,6 +206,11 @@ public abstract class Player extends GameObject {
         // if player has lost level
         else if (levelState == LevelState.PLAYER_DEAD) {
             updatePlayerDead();
+        }
+
+        //attack logic
+        else if (playerState == PlayerState.ATTACKING) {
+            // updateAttack();
         }
 
     }
@@ -227,6 +250,9 @@ public abstract class Player extends GameObject {
             case CLIMBING:
                 playerClimbing();
                 break;
+            case ATTACKING:
+                playerAttacking();
+                break;
         }
     }
 
@@ -254,6 +280,13 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.CLIMBING;
             momentumY = 0; 
         }
+
+        else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
+            keyLocker.lockKey(ATTACK_KEY); 
+            playerState = PlayerState.ATTACKING; 
+            hasDealtDamageThisAttack = false;
+            return; 
+        }
     }
 
     // player WALKING state logic
@@ -265,6 +298,10 @@ public abstract class Player extends GameObject {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
             moving = true; 
+            if (!SoundPlayer.isPlaying()) {
+                SoundPlayer.playMusic(walkFile, false); 
+            }
+
         }
 
         // if walk right key is pressed, move player to the right
@@ -272,20 +309,24 @@ public abstract class Player extends GameObject {
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
              moving = true; 
+            if (!SoundPlayer.isPlaying()) {
+                SoundPlayer.playMusic(walkFile, false); 
+            }
+
         } 
         
         else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
         }
 
-        if (moving && !walkingSoundPlaying) {
-            SoundPlayer.playMusic("Resources/walking.wav", true); 
-            walkingSoundPlaying = true; 
-        }
-        else if(!moving && walkingSoundPlaying) {
-            SoundPlayer.stopMusic(); 
-            walkingSoundPlaying = false; 
-        }
+        // if (moving && !walkingSoundPlaying) {
+        //     SoundPlayer.playMusic(walkFile, false); 
+        //     walkingSoundPlaying = true; 
+        // }
+        // else if(!moving && walkingSoundPlaying) {
+        //     SoundPlayer.stopMusic(); 
+        //     walkingSoundPlaying = false; 
+        // }
 
 
         //if Climb key is pressed, 
@@ -299,12 +340,23 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
 
-            SoundPlayer.playMusic("Resources/jump.wav", false); 
+            SoundPlayer.playMusic(jumpFile, false); 
         }
 
         // if crouch key is pressed,
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
+        }
+         
+        else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
+            keyLocker.lockKey(ATTACK_KEY); 
+            playerState = PlayerState.ATTACKING; 
+            SoundPlayer.playMusic(swordFile, false); 
+            System.out.println("Music file exists: " + new File(swordFile).exists());
+            hasDealtDamageThisAttack = false;
+            SoundPlayer.playMusic("Resources/swords.wav", false); 
+            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            return; 
         }
 
     }
@@ -341,7 +393,7 @@ public abstract class Player extends GameObject {
                     jumpForce = 0;
                 }
             }
-            SoundPlayer.playMusic("Resources/jump.wav", false);
+            SoundPlayer.playMusic(jumpFile, false);
         }
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
@@ -412,7 +464,44 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.JUMPING;
             applyGravity();
         }
-     }
+    }
+
+    public void updateAttack(ArrayList<Enemy> enemies){
+
+        if (playerState != PlayerState.ATTACKING){
+            return;
+        }
+
+        if (hasDealtDamageThisAttack){
+            return; 
+        }
+
+            for(Enemy enemy : enemies){
+                if(intersects(enemy))
+                    enemy.takeDamage(attackDamage); 
+                    hasDealtDamageThisAttack = true; 
+                    System.out.println("Enemy hit! " + attackDamage + "damage"); 
+                    break;
+                }
+
+            SoundPlayer.playMusic(swordFile, false); 
+            System.out.println("Music file exists: " + new File(swordFile).exists());
+        }
+    
+    
+
+
+    
+    public void touchedEnemy(Enemy enemy) {
+        enemy.hurtEnemy(this);
+    }
+
+    protected void playerAttacking() {
+        if(Keyboard.isKeyUp(ATTACK_KEY)){
+            keyLocker.unlockKey(ATTACK_KEY); 
+            playerState = PlayerState.STANDING; 
+        }
+    }
 
    
    
@@ -461,6 +550,10 @@ public abstract class Player extends GameObject {
             } else {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "FALL_RIGHT" : "FALL_LEFT";
             }
+        }
+        else if (playerState == PlayerState.ATTACKING) {
+            // sets animation to a WALK animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
         }
     }
 
@@ -592,20 +685,19 @@ public abstract class Player extends GameObject {
         listeners.add(listener);
     }
     public void setArmor(Armor armor){
-        if (this.equippedArmor == armor){
-            return;
-        }
+        if (this.equippedArmor == armor) return;
+        
         preArmorHealth = this.currentHealth;
         preArmorMaxHealth = this.maxHealth;
         int bonus = armor.getHpValue();
 
-
+    //apply armor bonus
         this.maxHealth += bonus;
         this.currentHealth += bonus;
 
-        if(this.currentHealth > this.maxHealth){
-            this.currentHealth = this.maxHealth;
-        }
+        if(this.currentHealth > this.maxHealth)   
+        this.currentHealth = this.maxHealth;
+        
 
 
         this.equippedArmor = armor;
@@ -619,14 +711,22 @@ public abstract class Player extends GameObject {
     public void removeArmor() {
         if (equippedArmor == null) return;
 
-        if (preArmorHealth != -1 && preArmorMaxHealth != -1){
-            this.currentHealth = preArmorHealth;
-            this.maxHealth = preArmorMaxHealth;
+        int bonus = equippedArmor.getHpValue();
 
-        }
-        armorTimer.stop();
+        this.maxHealth -= bonus;
+        this.currentHealth -= bonus;
+        
+        if(this.currentHealth > this.maxHealth)
+         this.currentHealth = this.maxHealth;
+
+        if(this.currentHealth < 0)
+        this.currentHealth = 0;
+
+       
         preArmorHealth = -1;
         preArmorMaxHealth = -1;
+        
+        armorTimer.stop();
         equippedArmor = null;
          
         }

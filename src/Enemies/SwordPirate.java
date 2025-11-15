@@ -1,7 +1,6 @@
 package Enemies;
 
 import Level.Enemy;
-import Level.MapEntity;
 import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
@@ -67,6 +66,14 @@ public class SwordPirate extends Enemy {
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(2,2,16,26)
+                            .build()
+            });
+
+            put("DIE", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 10, 13)
                             .build()
             });
         }};
