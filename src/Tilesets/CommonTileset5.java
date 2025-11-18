@@ -275,7 +275,7 @@ public class CommonTileset5 extends Tileset {
         
         //SLOPE
                   //M2
-                  Frame M2Frame = new FrameBuilder(getSubImage(5, 4))
+                  Frame M2Frame = new FrameBuilder(getSubImage(6,6))
                   .withScale(tileScale)
                   .build();
   
