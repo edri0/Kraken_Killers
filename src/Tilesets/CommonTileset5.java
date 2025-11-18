@@ -276,8 +276,8 @@ public class CommonTileset5 extends Tileset {
           mapTiles.add(WaveTile);
         
         //SLOPE
-// (5,4) RIGHT EDGE SLOPE
-Frame slopeRightEdge = new FrameBuilder(getSubImage(5, 4))
+// (6,6) RIGHT EDGE SLOPE
+Frame slopeRightEdge = new FrameBuilder(getSubImage(6,6))
         .withScale(tileScale)
         .build();
 
