@@ -22,7 +22,7 @@ public class TestMap extends Map {
 
     public TestMap() {
         super("test_map.txt", new CommonTileset3());
-        this.playerStartPosition = getMapTile(2, 11).getLocation();
+        this.playerStartPosition = getMapTile(1,5).getLocation();
         SoundPlayer.stopMusic(); 
     }
 
