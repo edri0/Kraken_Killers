@@ -21,11 +21,7 @@ public class TestMap extends Map {
 
     public TestMap() {
         super("test_map.txt", new CommonTileset3());
-<<<<<<< HEAD
-        this.playerStartPosition = getMapTile(1, 9).getLocation();
-=======
-        this.playerStartPosition = getMapTile(1,5).getLocation();
->>>>>>> bb3282e9352a2eb11af41e5fb028b55ac0c54162
+        this.playerStartPosition = getMapTile(1, 5).getLocation();
         SoundPlayer.stopMusic(); 
     }
 
