@@ -7,6 +7,7 @@ import Engine.ImageLoader;
 import GameObject.Frame;
 import Level.TileType;
 import Level.Tileset;
+import Utils.SlopeTileLayoutUtils;
 
 import java.util.ArrayList;
 
@@ -23,11 +24,59 @@ public class CommonTileset3 extends Tileset {
         // ----------------------------------------------------------
         // ROW 0 (0,0 → 0,5)
         // ----------------------------------------------------------
-        mapTiles.add(tile(0, 0, TileType.NOT_PASSABLE)); // sand pyramid top
-        mapTiles.add(tile(0, 1, TileType.PASSABLE));      // sky
-        mapTiles.add(tile(0, 2, TileType.NOT_PASSABLE));  // dirt
-        mapTiles.add(tile(0, 3, TileType.NOT_PASSABLE));  // slope 1
-        mapTiles.add(tile(0, 4, TileType.NOT_PASSABLE));  // slope 2
+        Frame sandFrame = new FrameBuilder(getSubImage(0, 0))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder sandTile = new MapTileBuilder(sandFrame)
+        .withTileType(TileType.NOT_PASSABLE); // solid, stops the player
+
+mapTiles.add(sandTile);
+
+// ----- (0,1) small right slope -----
+Frame slope01Frame = new FrameBuilder(getSubImage(0, 1))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder slope01 = new MapTileBuilder(slope01Frame)
+        .withTileType(TileType.SLOPE);
+
+mapTiles.add(slope01);
+
+
+// ----- (0,2) medium right slope -----
+Frame slope02Frame = new FrameBuilder(getSubImage(0, 2))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder slope02 = new MapTileBuilder(slope02Frame)
+        .withTileType(TileType.SLOPE);
+
+mapTiles.add(slope02);
+
+
+// ----- (0,3) deep right slope -----
+Frame slope03Frame = new FrameBuilder(getSubImage(0, 3))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder slope03 = new MapTileBuilder(slope03Frame)
+        .withTileType(TileType.SLOPE);
+
+mapTiles.add(slope03);
+
+
+// ----- (0,4) left slope -----
+Frame slope04Frame = new FrameBuilder(getSubImage(0, 4))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder slope04 = new MapTileBuilder(slope04Frame)
+        .withTileType(TileType.SLOPE);
+
+mapTiles.add(slope04);
+
+
         mapTiles.add(tile(0, 5, TileType.NOT_PASSABLE));  // wet sand
 
         // ----------------------------------------------------------

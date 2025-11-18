@@ -274,32 +274,79 @@ public class CommonTileset5 extends Tileset {
           mapTiles.add(WaveTile);
         
         //SLOPE
-                  //M2
-                  Frame M2Frame = new FrameBuilder(getSubImage(6,6))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder M2Tile = new MapTileBuilder(M2Frame);
-  
-          mapTiles.add(M2Tile);
-        
-                  //M3
-                  Frame M3Frame = new FrameBuilder(getSubImage(5, 5))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder M3Tile = new MapTileBuilder(M3Frame);
-  
-          mapTiles.add(M3Tile);
+// (5,4) RIGHT EDGE SLOPE
+Frame slopeRightEdge = new FrameBuilder(getSubImage(5, 4))
+        .withScale(tileScale)
+        .build();
 
-                  //M4
-                  Frame M4Frame = new FrameBuilder(getSubImage(5, 6))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder M4Tile = new MapTileBuilder(M4Frame);
-  
-          mapTiles.add(M4Tile);
+MapTileBuilder slopeRightEdgeTile = new MapTileBuilder(slopeRightEdge)
+        .withTileType(TileType.SLOPE)
+        .withTileLayout(SlopeTileLayoutUtils.createRight45SlopeLayout(spriteWidth, (int) tileScale));
+
+mapTiles.add(slopeRightEdgeTile);
+
+
+// (5,5) PEAK (SOLID TILE)
+Frame peakFrame = new FrameBuilder(getSubImage(5, 5))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder peakTile = new MapTileBuilder(peakFrame)
+        .withTileType(TileType.NOT_PASSABLE);
+
+mapTiles.add(peakTile);
+
+
+// (5,6) LEFT EDGE SLOPE
+Frame slopeLeftEdge = new FrameBuilder(getSubImage(5, 6))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder slopeLeftEdgeTile = new MapTileBuilder(slopeLeftEdge)
+        .withTileType(TileType.SLOPE)
+        .withTileLayout(SlopeTileLayoutUtils.createLeft45SlopeLayout(spriteWidth, (int) tileScale));
+
+mapTiles.add(slopeLeftEdgeTile);
+
+
+
+// -------------------------
+// ROW 6
+// -------------------------
+
+// (6,4) RIGHT INNER SLOPE
+Frame slopeRightInner = new FrameBuilder(getSubImage(6, 4))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder slopeRightInnerTile = new MapTileBuilder(slopeRightInner)
+        .withTileType(TileType.SLOPE)
+        .withTileLayout(SlopeTileLayoutUtils.createRight45SlopeLayout(spriteWidth, (int) tileScale));
+
+mapTiles.add(slopeRightInnerTile);
+
+
+// (6,5) CENTER SOLID TILE
+Frame centerFrame = new FrameBuilder(getSubImage(6, 5))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder centerTile = new MapTileBuilder(centerFrame)
+        .withTileType(TileType.NOT_PASSABLE);
+
+mapTiles.add(centerTile);
+
+
+// (6,6) LEFT INNER SLOPE
+Frame slopeLeftInner = new FrameBuilder(getSubImage(6, 6))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder slopeLeftInnerTile = new MapTileBuilder(slopeLeftInner)
+        .withTileType(TileType.SLOPE)
+        .withTileLayout(SlopeTileLayoutUtils.createLeft45SlopeLayout(spriteWidth, (int) tileScale));
+
+mapTiles.add(slopeLeftInnerTile);
 
         //SLOPE 
 
