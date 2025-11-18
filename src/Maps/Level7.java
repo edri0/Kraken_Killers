@@ -27,24 +27,44 @@ public class Level7 extends Map{
     
 
  @Override
-    public ArrayList<Enemy> loadEnemies() {
-        ArrayList<Enemy> enemies = new ArrayList<>();
-
-       SwordPirate swordDude = new SwordPirate(getMapTile(16, 17).getLocation().subtractY(25),getMapTile(17, 17).getLocation().subtractY(25), Direction.LEFT);
-       //getMapTile(16, 10).getLocation().subtractY(25)
-       enemies.add(swordDude);
-
-        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(36, 15).getLocation().addY(2), getMapTile(37, 15).getLocation().addY(2), Direction.RIGHT);
-        enemies.add(rangedPirate);
-
-        Fitz fitzEnemy = new Fitz(getMapTile(30, 16).getLocation().addY(2), getMapTile(33, 16).getLocation().addY(2), Direction.RIGHT);
-        enemies.add(fitzEnemy);
-
-        //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-       // enemies.add(SwordPirate);
-
-        return enemies;
-    }
+ public ArrayList<Enemy> loadEnemies() {
+     ArrayList<Enemy> enemies = new ArrayList<>();
+ 
+     // Sword Pirate
+     SwordPirate swordDude = new SwordPirate(
+             getMapTile(16, 17).getLocation().subtractY(25),
+             getMapTile(17, 17).getLocation().subtractY(25),
+             Direction.LEFT
+     );
+     enemies.add(swordDude);
+ 
+     // Ranged Pirate #1
+     RangeEnemy rangedPirate1 = new RangeEnemy(
+             getMapTile(36, 15).getLocation().addY(2),
+             getMapTile(37, 15).getLocation().addY(2),
+             Direction.RIGHT
+     );
+     enemies.add(rangedPirate1);
+ 
+     // Fitz
+     Fitz fitzEnemy = new Fitz(
+             getMapTile(30, 16).getLocation().addY(2),
+             getMapTile(33, 16).getLocation().addY(2),
+             Direction.RIGHT
+     );
+     enemies.add(fitzEnemy);
+ 
+     // Ranged Pirate #2
+     RangeEnemy rangedPirate2 = new RangeEnemy(
+             getMapTile(32, 15).getLocation().addY(2),
+             getMapTile(37, 15).getLocation().addY(2),
+             Direction.RIGHT
+     );
+     enemies.add(rangedPirate2);
+ 
+     return enemies;
+ }
+ 
 
 @Override
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {

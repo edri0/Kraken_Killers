@@ -200,14 +200,16 @@ public class CommonTileset5 extends Tileset {
           mapTiles.add(LightPointTile);
 
         //Ocean Tiles
-                  //Waves
-                  Frame WavesFrame = new FrameBuilder(getSubImage(2, 3))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder WavesTile = new MapTileBuilder(WavesFrame);
-  
-          mapTiles.add(WavesTile);
+// Waves 
+    Frame WavesFrame = new FrameBuilder(getSubImage(2, 3))
+        .withScale(tileScale)
+        .build();
+
+    MapTileBuilder WavesTile = new MapTileBuilder(WavesFrame)
+        .withTileType(TileType.NOT_PASSABLE);  // solid
+
+        mapTiles.add(WavesTile);
+
 
                   //TopWater
                   Frame TopWaterFrame = new FrameBuilder(getSubImage(2, 4))

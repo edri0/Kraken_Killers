@@ -204,9 +204,10 @@ public class CommonTileset extends Tileset {
                   Frame WavesFrame = new FrameBuilder(getSubImage(2, 3))
                   .withScale(tileScale)
                   .build();
-  
-          MapTileBuilder WavesTile = new MapTileBuilder(WavesFrame);
-  
+          
+          MapTileBuilder WavesTile = new MapTileBuilder(WavesFrame)
+                  .withTileType(TileType.NOT_PASSABLE);  //  solid
+          
           mapTiles.add(WavesTile);
 
                   //TopWater

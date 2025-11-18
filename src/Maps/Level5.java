@@ -5,11 +5,15 @@ import EnhancedMapTiles.EndLevelBox;
 import Level.*;
 import NPCs.Chest;
 import Tilesets.CommonTileset5;
+import Utils.Direction;
+
 //import Utils.Direction;
 import java.util.ArrayList;
 //import Engine.ImageLoader;
 //import GameObject.Rectangle;
 
+import Enemies.DinosaurEnemy;
+import Enemies.RangeEnemy;
 import Engine.SoundPlayer;
 
 
@@ -26,15 +30,39 @@ public class Level5 extends Map{
 public ArrayList<Enemy> loadEnemies() {
     ArrayList<Enemy> enemies = new ArrayList<>();
 
-   // BugEnemy bugEnemy = new BugEnemy(getMapTile(16, 10).getLocation().subtractY(25), Direction.LEFT);
-   // enemies.add(bugEnemy);
+    // -------------------------
+    // RANGED PIRATE #1
+    // -------------------------
+    RangeEnemy rangedPirate1 = new RangeEnemy(
+            getMapTile(36, 15).getLocation().addY(2),
+            getMapTile(37, 15).getLocation().addY(2),
+            Direction.RIGHT
+    );
+    enemies.add(rangedPirate1);
 
-   // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-   // enemies.add(dinosaurEnemy);
+    // -------------------------
+    // RANGED PIRATE #2
+    // -------------------------
+    RangeEnemy rangedPirate2 = new RangeEnemy(
+            getMapTile(32, 15).getLocation().addY(2),
+            getMapTile(35, 15).getLocation().addY(2),
+            Direction.LEFT
+    );
+    enemies.add(rangedPirate2);
 
+    // -------------------------
+    // RANGED PIRATE #3
+    // -------------------------
+    RangeEnemy rangedPirate3 = new RangeEnemy(
+            getMapTile(40, 15).getLocation().addY(2),
+            getMapTile(44, 15).getLocation().addY(2),
+            Direction.RIGHT
+    );
+    enemies.add(rangedPirate3);
 
     return enemies;
 }
+
 
 @Override
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {

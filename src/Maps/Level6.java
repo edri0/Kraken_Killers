@@ -8,6 +8,10 @@ import NPCs.Chest;
 import Tilesets.CommonTileset;
 //import Utils.Direction;
 import java.util.ArrayList;
+import Utils.Direction;
+import Enemies.Fitz;
+import Enemies.RangeEnemy;
+import Enemies.SwordPirate;
 //import Engine.ImageLoader;
 import Engine.SoundPlayer;
 //import GameObject.Rectangle;
@@ -26,15 +30,36 @@ public class Level6 extends Map{
 public ArrayList<Enemy> loadEnemies() {
     ArrayList<Enemy> enemies = new ArrayList<>();
 
-   // BugEnemy bugEnemy = new BugEnemy(getMapTile(16, 10).getLocation().subtractY(25), Direction.LEFT);
-   // enemies.add(bugEnemy);
+    // --- Sword Pirate ---
+    // Patrols from (16,10) → (18,10)
+    SwordPirate swordPirate = new SwordPirate(
+            getMapTile(16, 10).getLocation().subtractY(25),
+            getMapTile(18, 10).getLocation().subtractY(25),
+            Direction.LEFT
+    );
+    enemies.add(swordPirate);
 
-   // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-   // enemies.add(dinosaurEnemy);
+    // --- Ranged Pirate ---
+    // Patrols from (19,1) → (22,1)
+    RangeEnemy rangedPirate = new RangeEnemy(
+            getMapTile(19, 1).getLocation().addY(2),
+            getMapTile(22, 1).getLocation().addY(2),
+            Direction.RIGHT
+    );
+    enemies.add(rangedPirate);
 
+    // --- Fitz Enemy ---
+    // Patrols from (30,5) → (35,5)
+    Fitz fitz = new Fitz(
+            getMapTile(30, 5).getLocation().addY(2),
+            getMapTile(35, 5).getLocation().addY(2),
+            Direction.RIGHT
+    );
+    enemies.add(fitz);
 
     return enemies;
 }
+
 
 @Override
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
