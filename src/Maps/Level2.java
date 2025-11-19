@@ -44,60 +44,93 @@ public class Level2 extends Map {
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
-
-       SwordPirate swordDude = new SwordPirate(getMapTile(18, 15).getLocation().subtractY(25),getMapTile(22, 15).getLocation().subtractY(25), Direction.RIGHT);
-       //getMapTile(16, 10).getLocation().subtractY(25)
-       enemies.add(swordDude);
-
-        // RangeEnemy rangedPirate = new RangeEnemy(getMapTile(46, 18).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-        // enemies.add(rangedPirate);
-
-        Squidenemy squidenemy = new Squidenemy(getMapTile(34, 27).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-        enemies.add(squidenemy);
-
-
-        //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
-       // enemies.add(SwordPirate);
-
-        return enemies;
-    }
-
-    @Override
-    public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
-        ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-
-       /* HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
-                ImageLoader.load("GreenPlatform.png"),
-                getMapTile(24, 6).getLocation(),
-                getMapTile(27, 6).getLocation(),
-                TileType.JUMP_THROUGH_PLATFORM,
-                3,
-                new Rectangle(0, 6,16,4),
+    
+        // -------------------------
+        // Sword Pirate
+        // -------------------------
+        SwordPirate swordDude = new SwordPirate(
+                getMapTile(18, 15).getLocation().subtractY(25),
+                getMapTile(22, 15).getLocation().subtractY(25),
                 Direction.RIGHT
         );
-        
-        enhancedMapTiles.add(hmp);
-*/ 
-/*@Override
-public ArrayList<Enemy> loadEnemies() {
-    ArrayList<Enemy> enemies = new ArrayList<>();
+        enemies.add(swordDude);
+    
+    
+        // -------------------------
+        // SQUID 1
+        // -------------------------
+        Squidenemy squid1 = new Squidenemy(
+                getMapTile(34, 27).getLocation().addY(2),
+                getMapTile(36, 27).getLocation().addY(2),
+                Direction.RIGHT
+        );
+        enemies.add(squid1);
+    
+    
+        // -------------------------
+        // SQUID 2
+        // -------------------------
+        Squidenemy squid2 = new Squidenemy(
+                getMapTile(30, 27).getLocation().addY(2),
+                getMapTile(32, 27).getLocation().addY(2),
+                Direction.LEFT
+        );
+        enemies.add(squid2);
+    
+    
+        // -------------------------
+        // SQUID 3
+        // -------------------------
+        Squidenemy squid3 = new Squidenemy(
+                getMapTile(26, 27).getLocation().addY(2),
+                getMapTile(28, 27).getLocation().addY(2),
+                Direction.RIGHT
+        );
+        enemies.add(squid3);
 
-   SwordPirate swordDude = new SwordPirate(getMapTile(12, 10).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
-   //getMapTile(16, 10).getLocation().subtractY(25)
-   enemies.add(swordDude);
-
-    RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+            RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
     enemies.add(rangedPirate);
+    
+        return enemies;
+    }
+    
 
-    return enemies;
-}
-    */
+     @Override
+     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
+        ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+
+    //    HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
+    //             ImageLoader.load("GreenPlatform.png"),
+    //             getMapTile(24, 6).getLocation(),
+    //             getMapTile(27, 6).getLocation(),
+    //             TileType.JUMP_THROUGH_PLATFORM,
+    //             3,
+    //             new Rectangle(0, 6,16,4),
+    //             Direction.RIGHT
+    //     );
+        
+    //     enhancedMapTiles.add(hmp);
+
+// @Override
+// public ArrayList<Enemy> loadEnemies() {
+//     ArrayList<Enemy> enemies = new ArrayList<>();
+
+//    SwordPirate swordDude = new SwordPirate(getMapTile(12, 10).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+//    //getMapTile(16, 10).getLocation().subtractY(25)
+//    enemies.add(swordDude);
+
+//     RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+//     enemies.add(rangedPirate);
+
+//     return enemies;
+// }
+    
 
 
-        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 19).getLocation());
-       enhancedMapTiles.add(endLevelBox);
+     EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 19).getLocation());
+        enhancedMapTiles.add(endLevelBox);
 
-        return enhancedMapTiles;
+         return enhancedMapTiles;
     } 
 
     //@Override
