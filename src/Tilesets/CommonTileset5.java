@@ -77,14 +77,15 @@ public class CommonTileset5 extends Tileset {
 
         mapTiles.add(BloodOrangeskyTile);
 
-        //Orangesky
-        Frame OrangeskyFrame = new FrameBuilder(getSubImage(0, 2))
-                .withScale(tileScale)
-                .build();
+// Orangesky (Sand)
+Frame OrangeskyFrame = new FrameBuilder(getSubImage(0, 2))
+        .withScale(tileScale)
+        .build();
 
-        MapTileBuilder OrangeskyTile = new MapTileBuilder(OrangeskyFrame);
+MapTileBuilder OrangeskyTile = new MapTileBuilder(OrangeskyFrame)
+        .withTileType(TileType.NOT_PASSABLE);   // <-- player can stand on it
 
-        mapTiles.add(OrangeskyTile);
+mapTiles.add(OrangeskyTile);
 
                 // LightOrangesky
                 Frame LightOrangeskyFrame = new FrameBuilder(getSubImage(0, 3))
@@ -114,15 +115,17 @@ public class CommonTileset5 extends Tileset {
         mapTiles.add(MustardskyTile);
 
 
-                  // Yellowsky
-                  Frame YellowskyFrame = new FrameBuilder(getSubImage(0, 6))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder YellowskyTile = new MapTileBuilder(YellowskyFrame);
-  
-          mapTiles.add(YellowskyTile);
-       
+// YellowSky (Sand)
+Frame YellowskyFrame = new FrameBuilder(getSubImage(0, 6))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder YellowskyTile = new MapTileBuilder(YellowskyFrame)
+        .withTileType(TileType.NOT_PASSABLE);  // <-- player can stand on it
+
+mapTiles.add(YellowskyTile);
+
+
                   // BrightYellowsky
                   Frame BrightYellowskyFrame = new FrameBuilder(getSubImage(2, 0))
                   .withScale(tileScale)
@@ -190,14 +193,15 @@ public class CommonTileset5 extends Tileset {
           mapTiles.add(SunsetTile);
           //End of Skies
 
-                  //LightPoint
-                  Frame LightPointFrame = new FrameBuilder(getSubImage(2, 1))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder LightPointTile = new MapTileBuilder(LightPointFrame);
-  
-          mapTiles.add(LightPointTile);
+// LightPoint (solid ground)
+Frame LightPointFrame = new FrameBuilder(getSubImage(2, 1))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder LightPointTile = new MapTileBuilder(LightPointFrame)
+        .withTileType(TileType.NOT_PASSABLE);   // <-- now solid
+
+mapTiles.add(LightPointTile);
 
         //Ocean Tiles
 // Waves 
