@@ -632,8 +632,8 @@ public abstract class Player extends GameObject {
     }
 
     public void addMoney(int cents) {
-        getInventory().addMoneyCents(coinValue); 
-        System.out.println("Add $10"); 
+        getInventory().addMoneyCents(cents); 
+        System.out.println("Added: $10"); 
     }
 
     // if player has died, this will be the update cycle
@@ -802,13 +802,10 @@ public abstract class Player extends GameObject {
         return healthBar;
     }
 
-    public PlayerInventory getInventory() {
-        return this.getInventory(); 
-    }
-  
-
+    private PlayerInventory inventory = new PlayerInventory(); 
     
-
-    
+    public PlayerInventory getInventory(){
+        return inventory; 
+    }  
     
 }

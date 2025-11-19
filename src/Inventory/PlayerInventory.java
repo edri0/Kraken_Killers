@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerInventory {
+    public boolean collected; 
 
     protected int moneyCents = 3000;
     private final List<Item> owned = new ArrayList<>();
@@ -47,4 +48,5 @@ public class PlayerInventory {
     public void getaddItem(Armor rewardArmor) {
         if (!owned.contains(rewardArmor)) owned.add(rewardArmor);
     }
+
 }

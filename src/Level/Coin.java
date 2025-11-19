@@ -17,7 +17,7 @@ import Utils.Point;
 
 
 public class Coin extends Enemy{ 
-
+    public boolean collected = false; 
 
     protected KeyLocker keyLocker = new KeyLocker();
     protected Key COLLECT_KEY = Key.SPACE;
@@ -39,6 +39,7 @@ public class Coin extends Enemy{
         if (intersects(player) && Keyboard.isKeyDown(COLLECT_KEY)){
             player.addMoney(coinValue); 
             this.mapEntityStatus = MapEntityStatus.REMOVED; 
+            collected = true; 
         }
     }
 
