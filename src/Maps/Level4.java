@@ -21,7 +21,7 @@ public class Level4 extends Map{
 
     public Level4(){
         super("level4.txt", new CommonTileset5());
-        this.playerStartPosition = getMapTile(4, 11).getLocation();
+        this.playerStartPosition = getMapTile(3, 5).getLocation();
         SoundPlayer.stopMusic(); 
     }
     
