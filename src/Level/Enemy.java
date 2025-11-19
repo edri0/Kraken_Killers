@@ -3,9 +3,12 @@ package Level;
 import GameObject.Frame;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
+import Utils.Point;
+
 import java.util.HashMap;
 
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 
 // This class is a base class for all enemies in the game -- all enemies should extend from it
 public class Enemy extends MapEntity {
@@ -81,6 +84,11 @@ public class Enemy extends MapEntity {
         player.hurtPlayer(this);
     }
 
+    public void touchedCoin(Player player) {
+        System.out.println("Touched Coin");
+        player.costCents(this);
+    }
+
 
      public int getCurrentHealth() {
        return currentHealth;
@@ -105,6 +113,8 @@ public class Enemy extends MapEntity {
             levelState = LevelState.ENEMY_DEAD;
             System.out.println("Enemy died");
 
+            Coin coin =new Coin(new Point(Math.round(getX()), Math.round(getY())));
+
         } else {
             //he takes damage
             setCurrentHealth(currentHealth - amount);
@@ -116,6 +126,5 @@ public class Enemy extends MapEntity {
     public int getContactDamage(){
         return contactDamage; 
     }
-    
 
 }

@@ -628,6 +628,11 @@ public abstract class Player extends GameObject {
         }
     }
 
+    public void addMoney(int cents) {
+        getInventory().addMoneyCents(cents); 
+        System.out.println("Add $10"); 
+    }
+
     // if player has died, this will be the update cycle
     public void updatePlayerDead() {
         // change player animation to DEATH

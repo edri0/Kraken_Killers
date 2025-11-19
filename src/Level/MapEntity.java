@@ -59,4 +59,5 @@ public class MapEntity extends GameObject {
     public void setIsUpdateOffScreen(boolean isUpdateOffScreen) {
         this.isUpdateOffScreen = isUpdateOffScreen;
     }
+
 }
