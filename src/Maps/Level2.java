@@ -95,9 +95,9 @@ public class Level2 extends Map {
     }
     
 
-    // @Override
-    // public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
-    //     ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+     @Override
+     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
+        ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
     //    HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
     //             ImageLoader.load("GreenPlatform.png"),
@@ -127,11 +127,11 @@ public class Level2 extends Map {
     
 
 
-    //     EndLevelBox endLevelBox = new EndLevelBox(getMapTile(48, 19).getLocation());
-    //    enhancedMapTiles.add(endLevelBox);
+     EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 19).getLocation());
+        enhancedMapTiles.add(endLevelBox);
 
-    //     return enhancedMapTiles;
-    // } 
+         return enhancedMapTiles;
+    } 
 
     //@Override
     public ArrayList<NPC> loadNPCs() {
