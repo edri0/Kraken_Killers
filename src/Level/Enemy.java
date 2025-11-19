@@ -20,6 +20,7 @@ public class Enemy extends MapEntity {
     private int maxHealth;
     protected boolean isTinvincible = false; 
     private boolean dead = false;
+    protected int coinValue = 1000;
 
     public Enemy(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
@@ -86,7 +87,7 @@ public class Enemy extends MapEntity {
 
     public void touchedCoin(Player player) {
         System.out.println("Touched Coin");
-        player.costCents(this);
+        player.addMoney(coinValue);
     }
 
 
@@ -114,6 +115,7 @@ public class Enemy extends MapEntity {
             System.out.println("Enemy died");
 
             Coin coin =new Coin(new Point(Math.round(getX()), Math.round(getY())));
+            map.addEnemy(coin);
 
         } else {
             //he takes damage

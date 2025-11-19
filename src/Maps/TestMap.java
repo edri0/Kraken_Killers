@@ -32,23 +32,23 @@ public ArrayList<Enemy> loadEnemies() {
     // --------------------------------------------------
     // Sword Pirate 1
     // --------------------------------------------------
-  //  SwordPirate swordPirate1 = new SwordPirate(
-  //          getMapTile(12, 10).getLocation().subtractY(25),
-  //          getMapTile(18, 10).getLocation().subtractY(25),
-  //          Direction.LEFT
-  //  );
-  //  enemies.add(swordPirate1);
+   SwordPirate swordPirate1 = new SwordPirate(
+           getMapTile(7, 10).getLocation().subtractY(25),
+           getMapTile(13, 10).getLocation().subtractY(25),
+           Direction.LEFT
+   );
+   enemies.add(swordPirate1);
 
 
     // --------------------------------------------------
     // Sword Pirate 2
     // --------------------------------------------------
-    //SwordPirate swordPirate2 = new SwordPirate(
-       //     getMapTile(20, 12).getLocation().subtractY(25),
-         //   getMapTile(26, 12).getLocation().subtractY(25),
-           // Direction.RIGHT
-   // );
-   // enemies.add(swordPirate2);
+//     SwordPirate swordPirate2 = new SwordPirate(
+//            getMapTile(20, 12).getLocation().subtractY(25),
+//            getMapTile(26, 12).getLocation().subtractY(25),
+//            Direction.RIGHT
+//    );
+//    enemies.add(swordPirate2);
 
 
     // --------------------------------------------------

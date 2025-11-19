@@ -16,9 +16,7 @@ import Utils.Direction;
 import Utils.Point; 
 
 
-public class Coin extends Enemy{
-    private boolean collected = false; 
-    private final int coinValue = 1000; 
+public class Coin extends Enemy{ 
 
 
     protected KeyLocker keyLocker = new KeyLocker();
@@ -26,8 +24,8 @@ public class Coin extends Enemy{
 
 
     public Coin(Point location) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("Fireball.png"), 7, 7), "DEFAULT");
-
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("Coin.png"), 16, 16), "DEFAULT");
+        
         initialize();
     }
 
@@ -42,6 +40,13 @@ public class Coin extends Enemy{
             player.addMoney(coinValue); 
             this.mapEntityStatus = MapEntityStatus.REMOVED; 
         }
+    }
+
+    @Override
+    public void touchedCoin(Player player) {
+        // if fireball touches player, it disappears
+        player.addMoney(coinValue); 
+        this.mapEntityStatus = MapEntityStatus.REMOVED;
     }
 
 

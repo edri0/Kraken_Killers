@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PlayerInventory {
 
-    private int moneyCents = 3000;
+    protected int moneyCents = 3000;
     private final List<Item> owned = new ArrayList<>();
     private Item equippedWeapon;
     private Armor equippedArmor;

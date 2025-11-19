@@ -41,6 +41,8 @@ public abstract class Player extends GameObject {
     protected int attackRange = 40; 
     protected boolean hasDealtDamageThisAttack = false; 
 
+    protected int coinValue = 1000;
+
     // values used to handle player movement
     protected float jumpForce = 0;
     protected float momentumY = 0;
@@ -477,12 +479,13 @@ public abstract class Player extends GameObject {
         }
 
             for(Enemy enemy : enemies){
-                if(intersects(enemy))
+                if(intersects(enemy)){
                     enemy.takeDamage(attackDamage); 
                     hasDealtDamageThisAttack = true; 
                     System.out.println("Enemy hit! " + attackDamage + "damage"); 
                     break;
                 }
+            }
 
             SoundPlayer.playMusic(swordFile, false); 
             System.out.println("Music file exists: " + new File(swordFile).exists());
@@ -629,7 +632,7 @@ public abstract class Player extends GameObject {
     }
 
     public void addMoney(int cents) {
-        getInventory().addMoneyCents(cents); 
+        getInventory().addMoneyCents(coinValue); 
         System.out.println("Add $10"); 
     }
 
@@ -799,7 +802,9 @@ public abstract class Player extends GameObject {
         return healthBar;
     }
 
-    public abstract PlayerInventory getInventory();
+    public PlayerInventory getInventory() {
+        return this.getInventory(); 
+    }
   
 
     
