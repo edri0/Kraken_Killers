@@ -90,12 +90,12 @@ public class RangeEnemy extends Enemy {
             // dinosaur may end up going a bit past the start or end location depending on movement speed
             // this calculates the difference and pushes the enemy back a bit so it ends up right on the start or end location
             if (getX1() + getWidth() >= endBound) {
-                float difference = endBound - (getX2());
-                moveXHandleCollision(-difference);
+                //float difference = endBound - (getX2());
+                //moveXHandleCollision(-difference);
                 facingDirection = Direction.LEFT;
             } else if (getX1() <= startBound) {
-                float difference = startBound - getX1();
-                moveXHandleCollision(difference);
+                //float difference = startBound - getX1();
+                //moveXHandleCollision(difference);
                 facingDirection = Direction.RIGHT;
             }
         }

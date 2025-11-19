@@ -65,12 +65,12 @@ public ArrayList<Enemy> loadEnemies() {
     // --------------------------------------------------
     // Ranged Pirate
     // --------------------------------------------------
-    //RangeEnemy rangedPirate = new RangeEnemy(
-          //  getMapTile(23, 8).getLocation().addY(2),
-        //    getMapTile(22, 1).getLocation().addY(2),
-      //      Direction.RIGHT
-    //);
-   // enemies.add(rangedPirate);
+    RangeEnemy rangedPirate = new RangeEnemy(
+           getMapTile(23, 8).getLocation().addY(2),
+           getMapTile(22, 1).getLocation().addY(2),
+           Direction.RIGHT
+    );
+   enemies.add(rangedPirate);
 
     return enemies;
 }
