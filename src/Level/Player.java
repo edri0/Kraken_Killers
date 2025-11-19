@@ -104,9 +104,7 @@ public abstract class Player extends GameObject {
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
     public Object getHealthBar;
         
-            
-                
-        
+          
         public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
              super(spriteSheet, x, y, startingAnimationName);
              facingDirection = Direction.RIGHT;
@@ -139,7 +137,6 @@ public abstract class Player extends GameObject {
                         fileName += "Diamond.png";
                         break;
                     }
-                    //System.out.println("switching to armor sprite" + fileName);
                     BufferedImage image = ImageLoader.load(fileName);
                     SpriteSheet newSheet = new SpriteSheet(image,32,32);
                     
@@ -190,7 +187,6 @@ public abstract class Player extends GameObject {
             if(equippedArmor != null && !armorTimer.isActive()){
                 equippedArmor.unequip(this);
                 equippedArmor = null;
-                //System.out.println("armor expired");
             }
 
             if (playerState == PlayerState.ATTACKING) {
@@ -210,7 +206,7 @@ public abstract class Player extends GameObject {
 
         //attack logic
         else if (playerState == PlayerState.ATTACKING) {
-            // updateAttack();
+            
         }
 
     }
