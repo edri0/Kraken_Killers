@@ -460,4 +460,6 @@ public abstract class Map {
         return getTileByPosition(rightX, midY);
         
     }
+
+    protected abstract void mapEntity(Coin coin);
 }

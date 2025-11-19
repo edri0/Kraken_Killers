@@ -180,14 +180,16 @@ public class CommonTileset extends Tileset {
           mapTiles.add(MoonTile);
        
        
-                  // Sunset
-                  Frame SunsetFrame = new FrameBuilder(getSubImage(1, 6))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder SunsetTile = new MapTileBuilder(SunsetFrame);
-  
-          mapTiles.add(SunsetTile);
+// Sunset (solid ground)
+Frame SunsetFrame = new FrameBuilder(getSubImage(1, 6))
+        .withScale(tileScale)
+        .build();
+
+MapTileBuilder SunsetTile = new MapTileBuilder(SunsetFrame)
+        .withTileType(TileType.NOT_PASSABLE);   // <-- now solid
+
+mapTiles.add(SunsetTile);
+
           //End of Skies
 
                   //LightPoint
@@ -315,6 +317,7 @@ mapTiles.add(slopeLeftEdgeTile);
 // ROW 6
 // -------------------------
 
+// (6,4) RIGHT INNER SLOPE
 // (6,4) RIGHT INNER SLOPE
 Frame slopeRightInner = new FrameBuilder(getSubImage(6, 4))
         .withScale(tileScale)
@@ -522,7 +525,7 @@ Frame FIRE1Frame = new FrameBuilder(getSubImage(6, 2))  // column = 5, row = 3
    .build();
 
 MapTileBuilder FIRE1Tile = new MapTileBuilder(FIRE1Frame)
-   .withTileType(TileType.NOT_PASSABLE); 
+   .withTileType(TileType.PASSABLE); 
 
 mapTiles.add(FIRE1Tile);
 
@@ -532,7 +535,7 @@ Frame FIRE2Frame = new FrameBuilder(getSubImage(6, 3))  // column = 5, row = 3
    .build();
 
 MapTileBuilder FIRE2Tile = new MapTileBuilder(FIRE2Frame)
-   .withTileType(TileType.NOT_PASSABLE); 
+   .withTileType(TileType.PASSABLE); 
 
 mapTiles.add(FIRE2Tile);
 
