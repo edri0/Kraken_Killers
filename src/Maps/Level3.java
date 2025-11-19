@@ -22,7 +22,7 @@ public class Level3 extends Map{
 
     public Level3(){
         super("level3.txt", new CommonTileset());
-        this.playerStartPosition = getMapTile(2, 11).getLocation();
+        this.playerStartPosition = getMapTile(2, 5).getLocation();
         SoundPlayer.stopMusic(); 
     }
     
@@ -48,8 +48,8 @@ public class Level3 extends Map{
        //getMapTile(16, 10).getLocation().subtractY(25)
        enemies.add(swordDude);
 
-        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(45, 13).getLocation().addY(2), getMapTile(44, 12).getLocation().addY(2), Direction.RIGHT);
-        enemies.add(rangedPirate);
+       // RangeEnemy rangedPirate = new RangeEnemy(getMapTile(45, 13).getLocation().addY(2), getMapTile(44, 12).getLocation().addY(2), Direction.RIGHT);
+        //enemies.add(rangedPirate);
 
     Fitz fitzEnemy = new Fitz(getMapTile(35, 16).getLocation().addY(2), getMapTile(34, 16).getLocation().addY(2), Direction.RIGHT);
     enemies.add(fitzEnemy);
