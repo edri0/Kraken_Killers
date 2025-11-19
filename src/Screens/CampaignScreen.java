@@ -174,24 +174,36 @@ public class CampaignScreen extends Screen implements PlayerListener {
                     levelIndex++;
                     saveProgress();
                     
-                    // Load next level dynamically
-                    Map nextMap = loadMapForIndex(levelIndex);
-                    if (nextMap == null) {
-                        // No more levels — reset to menu or end of campaign
-                        screenCoordinator.setGameState(GameState.MENU);
-                        return;
-                    }
-                    this.map = nextMap;
+// Load next level dynamically
+Map nextMap = loadMapForIndex(levelIndex);
+if (nextMap == null) {
+    // No more levels — reset to menu or end of campaign
+    screenCoordinator.setGameState(GameState.MENU);
+    return;
+}
+this.map = nextMap;
 
-                    Point levelStartPos = map.getPlayerStartPosition();
-                    int selectedPlayerType = pickPlayerScreen.getSelectedPlayer(); 
-                   
-                    if(selectedPlayerType == 0){
-                        this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
-                    }
-                    else {
-                        this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
-                    }
+Point levelStartPos = map.getPlayerStartPosition();
+
+// -----------------------------
+// FIX: Prevent NullPointerException
+// -----------------------------
+int selectedPlayerType;
+if (pickPlayerScreen != null) {
+    selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
+} else {
+    selectedPlayerType = 0;   // DEFAULT PLAYER (Jack Sparrow)
+}
+
+// -----------------------------
+// Create player
+// -----------------------------
+if (selectedPlayerType == 0) {
+    this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
+} else {
+    this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
+}
+
                    
                     this.player.setMap(map); 
                     this.player.addListener(this); 
