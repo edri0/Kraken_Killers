@@ -54,42 +54,21 @@ public class Level2 extends Map {
                 Direction.RIGHT
         );
         enemies.add(swordDude);
+        SwordPirate swordDude2 = new SwordPirate(
+            getMapTile(5, 13).getLocation().subtractY(25),
+            getMapTile(5, 14).getLocation().subtractY(25),
+            Direction.RIGHT
+    );
+    enemies.add(swordDude2);
     
-    
-        // -------------------------
-        // SQUID 1
-        // -------------------------
-        Squidenemy squid1 = new Squidenemy(
-                getMapTile(34, 27).getLocation().addY(2),
-                getMapTile(36, 27).getLocation().addY(2),
-                Direction.RIGHT
-        );
-        enemies.add(squid1);
-    
-    
-        // -------------------------
-        // SQUID 2
-        // -------------------------
-        Squidenemy squid2 = new Squidenemy(
-                getMapTile(30, 27).getLocation().addY(2),
-                getMapTile(32, 27).getLocation().addY(2),
-                Direction.LEFT
-        );
-        enemies.add(squid2);
-    
-    
-        // -------------------------
-        // SQUID 3
-        // -------------------------
-        Squidenemy squid3 = new Squidenemy(
-                getMapTile(26, 27).getLocation().addY(2),
-                getMapTile(28, 27).getLocation().addY(2),
-                Direction.RIGHT
-        );
-        enemies.add(squid3);
 
-            RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 8).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+   
+
+            RangeEnemy rangedPirate = new RangeEnemy(getMapTile(23, 16).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
     enemies.add(rangedPirate);
+
+    RangeEnemy rangedPirate2 = new RangeEnemy(getMapTile(41, 18).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+    enemies.add(rangedPirate2);
     
         return enemies;
     }

@@ -74,18 +74,18 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 */
    
 
-EndLevelBox endLevelBox = new EndLevelBox(getMapTile(18, 12).getLocation());
+EndLevelBox endLevelBox = new EndLevelBox(getMapTile(39, 15).getLocation());
 enhancedMapTiles.add(endLevelBox);
 
 return enhancedMapTiles;
 } 
 
-//@Override
+@Override
 public ArrayList<NPC> loadNPCs() {
 ArrayList<NPC> npcs = new ArrayList<>();
 
-//Chest chest = new Chest(getMapTile(30, 7).getLocation().subtractY(13));
-//npcs.add(chest);
+Chest chest = new Chest(getMapTile(4, 15).getLocation().subtractY(13));
+npcs.add(chest);
 
 return npcs;
 

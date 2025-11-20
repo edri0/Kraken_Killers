@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import Enemies.DinosaurEnemy;
 import Enemies.RangeEnemy;
+import Enemies.Squidenemy;
+import Enemies.SwordPirate;
 import Engine.SoundPlayer;
 
 
@@ -30,35 +32,65 @@ public class Level5 extends Map{
 public ArrayList<Enemy> loadEnemies() {
     ArrayList<Enemy> enemies = new ArrayList<>();
 
-    // -------------------------
-    // RANGED PIRATE #1
-    // -------------------------
-    RangeEnemy rangedPirate1 = new RangeEnemy(
-            getMapTile(36, 15).getLocation().addY(2),
-            getMapTile(37, 15).getLocation().addY(2),
-            Direction.RIGHT
-    );
-    enemies.add(rangedPirate1);
-
-    // -------------------------
-    // RANGED PIRATE #2
-    // -------------------------
-    RangeEnemy rangedPirate2 = new RangeEnemy(
-            getMapTile(32, 15).getLocation().addY(2),
-            getMapTile(35, 15).getLocation().addY(2),
+        // -------------------------
+        // SQUID 1
+        // -------------------------
+        Squidenemy squid1 = new Squidenemy(
+                getMapTile(14, 18).getLocation().addY(2),
+                getMapTile(12, 18).getLocation().addY(2),
+                Direction.RIGHT
+        );
+        enemies.add(squid1);
+    
+    
+        // -------------------------
+        // SQUID 2
+        // -------------------------
+        Squidenemy squid2 = new Squidenemy(
+                getMapTile(39, 18).getLocation().addY(2),
+                getMapTile(37, 17).getLocation().addY(2),
+                Direction.LEFT
+        );
+        enemies.add(squid2);
+    
+    
+        // -------------------------
+        // SQUID 3
+        // -------------------------
+        Squidenemy squid3 = new Squidenemy(
+                getMapTile(47, 18).getLocation().addY(2),
+                getMapTile(49, 18).getLocation().addY(2),
+                Direction.RIGHT
+        );
+     // Sword Pirate
+     SwordPirate swordDude = new SwordPirate(
+             getMapTile(45, 10).getLocation().subtractY(25),
+             getMapTile(46, 10).getLocation().subtractY(25),
+             Direction.LEFT
+     );     enemies.add(swordDude);
+          // Sword Pirate
+          SwordPirate swordDude2 = new SwordPirate(
+            getMapTile(19, 10).getLocation().subtractY(25),
+            getMapTile(20, 10).getLocation().subtractY(25),
             Direction.LEFT
     );
-    enemies.add(rangedPirate2);
+    enemies.add(swordDude2);
 
-    // -------------------------
-    // RANGED PIRATE #3
-    // -------------------------
-    RangeEnemy rangedPirate3 = new RangeEnemy(
-            getMapTile(40, 15).getLocation().addY(2),
-            getMapTile(44, 15).getLocation().addY(2),
-            Direction.RIGHT
-    );
-    enemies.add(rangedPirate3);
+              // Sword Pirate
+              SwordPirate swordDude3 = new SwordPirate(
+                getMapTile(7, 12).getLocation().subtractY(25),
+                getMapTile(5, 12).getLocation().subtractY(25),
+                Direction.LEFT
+        );
+        enemies.add(swordDude3);
+
+                  // Sword Pirate
+                  SwordPirate swordDude4 = new SwordPirate(
+                    getMapTile(35, 12).getLocation().subtractY(25),
+                    getMapTile(23, 12).getLocation().subtractY(25),
+                    Direction.LEFT
+            );
+            enemies.add(swordDude4);
 
     return enemies;
 }
