@@ -223,6 +223,10 @@ public abstract class Player extends GameObject {
             if (playerState == PlayerState.ATTACKING) {
                 updateAttack(map.getActiveEnemies()); 
             }
+
+            // if (playerState == PlayerState.SHOOTING) {
+            //     updateShoot(map.getActiveEnemies()); 
+            // }
         }
 
         // if player has beaten level
@@ -237,11 +241,11 @@ public abstract class Player extends GameObject {
 
         //attack logic
         // else if (playerState == PlayerState.ATTACKING) {
-        //     // updateAttack();
+        //     updateAttack();
         // }
 
         // else if(playerState == playerState.SHOOTING) {
-        //     //updateShoot(); 
+        //     updateShoot(); 
         // }
 
     }
@@ -541,7 +545,29 @@ public abstract class Player extends GameObject {
             System.out.println("Music file exists: " + new File(swordFile).exists());
     }
     
-    
+    // public void updateShoot(ArrayList<Enemy> enemies){
+
+    //     if (playerState != PlayerState.SHOOTING){
+    //         return;
+    //     }
+
+    //     if (hasDealtDamageThisAttack){
+    //         return; 
+    //     }
+
+    //     if(getInventory().getEquippedWeapon() instanceof Weapon weapon) {
+    //         attackDamage = weapon.getDamage(); 
+    //     }
+
+    //         for(Enemy enemy : enemies){
+    //             if(intersects(enemy)){
+    //                 enemy.takeDamage(attackDamage); 
+    //                 hasDealtDamageThisAttack = true; 
+    //                 System.out.println("Enemy hit! " + attackDamage + "damage"); 
+    //                 break;
+    //             }
+    //         }
+    // }
 
 
     
@@ -574,7 +600,7 @@ public abstract class Player extends GameObject {
             Bullet bullet = new Bullet(new Point(bulletX, bulletY), movementSpeed, 60);
 
             // add fireball enemy to the map for it to spawn in the level
-            map.addEnemy(bullet);
+            map.addNPC(bullet);
  
     }
 
