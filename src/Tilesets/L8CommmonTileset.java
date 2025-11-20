@@ -283,14 +283,15 @@ public class L8CommmonTileset extends Tileset {
   
           mapTiles.add(M2Tile);
         
-                  //M3
-                  Frame M3Frame = new FrameBuilder(getSubImage(5, 5))
-                  .withScale(tileScale)
-                  .build();
-  
-          MapTileBuilder M3Tile = new MapTileBuilder(M3Frame);
-  
-          mapTiles.add(M3Tile);
+   // M3 (solid)
+   Frame M3Frame = new FrameBuilder(getSubImage(5, 5))
+        .withScale(tileScale)
+        .build();
+
+   MapTileBuilder M3Tile = new MapTileBuilder(M3Frame)
+        .withTileType(TileType.NOT_PASSABLE);   // <-- makes it solid
+
+   mapTiles.add(M3Tile);
 
                   //M4
                   Frame M4Frame = new FrameBuilder(getSubImage(5, 6))

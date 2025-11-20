@@ -49,8 +49,8 @@ public class Level2 extends Map {
         // Sword Pirate
         // -------------------------
         SwordPirate swordDude = new SwordPirate(
-                getMapTile(18, 15).getLocation().subtractY(25),
-                getMapTile(22, 15).getLocation().subtractY(25),
+                getMapTile(19, 16).getLocation().subtractY(25),
+                getMapTile(20, 16).getLocation().subtractY(25),
                 Direction.RIGHT
         );
         enemies.add(swordDude);
