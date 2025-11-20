@@ -18,6 +18,7 @@ import Inventory.Armor;
 import Inventory.Item;
 import Inventory.ItemType;
 import Inventory.PlayerInventory;
+import Inventory.Weapon;
 import Level.Player;
 
 public class ShopScreen extends Screen{
@@ -65,8 +66,9 @@ public class ShopScreen extends Screen{
             Sprite diamondArmorSprite = new Sprite(diamondImg);
             shopItems.add(new Armor("Diamond Armor", 10000, 30, diamondArmorSprite));
     
-            
-            //shopItems.add(new Item("One-Shot pistol", 1500, ItemType.WEAPON));
+            BufferedImage pistolImg = ImageLoader.load("Pistol.png");
+            Sprite pistolSprite = new Sprite(pistolImg);
+            shopItems.add(new Weapon("One-Shot pistol", 1500, 3));
         
         }
     
@@ -138,16 +140,34 @@ public class ShopScreen extends Screen{
                             Armor currentlyEquipped = inventory.getEquippedArmor();
                             
                             if(currentlyEquipped == armorItem){
-                                armorItem.unequip(player);
+                                armorItem.unequipArmor(player);
                                 inventory.setEquippedArmor(null);
 
                             } else {
                                 if(currentlyEquipped != null){
-                                    currentlyEquipped.unequip(player);
+                                    currentlyEquipped.unequipArmor(player);
                                 }
                                 armorItem.equip(player);
                                 //System.out.println("after equip player health = " + player.getCurrentHealth());
                                 inventory.setEquippedArmor(armorItem);
+                               
+                            }
+                        }
+
+                        if(selected instanceof Weapon weaponItem){
+                            Weapon currentlyEquipped = inventory.getEquippedWeapon();
+                            
+                            if(currentlyEquipped == weaponItem){
+                                weaponItem.unequipWeapon(player);
+                                inventory.setEquippedArmor(null);
+
+                            } else {
+                                if(currentlyEquipped != null){
+                                    currentlyEquipped.unequipWeapon(player);
+                                }
+                                weaponItem.equip(player);
+                                //System.out.println("after equip player health = " + player.getCurrentHealth());
+                                inventory.setEquippedWeapon(weaponItem);
                                
                             }
                         }

@@ -9,11 +9,13 @@ import Engine.Keyboard;
 import Engine.SoundPlayer;
 import Game.ArmorType;
 import Game.GameState;
+import Game.WeaponType;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
 import Inventory.PlayerInventory;
+import Inventory.Weapon;
 import UI.HealthBar;
 import Utils.AirGroundState;
 import Utils.Direction;
@@ -57,6 +59,7 @@ public abstract class Player extends GameObject {
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
     private Armor equippedArmor;
+    private Weapon equippedWeapon;
     private SpriteSheet playSpriteSheet;
     private HealthBar healthBar;
 
@@ -124,32 +127,48 @@ public abstract class Player extends GameObject {
 
             }
             
-            public void updatePlayerSprite(String playerName, ArmorType armorType){
+            public void updatePlayerArmorSprite(String playerName, ArmorType armorType){
                    
-                    String fileName = playerName;
-                    switch (armorType){
-                        case NONE:
-                        fileName += ".png";
-                        break;
-                        case BRONZE:
-                        fileName += "Bronze.png";
-                        break;
-                        case IRON:
-                        fileName += "Iron.png";
-                        break;
-                        case DIAMOND:
-                        fileName += "Diamond.png";
-                        break;
-                    }
-                    //System.out.println("switching to armor sprite" + fileName);
-                    BufferedImage image = ImageLoader.load(fileName);
-                    SpriteSheet newSheet = new SpriteSheet(image,32,32);
-                    
-                    reloadAnimations(newSheet);
-                   
-
+                String fileName = playerName;
+                switch (armorType){
+                    case NONE:
+                    fileName += ".png";
+                    break;
+                    case BRONZE:
+                    fileName += "Bronze.png";
+                    break;
+                    case IRON:
+                    fileName += "Iron.png";
+                    break;
+                    case DIAMOND:
+                    fileName += "Diamond.png";
+                    break;
                 }
-                
+                //System.out.println("switching to armor sprite" + fileName);
+                BufferedImage image = ImageLoader.load(fileName);
+                SpriteSheet newSheet = new SpriteSheet(image,32,32);
+                    
+                reloadAnimations(newSheet);
+            }
+
+        
+            public void updatePlayerWeaponSprite(String playerName, WeaponType weaponType){
+                   
+                String fileName = playerName;
+                switch (weaponType){
+                    case NONE:
+                    fileName += ".png";
+                    break;
+                    case PISTOL:
+                    fileName += "Pistol.png";
+                    break;
+                }
+                BufferedImage image = ImageLoader.load(fileName);
+                SpriteSheet newSheet = new SpriteSheet(image,32,32);
+                    
+                reloadAnimations(newSheet);
+            }
+
     
 
 
@@ -190,7 +209,7 @@ public abstract class Player extends GameObject {
 
             //check if armor timer is done
             if(equippedArmor != null && !armorTimer.isActive()){
-                equippedArmor.unequip(this);
+                equippedArmor.unequipArmor(this);
                 equippedArmor = null;
                 //System.out.println("armor expired");
             }
@@ -478,6 +497,10 @@ public abstract class Player extends GameObject {
             return; 
         }
 
+        if(getInventory().getEquippedWeapon() instanceof Weapon weapon) {
+            attackDamage = weapon.getDamage(); 
+        }
+
             for(Enemy enemy : enemies){
                 if(intersects(enemy)){
                     enemy.takeDamage(attackDamage); 
@@ -745,6 +768,26 @@ public abstract class Player extends GameObject {
     public ArmorTimer getArmorTimer(){
         return armorTimer;
     }
+
+    //Weapon Logic
+    public void setWeapon(Weapon weapon){
+        if (this.equippedWeapon== weapon) return;
+        
+        this.equippedWeapon = weapon;
+
+        
+    }
+    public void removeWeapon() {
+        if (equippedWeapon == null) return;
+
+        equippedWeapon = null;
+         
+        }
+    
+    public Armor getEquippedWeapon(){
+        return equippedWeapon;
+    }
+
     // Uncomment this to have game draw player's bounds to make it easier to visualize
 
     public void draw(GraphicsHandler graphicsHandler) {
