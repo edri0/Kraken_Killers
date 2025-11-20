@@ -26,7 +26,7 @@ public class Bullet extends Enemy {
 
         // how long the fireball will exist for before disappearing
         this.existenceFrames = existenceFrames;
-        this.contactDamage = 3;
+        this.contactDamage = 30;
 
         initialize();
     }
