@@ -9,14 +9,18 @@ import Engine.Keyboard;
 import Engine.SoundPlayer;
 import Game.ArmorType;
 import Game.GameState;
+import Game.WeaponType;
 import GameObject.GameObject;
 import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import Inventory.Armor;
 import Inventory.PlayerInventory;
+import Inventory.Weapon;
 import UI.HealthBar;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
+
 import java.awt.Color;
 import Game.ArmorTimer;
 import NPCs.Chest;
@@ -25,6 +29,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
+import Enemies.Bullet;
+import Enemies.Fireball;
 import Level.Map; 
 
 public abstract class Player extends GameObject {
@@ -57,6 +63,7 @@ public abstract class Player extends GameObject {
     protected AirGroundState previousAirGroundState;
     protected LevelState levelState;
     private Armor equippedArmor;
+    private Weapon equippedWeapon;
     private SpriteSheet playSpriteSheet;
     private HealthBar healthBar;
 
@@ -64,7 +71,7 @@ public abstract class Player extends GameObject {
     private int preArmorMaxHealth = -1;
 
     private ArmorType armorType = ArmorType.NONE;
-    private GameState avatarType = GameState.JACK;
+    private GameState avatarType;
     protected boolean isTouchingLeftWall = false;
     protected boolean isTouchingRightWall = false; 
 
@@ -86,6 +93,7 @@ public abstract class Player extends GameObject {
     protected Key CROUCH_KEY = Key.DOWN;
     protected Key CLIMB_KEY = Key.C; 
     protected Key ATTACK_KEY = Key.A; 
+    protected Key SHOOT_KEY = Key.D; 
 
     //health bar
     private int currentHealth = 100;
@@ -106,9 +114,13 @@ public abstract class Player extends GameObject {
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
     public Object getHealthBar;
         
-          
-        public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
+            
+                
+        
+        public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName, GameState avatarType) {
              super(spriteSheet, x, y, startingAnimationName);
+             this.avatarType = avatarType; 
+
              facingDirection = Direction.RIGHT;
              airGroundState = AirGroundState.AIR;
              previousAirGroundState = airGroundState;
@@ -122,31 +134,48 @@ public abstract class Player extends GameObject {
 
             }
             
-            public void updatePlayerSprite(String playerName, ArmorType armorType){
+            public void updatePlayerArmorSprite(String playerName, ArmorType armorType){
                    
-                    String fileName = playerName;
-                    switch (armorType){
-                        case NONE:
-                        fileName += ".png";
-                        break;
-                        case BRONZE:
-                        fileName += "Bronze.png";
-                        break;
-                        case IRON:
-                        fileName += "Iron.png";
-                        break;
-                        case DIAMOND:
-                        fileName += "Diamond.png";
-                        break;
-                    }
-                    BufferedImage image = ImageLoader.load(fileName);
-                    SpriteSheet newSheet = new SpriteSheet(image,32,32);
-                    
-                    reloadAnimations(newSheet);
-                   
-
+                String fileName = playerName;
+                switch (armorType){
+                    case NONE:
+                    fileName += ".png";
+                    break;
+                    case BRONZE:
+                    fileName += "Bronze.png";
+                    break;
+                    case IRON:
+                    fileName += "Iron.png";
+                    break;
+                    case DIAMOND:
+                    fileName += "Diamond.png";
+                    break;
                 }
-                
+                //System.out.println("switching to armor sprite" + fileName);
+                BufferedImage image = ImageLoader.load(fileName);
+                SpriteSheet newSheet = new SpriteSheet(image,32,32);
+                    
+                reloadAnimations(newSheet);
+            }
+
+        
+            public void updatePlayerWeaponSprite(String playerName, WeaponType weaponType){
+                   
+                String fileName = playerName;
+                switch (weaponType){
+                    case NONE:
+                    fileName += ".png";
+                    break;
+                    case PISTOL:
+                    fileName += "Pistol.png";
+                    break;
+                }
+                BufferedImage image = ImageLoader.load(fileName);
+                SpriteSheet newSheet = new SpriteSheet(image,32,32);
+                    
+                reloadAnimations(newSheet);
+            }
+
     
 
 
@@ -187,7 +216,7 @@ public abstract class Player extends GameObject {
 
             //check if armor timer is done
             if(equippedArmor != null && !armorTimer.isActive()){
-                equippedArmor.unequip(this);
+                equippedArmor.unequipArmor(this);
                 equippedArmor = null;
             }
 
@@ -207,9 +236,13 @@ public abstract class Player extends GameObject {
         }
 
         //attack logic
-        else if (playerState == PlayerState.ATTACKING) {
-            
-        }
+        // else if (playerState == PlayerState.ATTACKING) {
+        //     // updateAttack();
+        // }
+
+        // else if(playerState == playerState.SHOOTING) {
+        //     //updateShoot(); 
+        // }
 
     }
     public void reloadAnimations(SpriteSheet newSheet){
@@ -251,6 +284,9 @@ public abstract class Player extends GameObject {
             case ATTACKING:
                 playerAttacking();
                 break;
+            case SHOOTING:
+                playerShooting();
+                break;
         }
     }
 
@@ -283,6 +319,13 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(ATTACK_KEY); 
             playerState = PlayerState.ATTACKING; 
             hasDealtDamageThisAttack = false;
+            return; 
+        }
+
+        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY)){
+            keyLocker.lockKey(SHOOT_KEY); 
+            playerState = PlayerState.SHOOTING; 
+            playerShoot();
             return; 
         }
     }
@@ -354,6 +397,13 @@ public abstract class Player extends GameObject {
             hasDealtDamageThisAttack = false;
             SoundPlayer.playMusic("Resources/swords.wav", false); 
             //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            return; 
+        }
+
+        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY)){
+            keyLocker.lockKey(SHOOT_KEY); 
+            playerState = PlayerState.SHOOTING; 
+            playerShoot();
             return; 
         }
 
@@ -474,6 +524,10 @@ public abstract class Player extends GameObject {
             return; 
         }
 
+        if(getInventory().getEquippedWeapon() instanceof Weapon weapon) {
+            attackDamage = weapon.getDamage(); 
+        }
+
             for(Enemy enemy : enemies){
                 if(intersects(enemy)){
                     enemy.takeDamage(attackDamage); 
@@ -485,7 +539,7 @@ public abstract class Player extends GameObject {
 
             SoundPlayer.playMusic(swordFile, false); 
             System.out.println("Music file exists: " + new File(swordFile).exists());
-        }
+    }
     
     
 
@@ -502,8 +556,34 @@ public abstract class Player extends GameObject {
         }
     }
 
-   
-   
+    protected void playerShoot() {
+        int bulletX;
+            float movementSpeed;
+            if (facingDirection == Direction.RIGHT) {
+                bulletX = Math.round(getX()) + getWidth();
+                movementSpeed = 1.5f;
+            } else {
+                bulletX = Math.round(getX() - 21);
+                movementSpeed = -1.5f;
+            }
+
+            // define where fireball will spawn on the map (y location) relative to dinosaur enemy's location
+            int bulletY = Math.round(getY()) + 4;
+
+            // create Fireball enemy
+            Bullet bullet = new Bullet(new Point(bulletX, bulletY), movementSpeed, 60);
+
+            // add fireball enemy to the map for it to spawn in the level
+            map.addEnemy(bullet);
+ 
+    }
+
+    protected void playerShooting() {
+        if(Keyboard.isKeyUp(SHOOT_KEY)){
+            keyLocker.unlockKey(SHOOT_KEY); 
+            playerState = PlayerState.STANDING; 
+        }
+    }
 
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
     protected void increaseMomentum() {
@@ -553,6 +633,11 @@ public abstract class Player extends GameObject {
         else if (playerState == PlayerState.ATTACKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
+        }
+
+        else if (playerState == PlayerState.SHOOTING) {
+            // sets animation to a WALK animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "SHOOT_RIGHT" : "SHOOT_LEFT";
         }
     }
 
@@ -741,6 +826,26 @@ public abstract class Player extends GameObject {
     public ArmorTimer getArmorTimer(){
         return armorTimer;
     }
+
+    //Weapon Logic
+    public void setWeapon(Weapon weapon){
+        if (this.equippedWeapon== weapon) return;
+        
+        this.equippedWeapon = weapon;
+
+        
+    }
+    public void removeWeapon() {
+        if (equippedWeapon == null) return;
+
+        equippedWeapon = null;
+         
+        }
+    
+    public Weapon getEquippedWeapon(){
+        return equippedWeapon;
+    }
+
     // Uncomment this to have game draw player's bounds to make it easier to visualize
 
     public void draw(GraphicsHandler graphicsHandler) {
@@ -786,10 +891,14 @@ public abstract class Player extends GameObject {
         }
     }
 
+
     public String getAvatarTypeName() {
         if( avatarType == GameState.JACK){
             return "JackSparrow";
-        }else{
+        }else if (avatarType == GameState.WILL) {
+            return "WillTurner";
+        }
+        else {
             return "WillTurner";
         }
     }

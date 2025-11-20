@@ -54,15 +54,16 @@ public class Armor extends Item{
 
             System.out.println("applying new armor sprite: " + armorType);
         
-            player.updatePlayerSprite(player.getAvatarTypeName(), armorType);
+            player.updatePlayerArmorSprite(player.getAvatarTypeName(), armorType);
     }
-    public void unequip(Player player){
+    public void unequipArmor(Player player){
         if (!equipped) return;
-            equipped = false;
-            player.removeArmor();
-            player.updatePlayerSprite(player.getAvatarTypeName(), ArmorType.NONE);
-        }
-    
+        equipped = false;
+        player.removeArmor();
+        player.updatePlayerArmorSprite(player.getAvatarTypeName(), ArmorType.NONE);
+    }
+
+
     public void forceEquip(Player player){
         equipped = true;
         player.setArmor(this);
@@ -73,7 +74,7 @@ public class Armor extends Item{
         else if (name.toLowerCase().contains("iron")) armorType = ArmorType.IRON;
         else if (name.toLowerCase().contains("diamond")) armorType = ArmorType.DIAMOND;
         else armorType = ArmorType.NONE;
-        player.updatePlayerSprite(avatarName, armorType);
+        player.updatePlayerArmorSprite(avatarName, armorType);
     }
    
 }

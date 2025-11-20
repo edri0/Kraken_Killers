@@ -8,7 +8,7 @@ public class PlayerInventory {
 
     protected int moneyCents = 3000;
     private final List<Item> owned = new ArrayList<>();
-    private Item equippedWeapon;
+    private Weapon equippedWeapon;
     private Armor equippedArmor;
 
     public int getMoneyCents() { return moneyCents; }
@@ -16,15 +16,17 @@ public class PlayerInventory {
     public static String fmt(int cents) { return String.format("$%.2f", cents / 100.0); }
     public List<Item> getOwned() { return owned; }
 
-    public Item getEquippedWeapon() { return equippedWeapon; }
     public void equip(Item item) {
         if (!owned.contains(item)) return;
-        if (item.type == ItemType.WEAPON) equippedWeapon = item;
+        if (item.type == ItemType.WEAPON) equippedWeapon = (Weapon)item;
         if (item.type == ItemType.ARMOR) equippedArmor = (Armor) item;
     }
 
     public Armor getEquippedArmor() { return equippedArmor; }
     public void setEquippedArmor(Armor armorItem) { this.equippedArmor = armorItem; }
+
+    public Weapon getEquippedWeapon() { return equippedWeapon; }
+    public void setEquippedWeapon(Weapon weaponItem) { this.equippedWeapon = weaponItem; }
 
     public void addArmor(Armor armor) {
         if (!owned.contains(armor)) owned.add(armor);
@@ -39,7 +41,7 @@ public class PlayerInventory {
         if (moneyCents >= item.costCents) {
             moneyCents -= item.costCents;
             owned.add(item);
-            if (item.type == ItemType.WEAPON && equippedWeapon == null) equippedWeapon = item;
+            // if (item.type == ItemType.WEAPON && equippedWeapon == null) equippedWeapon = item;
             return true;
         }
         return false;

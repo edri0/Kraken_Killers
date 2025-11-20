@@ -314,6 +314,10 @@ public abstract class Map {
         this.enemies.add(enemy);
     }
 
+    public void addPlayer(Player player) {
+        player.setMap(this);
+    }
+
     // add an enhanced map tile to the map's list of enhanced map tiles
     public void addEnhancedMapTile(EnhancedMapTile enhancedMapTile) {
         enhancedMapTile.setMap(this);

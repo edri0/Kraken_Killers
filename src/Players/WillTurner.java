@@ -3,6 +3,7 @@ package Players;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Game.GameState;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
@@ -16,7 +17,7 @@ public class WillTurner extends Player {
     private PlayerInventory inventory = new PlayerInventory();
 
     public WillTurner(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("WillTurnerSpriteSheet2.png"), 32, 32), x, y, "STAND_RIGHT");
+        super(new SpriteSheet(ImageLoader.load("WillTurner.png"), 32, 32), x, y, "STAND_RIGHT", GameState.WILL);
         gravity = .5f;
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
@@ -148,6 +149,21 @@ public class WillTurner extends Player {
 
             put("ATTACK_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(6, 1))
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                           .withBounds(14,22, 8, 9)
+                            .build()
+            });
+
+            put("SHOOT_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 3))
+                            .withScale(3)
+                        .withBounds(14, 22, 8, 9)
+                            .build()
+            });
+
+            put("SHOOT_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 3))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                            .withBounds(14,22, 8, 9)
