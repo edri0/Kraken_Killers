@@ -39,74 +39,74 @@ public class Level4 extends Map{
 //     return enemies;
 // }
 
-@Override
-public ArrayList<Enemy> loadEnemies() {
-    ArrayList<Enemy> enemies = new ArrayList<>();
+// @Override
+// public ArrayList<Enemy> loadEnemies() {
+//     ArrayList<Enemy> enemies = new ArrayList<>();
 
-    // ---------------------------
-    // Sword Pirate
-    // ---------------------------
-    SwordPirate swordDude = new SwordPirate(
-            getMapTile(10, 11).getLocation().subtractY(25),
-            getMapTile(18, 10).getLocation().subtractY(25),
-            Direction.LEFT
-    );
-    enemies.add(swordDude);
-
-
-    // ---------------------------
-    // Ranged Pirate
-    // ---------------------------
-    RangeEnemy rangedPirate = new RangeEnemy(
-            getMapTile(19, 1).getLocation().addY(2),
-            getMapTile(22, 1).getLocation().addY(2),
-            Direction.RIGHT
-    );
-    enemies.add(rangedPirate);
+//     // ---------------------------
+//     // Sword Pirate
+//     // ---------------------------
+//     SwordPirate swordDude = new SwordPirate(
+//             getMapTile(10, 11).getLocation().subtractY(25),
+//             getMapTile(18, 10).getLocation().subtractY(25),
+//             Direction.LEFT
+//     );
+//     enemies.add(swordDude);
 
 
-    // ---------------------------
-    // KRABS 1
-    // ---------------------------
-    Krabs krabs1 = new Krabs(
-            getMapTile(13, 6).getLocation().subtractY(25),
-            Direction.RIGHT
-    );
-    enemies.add(krabs1);
+//     // ---------------------------
+//     // Ranged Pirate
+//     // ---------------------------
+//     RangeEnemy rangedPirate = new RangeEnemy(
+//             getMapTile(19, 1).getLocation().addY(2),
+//             getMapTile(22, 1).getLocation().addY(2),
+//             Direction.RIGHT
+//     );
+//     enemies.add(rangedPirate);
 
 
-    // ---------------------------
-    // KRABS 2
-    // ---------------------------
-    Krabs krabs2 = new Krabs(
-            getMapTile(27, 6).getLocation().subtractY(25),
-            Direction.LEFT
-    );
-    enemies.add(krabs2);
+//     // ---------------------------
+//     // KRABS 1
+//     // ---------------------------
+//     Krabs krabs1 = new Krabs(
+//             getMapTile(13, 6).getLocation().subtractY(25),
+//             Direction.RIGHT
+//     );
+//     enemies.add(krabs1);
 
 
-    // ---------------------------
-    // KRABS 3
-    // ---------------------------
-    Krabs krabs3 = new Krabs(
-            getMapTile(21, 6).getLocation().subtractY(25),
-            Direction.RIGHT
-    );
-    enemies.add(krabs3);
+//     // ---------------------------
+//     // KRABS 2
+//     // ---------------------------
+//     Krabs krabs2 = new Krabs(
+//             getMapTile(27, 6).getLocation().subtractY(25),
+//             Direction.LEFT
+//     );
+//     enemies.add(krabs2);
 
 
-    // ---------------------------
-    // KRABS 4
-    // ---------------------------
-    Krabs krabs4 = new Krabs(
-            getMapTile(8, 6).getLocation().subtractY(25),
-            Direction.LEFT
-    );
-    enemies.add(krabs4);
+//     // ---------------------------
+//     // KRABS 3
+//     // ---------------------------
+//     Krabs krabs3 = new Krabs(
+//             getMapTile(21, 6).getLocation().subtractY(25),
+//             Direction.RIGHT
+//     );
+//     enemies.add(krabs3);
 
 
-    return enemies;
-}
+//     // ---------------------------
+//     // KRABS 4
+//     // ---------------------------
+//     Krabs krabs4 = new Krabs(
+//             getMapTile(8, 6).getLocation().subtractY(25),
+//             Direction.LEFT
+//     );
+//     enemies.add(krabs4);
+
+
+//     return enemies;
+// }
 
 @Override
 public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {

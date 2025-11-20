@@ -81,7 +81,7 @@ public class Enemy extends MapEntity {
 
     // A subclass can override this method to specify what it does when it touches the player
     public void touchedPlayer(Player player) {
-        System.out.println("Touched PLayer");
+        System.out.println("Touched Player");
         player.hurtPlayer(this);
     }
 

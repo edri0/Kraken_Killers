@@ -84,7 +84,7 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 
    
 
-EndLevelBox endLevelBox = new EndLevelBox(getMapTile(39, 10).getLocation());
+EndLevelBox endLevelBox = new EndLevelBox(getMapTile(59, 5).getLocation());
 enhancedMapTiles.add(endLevelBox);
 
 return enhancedMapTiles;

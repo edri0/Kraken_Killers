@@ -33,41 +33,38 @@ public ArrayList<Enemy> loadEnemies() {
     // Sword Pirate 1
     // --------------------------------------------------
    SwordPirate swordPirate1 = new SwordPirate(
-           getMapTile(7, 10).getLocation().subtractY(25),
-           getMapTile(13, 10).getLocation().subtractY(25),
+           getMapTile(9, 10).getLocation().subtractY(25),
+           getMapTile(9, 10).getLocation().subtractY(25),
            Direction.LEFT
    );
    enemies.add(swordPirate1);
 
 
-    // --------------------------------------------------
-    // Sword Pirate 2
-    // --------------------------------------------------
-//     SwordPirate swordPirate2 = new SwordPirate(
-//            getMapTile(20, 12).getLocation().subtractY(25),
-//            getMapTile(26, 12).getLocation().subtractY(25),
-//            Direction.RIGHT
-//    );
-//    enemies.add(swordPirate2);
+    SwordPirate swordPirate2 = new SwordPirate(
+           getMapTile(13, 6).getLocation().subtractY(25),
+           getMapTile(13, 6).getLocation().subtractY(25),
+           Direction.RIGHT
+   );
+   enemies.add(swordPirate2);
 
 
     // --------------------------------------------------
     // Sword Pirate 3
     // --------------------------------------------------
-   // SwordPirate swordPirate3 = new SwordPirate(
-    //        getMapTile(30, 9).getLocation().subtractY(25),
-    ///        getMapTile(35, 9).getLocation().subtractY(25),
-    //        Direction.LEFT
-   // );
-   // enemies.add(swordPirate3);
+   SwordPirate swordPirate3 = new SwordPirate(
+           getMapTile(19, 11).getLocation().subtractY(25),
+           getMapTile(19, 11).getLocation().subtractY(25),
+           Direction.LEFT
+   );
+   enemies.add(swordPirate3);
 
 
     // --------------------------------------------------
     // Ranged Pirate
     // --------------------------------------------------
     RangeEnemy rangedPirate = new RangeEnemy(
-           getMapTile(23, 8).getLocation().addY(2),
-           getMapTile(22, 1).getLocation().addY(2),
+           getMapTile(29, 11).getLocation().addY(2),
+           getMapTile(30, 11).getLocation().addY(2),
            Direction.RIGHT
     );
    enemies.add(rangedPirate);
@@ -80,16 +77,6 @@ public ArrayList<Enemy> loadEnemies() {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        // HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
-        //         ImageLoader.load("GreenPlatform.png"),
-        //         getMapTile(24, 6).getLocation(),
-        //         getMapTile(27, 6).getLocation(),
-        //         TileType.JUMP_THROUGH_PLATFORM,
-        //         3,
-        //         new Rectangle(0, 6,16,4),
-        //         Direction.RIGHT
-        // );
-        // enhancedMapTiles.add(hmp);
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(33, 8).getLocation());
         enhancedMapTiles.add(endLevelBox);
@@ -107,4 +94,7 @@ public ArrayList<Enemy> loadEnemies() {
         return npcs;
         
     }
+
+
+
 }

@@ -1,4 +1,4 @@
-/*package Screens;
+package Screens;
 
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -33,7 +33,7 @@ public class EndLevelScreen extends Screen {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        /*graphicsHandler.drawFilledRectangle(
+        graphicsHandler.drawFilledRectangle(
             0, 0,
             ScreenManager.getScreenWidth(),
             ScreenManager.getScreenHeight(),
@@ -50,4 +50,3 @@ public class EndLevelScreen extends Screen {
         return hasInitialized;
     }
 }
-*/
