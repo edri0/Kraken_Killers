@@ -22,6 +22,7 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
+import Maps.TitleScreenMap;
 import Players.JackSparrow;
 import Players.WillTurner;
 import Utils.Point;
@@ -34,6 +35,7 @@ import Maps.Level5;
 import Maps.Level6;
 import Maps.Level7;
 import Maps.FinalLevel;
+
 
 
 
@@ -345,10 +347,11 @@ public void onLevelCompleted() {
             case 5: return new Level6();
             case 6: return new Level7();
             case 7: return new FinalLevel();
-            default: return null; // no more levels yet
-        }
-    }
-    private void reapplyArmor(){
+            default: return new TitleScreenMap(); // no more levels yet
+                    }
+                }
+            
+                private void reapplyArmor(){
         Armor armor = playerInventory.getEquippedArmor();
         if (armor != null){
             armor.equip(this.player);

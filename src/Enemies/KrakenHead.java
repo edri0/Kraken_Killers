@@ -1,0 +1,148 @@
+package Enemies;
+
+import Builders.FrameBuilder;
+import Engine.ImageLoader;
+import GameObject.Frame;
+import GameObject.ImageEffect;
+import GameObject.SpriteSheet;
+import Level.Enemy;
+import Level.Player;
+import Utils.AirGroundState;
+import Utils.Direction;
+import Utils.Point;
+
+import java.util.HashMap;
+
+public class KrakenHead extends Enemy {
+
+    protected Point startLocation;
+    protected Point endLocation;
+
+    protected float movementSpeed = 1f;
+    protected Direction facingDirection;
+    protected Direction startFacingDirection;
+
+    protected AirGroundState airGroundState;
+
+    protected Leg1State legState;
+    protected Leg1State previousLegState;
+
+    protected int shootWaitTimer;
+    protected int shootTimer;
+
+    // Hurt flash timer
+    private int hurtTimer = 0;
+
+    public KrakenHead(Point startLocation, Point endLocation, Direction facingDirection) {
+        super(startLocation.x, startLocation.y,
+        new SpriteSheet(ImageLoader.load("KrakenHead.png"), 31, 31), "WALK_RIGHT");
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
+        this.startFacingDirection = facingDirection;
+        this.contactDamage = 0;
+        initialize();
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        legState = Leg1State.STAND;
+        previousLegState = legState;
+        facingDirection = startFacingDirection;
+
+        currentAnimationName = (facingDirection == Direction.RIGHT) ? "WALK_RIGHT" : "WALK_LEFT";
+
+        airGroundState = AirGroundState.GROUND;
+
+        shootWaitTimer = 65;
+    }
+
+    @Override
+    public void update(Player player) {
+
+        // ------------------------------
+        // HURT OVERRIDE
+        // ------------------------------
+        if (hurtTimer > 0) {
+            hurtTimer--;
+            currentAnimationName = (facingDirection == Direction.RIGHT) ? "HURT_RIGHT" : "HURT_LEFT";
+            super.update(player);
+            return; // skip movement/shooting while hurt
+        }
+
+        float startBound = startLocation.x;
+        float endBound = endLocation.x;
+
+        // // shooting logic
+        // if (shootWaitTimer == 0 && legState != Leg1State.ATTACKING) {
+        //     legState = Leg1State.ATTACKING;
+        // } else {
+        //     shootWaitTimer--;
+        // }
+
+        // movement (stand/walk)
+        // if (legState == Leg1State.STAND) {
+
+        //     if (facingDirection == Direction.RIGHT) {
+        //         currentAnimationName = "WALK_RIGHT";
+        //         moveXHandleCollision(movementSpeed);
+        //     } else {
+        //         currentAnimationName = "WALK_LEFT";
+        //         moveXHandleCollision(-movementSpeed);
+        //     }
+
+        //     // turn around at edges
+        //     if (getX1() + getWidth() >= endBound) {
+        //         facingDirection = Direction.LEFT;
+        //     } else if (getX1() <= startBound) {
+        //         facingDirection = Direction.RIGHT;
+        //     }
+        // }
+
+        // // start shooting animation
+        // if (legState == Leg1State.ATTACKING) {
+        //     if (previousLegState == Leg1State.STAND) {
+        //         shootTimer = 65;
+        //         currentAnimationName = (facingDirection == Direction.RIGHT) ? "SHOOT_RIGHT" : "SHOOT_LEFT";
+        //     } else if (shootTimer == 0) {
+        //         legState = Leg1State.SHOOT;
+        //     } else {
+        //         shootTimer--;
+        //     }
+        // }
+
+        // // end shooting
+        // if (legState == Leg1State.SHOOT) {
+        //     legState = Leg1State.STAND;
+        //     shootWaitTimer = 130;
+        // }
+
+        super.update(player);
+        previousLegState = legState;
+    }
+
+
+
+    @Override
+    public HashMap<String, Frame[]> loadAnimations(SpriteSheet sheet) {
+        return new HashMap<String, Frame[]>() {{
+
+            put("WALK_LEFT", new Frame[]{
+                    new FrameBuilder(sheet.getSprite(0, 0), 14)
+                            .withScale(3)
+                            .withBounds(4, 2, 31, 31)
+                            .build()
+            });
+
+            put("WALK_RIGHT", new Frame[]{
+                    new FrameBuilder(sheet.getSprite(0, 0), 14)
+                            .withScale(3)
+                            .withBounds(4, 2, 31, 31)
+                            .build()
+            });
+
+        }};
+    }
+
+    public enum Leg1State { SHOOT_WAIT, SHOOT, STAND, ATTACKING }
+}

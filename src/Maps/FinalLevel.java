@@ -6,8 +6,17 @@ import EnhancedMapTiles.EndLevelBox;
 import Level.*;
 import NPCs.Chest;
 import Tilesets.L8CommmonTileset;
+import Utils.Direction;
+
 //import Utils.Direction;
 import java.util.ArrayList;
+
+import Enemies.KrakenHead;
+import Enemies.Leg1;
+import Enemies.Leg2;
+import Enemies.Leg3;
+import Enemies.Leg4;
+
 //import Engine.ImageLoader;
 import Engine.SoundPlayer;
 //import GameObject.Rectangle;
@@ -17,7 +26,7 @@ public class FinalLevel extends Map{
 
     public FinalLevel(){
         super("FinalLevel.txt", new L8CommmonTileset());
-        this.playerStartPosition = getMapTile(4, 9).getLocation();
+        this.playerStartPosition = getMapTile(9, 10).getLocation();
         SoundPlayer.stopMusic(); 
     
     }
@@ -32,6 +41,17 @@ public ArrayList<Enemy> loadEnemies() {
 
    // DinosaurEnemy dinosaurEnemy = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
    // enemies.add(dinosaurEnemy);
+
+   Leg1 leg1 = new Leg1(getMapTile(12, 12).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+   enemies.add(leg1);
+   Leg2 leg2 = new Leg2(getMapTile(15, 12).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
+   enemies.add(leg2);
+   Leg3 leg3 = new Leg3(getMapTile(23, 12).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.LEFT);
+   enemies.add(leg3);
+   Leg4 leg4 = new Leg4(getMapTile(20, 12).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.LEFT);
+   enemies.add(leg4);
+   KrakenHead krakenHead = new KrakenHead(getMapTile(31, 14).getLocation().addY(2), getMapTile(31, 15).getLocation().addY(2), Direction.LEFT);
+   enemies.add(krakenHead);
 
     return enemies;
 }
@@ -54,7 +74,7 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
 */
    
 
-EndLevelBox endLevelBox = new EndLevelBox(getMapTile(36, 7).getLocation());
+EndLevelBox endLevelBox = new EndLevelBox(getMapTile(18, 12).getLocation());
 enhancedMapTiles.add(endLevelBox);
 
 return enhancedMapTiles;

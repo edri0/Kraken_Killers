@@ -218,7 +218,6 @@ public abstract class Player extends GameObject {
             if(equippedArmor != null && !armorTimer.isActive()){
                 equippedArmor.unequipArmor(this);
                 equippedArmor = null;
-                //System.out.println("armor expired");
             }
 
             if (playerState == PlayerState.ATTACKING) {
