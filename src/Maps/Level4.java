@@ -83,8 +83,8 @@ public ArrayList<Enemy> loadEnemies() {
     // enemies.add(krabs3);
 
 
-      Fitz fitzEnemy = new Fitz(getMapTile(10, 7).getLocation().addY(2), getMapTile(11, 7).getLocation().addY(2), Direction.RIGHT);
-      enemies.add(fitzEnemy);
+    //   Fitz fitzEnemy = new Fitz(getMapTile(10, 7).getLocation().addY(2), getMapTile(11, 7).getLocation().addY(2), Direction.RIGHT);
+    //   enemies.add(fitzEnemy);
 
       Fitz fitzEnemy2 = new Fitz(getMapTile(14, 4).getLocation().addY(2), getMapTile(14, 6).getLocation().addY(2), Direction.RIGHT);
       enemies.add(fitzEnemy2);
