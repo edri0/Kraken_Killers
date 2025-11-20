@@ -73,14 +73,14 @@ public ArrayList<Enemy> loadEnemies() {
     enemies.add(krabs2);
 
 
-    // ---------------------------
-    // KRABS 3
-    // ---------------------------
-    Krabs krabs3 = new Krabs(
-            getMapTile(3, 10).getLocation().subtractY(25),
-            Direction.RIGHT
-    );
-    enemies.add(krabs3);
+    // // ---------------------------
+    // // KRABS 3
+    // // ---------------------------
+    // Krabs krabs3 = new Krabs(
+    //         getMapTile(3, 10).getLocation().subtractY(25),
+    //         Direction.RIGHT
+    // );
+    // enemies.add(krabs3);
 
 
       Fitz fitzEnemy = new Fitz(getMapTile(10, 7).getLocation().addY(2), getMapTile(11, 7).getLocation().addY(2), Direction.RIGHT);
