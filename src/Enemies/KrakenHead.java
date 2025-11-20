@@ -39,7 +39,7 @@ public class KrakenHead extends Enemy {
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
-        this.contactDamage = 0;
+        this.contactDamage = 40;
         initialize();
     }
 

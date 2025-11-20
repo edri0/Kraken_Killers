@@ -33,17 +33,19 @@ public ArrayList<Enemy> loadEnemies() {
     // --- Sword Pirate ---
     // Patrols from (16,10) → (18,10)
     SwordPirate swordPirate = new SwordPirate(
-            getMapTile(16, 10).getLocation().subtractY(25),
-            getMapTile(18, 10).getLocation().subtractY(25),
+            getMapTile(9, 13).getLocation().subtractY(25),
+            getMapTile(8, 12).getLocation().subtractY(25),
             Direction.LEFT
     );
     enemies.add(swordPirate);
 
+    
+
     // --- Ranged Pirate ---
     // Patrols from (19,1) → (22,1)
     RangeEnemy rangedPirate = new RangeEnemy(
-            getMapTile(19, 1).getLocation().addY(2),
-            getMapTile(22, 1).getLocation().addY(2),
+            getMapTile(33, 17).getLocation().addY(2),
+            getMapTile(34, 17).getLocation().addY(2),
             Direction.RIGHT
     );
     enemies.add(rangedPirate);
@@ -51,8 +53,8 @@ public ArrayList<Enemy> loadEnemies() {
     // --- Fitz Enemy ---
     // Patrols from (30,5) → (35,5)
     Fitz fitz = new Fitz(
-            getMapTile(30, 5).getLocation().addY(2),
-            getMapTile(35, 5).getLocation().addY(2),
+            getMapTile(37, 14).getLocation().addY(2),
+            getMapTile(35, 14).getLocation().addY(2),
             Direction.RIGHT
     );
     enemies.add(fitz);
@@ -79,7 +81,7 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
  */
    
 
-EndLevelBox endLevelBox = new EndLevelBox(getMapTile(34, 14).getLocation());
+EndLevelBox endLevelBox = new EndLevelBox(getMapTile(39, 14).getLocation());
 enhancedMapTiles.add(endLevelBox);
 
 return enhancedMapTiles;

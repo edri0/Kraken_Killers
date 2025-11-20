@@ -34,33 +34,41 @@ public class Level7 extends Map{
      SwordPirate swordDude = new SwordPirate(
              getMapTile(16, 17).getLocation().subtractY(25),
              getMapTile(17, 17).getLocation().subtractY(25),
-             Direction.LEFT
+             Direction.RIGHT
      );
      enemies.add(swordDude);
  
      // Ranged Pirate #1
      RangeEnemy rangedPirate1 = new RangeEnemy(
-             getMapTile(36, 15).getLocation().addY(2),
-             getMapTile(37, 15).getLocation().addY(2),
-             Direction.RIGHT
+             getMapTile(29, 17).getLocation().addY(2),
+             getMapTile(28, 17).getLocation().addY(2),
+             Direction.LEFT
      );
      enemies.add(rangedPirate1);
  
      // Fitz
      Fitz fitzEnemy = new Fitz(
-             getMapTile(30, 16).getLocation().addY(2),
-             getMapTile(33, 16).getLocation().addY(2),
+             getMapTile(30, 17).getLocation().addY(2),
+             getMapTile(33, 17).getLocation().addY(2),
              Direction.RIGHT
      );
      enemies.add(fitzEnemy);
  
      // Ranged Pirate #2
      RangeEnemy rangedPirate2 = new RangeEnemy(
-             getMapTile(32, 15).getLocation().addY(2),
-             getMapTile(37, 15).getLocation().addY(2),
+             getMapTile(36, 18).getLocation().addY(2),
+             getMapTile(37, 18).getLocation().addY(2),
              Direction.RIGHT
      );
      enemies.add(rangedPirate2);
+
+          // Ranged Pirate #2
+          RangeEnemy rangedPirate3 = new RangeEnemy(
+                getMapTile(55, 7).getLocation().addY(2),
+                getMapTile(54, 7).getLocation().addY(2),
+                Direction.RIGHT
+        );
+        enemies.add(rangedPirate3);
  
      return enemies;
  }
@@ -100,6 +108,13 @@ public ArrayList<NPC> loadNPCs() {
     return npcs;
     
     }
+
+
+// @Override
+// protected void mapEntity(Coin coin) {
+//         // TODO Auto-generated method stub
+//         throw new UnsupportedOperationException("Unimplemented method 'mapEntity'");
+// }
 
 }
 

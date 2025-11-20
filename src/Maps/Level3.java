@@ -44,15 +44,21 @@ public class Level3 extends Map{
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-       SwordPirate swordDude = new SwordPirate(getMapTile(10, 17).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
-       //getMapTile(16, 10).getLocation().subtractY(25)
+       SwordPirate swordDude = new SwordPirate(getMapTile(11, 17).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
        enemies.add(swordDude);
 
-       // RangeEnemy rangedPirate = new RangeEnemy(getMapTile(45, 13).getLocation().addY(2), getMapTile(44, 12).getLocation().addY(2), Direction.RIGHT);
-        //enemies.add(rangedPirate);
+       SwordPirate swordDude2 = new SwordPirate(getMapTile(14, 16).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+       enemies.add(swordDude2);
 
-    Fitz fitzEnemy = new Fitz(getMapTile(35, 16).getLocation().addY(2), getMapTile(34, 16).getLocation().addY(2), Direction.RIGHT);
-    enemies.add(fitzEnemy);
+       SwordPirate swordDude3 = new SwordPirate(getMapTile(29, 15).getLocation().subtractY(25),getMapTile(18, 10).getLocation().subtractY(25), Direction.LEFT);
+       enemies.add(swordDude3);
+
+
+        RangeEnemy rangedPirate = new RangeEnemy(getMapTile(44, 11).getLocation().addY(2), getMapTile(44, 12).getLocation().addY(2), Direction.RIGHT);
+        enemies.add(rangedPirate);
+
+    // Fitz fitzEnemy = new Fitz(getMapTile(35, 16).getLocation().addY(2), getMapTile(34, 16).getLocation().addY(2), Direction.RIGHT);
+    // enemies.add(fitzEnemy);
 
         //DinosaurEnemy SwordPirate = new DinosaurEnemy(getMapTile(19, 1).getLocation().addY(2), getMapTile(22, 1).getLocation().addY(2), Direction.RIGHT);
        // enemies.add(SwordPirate);
@@ -77,7 +83,7 @@ public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
     enhancedMapTiles.add(hmp);
 */
 
-    EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 12).getLocation());
+    EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 15).getLocation());
     enhancedMapTiles.add(endLevelBox);
 
     return enhancedMapTiles;

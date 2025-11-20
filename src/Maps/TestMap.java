@@ -41,7 +41,7 @@ public ArrayList<Enemy> loadEnemies() {
 
 
     SwordPirate swordPirate2 = new SwordPirate(
-           getMapTile(13, 6).getLocation().subtractY(25),
+           getMapTile(14, 7).getLocation().subtractY(25),
            getMapTile(13, 6).getLocation().subtractY(25),
            Direction.RIGHT
    );
@@ -78,7 +78,7 @@ public ArrayList<Enemy> loadEnemies() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
 
-        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(33, 8).getLocation());
+        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(33, 11).getLocation());
         enhancedMapTiles.add(endLevelBox);
 
         return enhancedMapTiles;
@@ -88,8 +88,8 @@ public ArrayList<Enemy> loadEnemies() {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Chest chest = new Chest(getMapTile(7, 10).getLocation().subtractY(13));
-        npcs.add(chest);
+       // Chest chest = new Chest(getMapTile(7, 10).getLocation().subtractY(13));
+      //  npcs.add(chest);
 
         return npcs;
         
