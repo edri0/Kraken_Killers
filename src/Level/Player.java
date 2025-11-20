@@ -19,6 +19,8 @@ import Inventory.Weapon;
 import UI.HealthBar;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
+
 import java.awt.Color;
 import Game.ArmorTimer;
 import NPCs.Chest;
@@ -27,6 +29,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
+import Enemies.Bullet;
+import Enemies.Fireball;
 import Level.Map; 
 
 public abstract class Player extends GameObject {
@@ -89,6 +93,7 @@ public abstract class Player extends GameObject {
     protected Key CROUCH_KEY = Key.DOWN;
     protected Key CLIMB_KEY = Key.C; 
     protected Key ATTACK_KEY = Key.A; 
+    protected Key SHOOT_KEY = Key.D; 
 
     //health bar
     private int currentHealth = 100;
@@ -115,7 +120,7 @@ public abstract class Player extends GameObject {
         public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName, GameState avatarType) {
              super(spriteSheet, x, y, startingAnimationName);
              this.avatarType = avatarType; 
-             
+
              facingDirection = Direction.RIGHT;
              airGroundState = AirGroundState.AIR;
              previousAirGroundState = airGroundState;
@@ -232,9 +237,13 @@ public abstract class Player extends GameObject {
         }
 
         //attack logic
-        else if (playerState == PlayerState.ATTACKING) {
-            // updateAttack();
-        }
+        // else if (playerState == PlayerState.ATTACKING) {
+        //     // updateAttack();
+        // }
+
+        // else if(playerState == playerState.SHOOTING) {
+        //     //updateShoot(); 
+        // }
 
     }
     public void reloadAnimations(SpriteSheet newSheet){
@@ -276,6 +285,9 @@ public abstract class Player extends GameObject {
             case ATTACKING:
                 playerAttacking();
                 break;
+            case SHOOTING:
+                playerShooting();
+                break;
         }
     }
 
@@ -308,6 +320,13 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(ATTACK_KEY); 
             playerState = PlayerState.ATTACKING; 
             hasDealtDamageThisAttack = false;
+            return; 
+        }
+
+        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY)){
+            keyLocker.lockKey(SHOOT_KEY); 
+            playerState = PlayerState.SHOOTING; 
+            playerShoot();
             return; 
         }
     }
@@ -379,6 +398,13 @@ public abstract class Player extends GameObject {
             hasDealtDamageThisAttack = false;
             SoundPlayer.playMusic("Resources/swords.wav", false); 
             //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
+            return; 
+        }
+
+        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY)){
+            keyLocker.lockKey(SHOOT_KEY); 
+            playerState = PlayerState.SHOOTING; 
+            playerShoot();
             return; 
         }
 
@@ -514,7 +540,7 @@ public abstract class Player extends GameObject {
 
             SoundPlayer.playMusic(swordFile, false); 
             System.out.println("Music file exists: " + new File(swordFile).exists());
-        }
+    }
     
     
 
@@ -531,8 +557,34 @@ public abstract class Player extends GameObject {
         }
     }
 
-   
-   
+    protected void playerShoot() {
+        int bulletX;
+            float movementSpeed;
+            if (facingDirection == Direction.RIGHT) {
+                bulletX = Math.round(getX()) + getWidth();
+                movementSpeed = 1.5f;
+            } else {
+                bulletX = Math.round(getX() - 21);
+                movementSpeed = -1.5f;
+            }
+
+            // define where fireball will spawn on the map (y location) relative to dinosaur enemy's location
+            int bulletY = Math.round(getY()) + 4;
+
+            // create Fireball enemy
+            Bullet bullet = new Bullet(new Point(bulletX, bulletY), movementSpeed, 60);
+
+            // add fireball enemy to the map for it to spawn in the level
+            map.addEnemy(bullet);
+ 
+    }
+
+    protected void playerShooting() {
+        if(Keyboard.isKeyUp(SHOOT_KEY)){
+            keyLocker.unlockKey(SHOOT_KEY); 
+            playerState = PlayerState.STANDING; 
+        }
+    }
 
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
     protected void increaseMomentum() {
@@ -582,6 +634,11 @@ public abstract class Player extends GameObject {
         else if (playerState == PlayerState.ATTACKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
+        }
+
+        else if (playerState == PlayerState.SHOOTING) {
+            // sets animation to a WALK animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "SHOOT_RIGHT" : "SHOOT_LEFT";
         }
     }
 

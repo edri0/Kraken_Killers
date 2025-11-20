@@ -154,6 +154,21 @@ public class JackSparrow extends Player {
                            .withBounds(14,22, 8, 9)
                             .build()
             });
+
+            put("SHOOT_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 3))
+                            .withScale(3)
+                        .withBounds(14, 22, 8, 9)
+                            .build()
+            });
+
+            put("SHOOT_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(6, 3))
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                           .withBounds(14,22, 8, 9)
+                            .build()
+            });
         }};
     }
 }
