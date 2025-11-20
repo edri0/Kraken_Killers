@@ -67,7 +67,7 @@ public abstract class Player extends GameObject {
     private int preArmorMaxHealth = -1;
 
     private ArmorType armorType = ArmorType.NONE;
-    private GameState avatarType = GameState.JACK;
+    private GameState avatarType;
     protected boolean isTouchingLeftWall = false;
     protected boolean isTouchingRightWall = false; 
 
@@ -112,8 +112,10 @@ public abstract class Player extends GameObject {
             
                 
         
-        public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
+        public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName, GameState avatarType) {
              super(spriteSheet, x, y, startingAnimationName);
+             this.avatarType = avatarType; 
+             
              facingDirection = Direction.RIGHT;
              airGroundState = AirGroundState.AIR;
              previousAirGroundState = airGroundState;
@@ -784,7 +786,7 @@ public abstract class Player extends GameObject {
          
         }
     
-    public Armor getEquippedWeapon(){
+    public Weapon getEquippedWeapon(){
         return equippedWeapon;
     }
 
@@ -833,10 +835,14 @@ public abstract class Player extends GameObject {
         }
     }
 
+
     public String getAvatarTypeName() {
         if( avatarType == GameState.JACK){
             return "JackSparrow";
-        }else{
+        }else if (avatarType == GameState.WILL) {
+            return "WillTurner";
+        }
+        else {
             return "WillTurner";
         }
     }

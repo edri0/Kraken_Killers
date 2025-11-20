@@ -3,6 +3,7 @@ package Players;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Game.GameState;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
@@ -16,7 +17,7 @@ public class JackSparrow extends Player {
     private PlayerInventory inventory = new PlayerInventory();
 
     public JackSparrow(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("JackSparrow2.png"), 32, 32), x, y, "STAND_RIGHT");
+        super(new SpriteSheet(ImageLoader.load("JackSparrow.png"), 32, 32), x, y, "STAND_RIGHT", GameState.JACK);
         gravity = .5f;
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
