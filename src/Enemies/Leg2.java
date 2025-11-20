@@ -39,7 +39,7 @@ public class Leg2 extends Enemy {
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
-        this.contactDamage = 30;
+        this.contactDamage = 20;
         initialize();
     }
 
