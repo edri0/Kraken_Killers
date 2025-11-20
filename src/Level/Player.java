@@ -322,7 +322,7 @@ public abstract class Player extends GameObject {
             return; 
         }
 
-        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY)){
+        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY) && getEquippedWeapon() != null && getEquippedWeapon().getName().toLowerCase().contains("pistol")){
             keyLocker.lockKey(SHOOT_KEY); 
             playerState = PlayerState.SHOOTING; 
             playerShoot();
@@ -400,7 +400,7 @@ public abstract class Player extends GameObject {
             return; 
         }
 
-        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY)){
+        else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY) && getEquippedWeapon() != null && getEquippedWeapon().getName().toLowerCase().contains("pistol")){
             keyLocker.lockKey(SHOOT_KEY); 
             playerState = PlayerState.SHOOTING; 
             playerShoot();
@@ -579,6 +579,10 @@ public abstract class Player extends GameObject {
     }
 
     protected void playerShooting() {
+        if (getEquippedWeapon() == null || !getEquippedWeapon().getName().toLowerCase().contains("pistol")){
+            playerState = PlayerState.STANDING; 
+            return; 
+        }
         if(Keyboard.isKeyUp(SHOOT_KEY)){
             keyLocker.unlockKey(SHOOT_KEY); 
             playerState = PlayerState.STANDING; 
