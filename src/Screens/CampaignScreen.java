@@ -37,8 +37,6 @@ import Maps.Level7;
 import Maps.FinalLevel;
 
 
-
-
 // This class is for when the platformer game is actually being played
 public class CampaignScreen extends Screen implements PlayerListener {
     protected final ScreenCoordinator screenCoordinator;
@@ -51,16 +49,19 @@ public class CampaignScreen extends Screen implements PlayerListener {
     protected boolean levelCompletedStateChangeStart;
 
     private PickPlayerScreen pickPlayerScreen; 
- 
+
     private final PlayerInventory playerInventory;
     private ShopScreen shopScreen;
     private boolean sToggleLock = false;
 
-
-
     private int levelIndex = 0;
     private static final String SAVE_FILE = "campaign_level_save.txt";
 
+    // Minimal added fields for final-level flow
+    private static final int FINAL_LEVEL_INDEX = 7;
+    private EndLevelScreen endLevelScreen;
+    private boolean endGameActive = false;
+    private int endGameTimer = 0;
 
 
     public CampaignScreen(ScreenCoordinator screenCoordinator, PlayerInventory inventory, PickPlayerScreen pickPlayerScreen) {
@@ -76,18 +77,18 @@ public class CampaignScreen extends Screen implements PlayerListener {
         } else {
             levelIndex = 0;
         }
-        
+
 
         this.map = loadMapForIndex(levelIndex);
 
         // define/setup map
         Point startPos = map.getPlayerStartPosition(); 
-        
+
         int selectedPlayerType = 0; 
         if(pickPlayerScreen != null){
             selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
         }
-        
+
 
         if(this.player == null){
             if(selectedPlayerType ==0){
@@ -130,6 +131,16 @@ public class CampaignScreen extends Screen implements PlayerListener {
 
     //Campaign
     public void update() {
+        // END GAME SCREEN HANDLING (minimal)
+        if (endGameActive) {
+            endGameTimer--;
+            if (endGameTimer <= 0) {
+                screenCoordinator.setGameState(GameState.MENU);
+                endGameActive = false;
+            }
+            return;
+        }
+
         //DO NOT CHANGE THIS PLEASE-Nicky
         // based on screen state, perform specific actions
         switch (campaignScreenState) {
@@ -159,76 +170,78 @@ public class CampaignScreen extends Screen implements PlayerListener {
                        equipped.equip(player);
                     }
                 campaignScreenState = CampaignScreenState.RUNNING;
-                
+
                 }
                 if (!sDown) sToggleLock = false;
                 break;
             }
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
-            if (levelCompletedStateChangeStart) {
-                screenTimer = 130;
-                levelCompletedStateChangeStart = false;
-            } else {
-                levelClearedScreen.update();
-                screenTimer--;
-                if (screenTimer <= 0) {
-                    levelIndex++;
-                    saveProgress();
-                    
-// Load next level dynamically
-Map nextMap = loadMapForIndex(levelIndex);
-if (nextMap == null) {
-    // No more levels — reset to menu or end of campaign
-    screenCoordinator.setGameState(GameState.MENU);
-    return;
-}
-this.map = nextMap;
+                if (levelCompletedStateChangeStart) {
+                    screenTimer = 130;
+                    levelCompletedStateChangeStart = false;
+                } else {
+                    levelClearedScreen.update();
+                    screenTimer--;
+                    if (screenTimer <= 0) {
 
-Point levelStartPos = map.getPlayerStartPosition();
+                        // If final level, trigger end-level flow
+                        if (levelIndex == FINAL_LEVEL_INDEX) {
+                            triggerEndGameScreen();
+                            return;
+                        }
 
-// -----------------------------
-// FIX: Prevent NullPointerException
-// -----------------------------
-int selectedPlayerType;
-if (pickPlayerScreen != null) {
-    selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
-} else {
-    selectedPlayerType = 0;   // DEFAULT PLAYER (Jack Sparrow)
-}
+                        levelIndex++;
+                        saveProgress();
 
-// -----------------------------
-// Create player
-// -----------------------------
-if (selectedPlayerType == 0) {
-    this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
-} else {
-    this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
-}
+                        // Load next level dynamically
+                        Map nextMap = loadMapForIndex(levelIndex);
+                        if (nextMap == null) {
+                            // No more levels — go to menu
+                            screenCoordinator.setGameState(GameState.MENU);
+                            return;
+                        }
+                        this.map = nextMap;
 
-                   
-                    this.player.setMap(map); 
-                    this.player.addListener(this); 
-                    
-                    reapplyArmor();
-                    this.shopScreen.setPlayer(this.player);
-                    this.campaignScreenState = CampaignScreenState.RUNNING;
+                        Point levelStartPos = map.getPlayerStartPosition();
+
+                        // Prevent NullPointerException
+                        int selectedPlayerType;
+                        if (pickPlayerScreen != null) {
+                            selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
+                        } else {
+                            selectedPlayerType = 0;   // DEFAULT PLAYER (Jack Sparrow)
+                        }
+
+                        // Create player
+                        if (selectedPlayerType == 0) {
+                            this.player = new JackSparrow(levelStartPos.x, levelStartPos.y);
+                        } else {
+                            this.player = new WillTurner(levelStartPos.x, levelStartPos.y);
+                        }
+
+                        this.player.setMap(map); 
+                        this.player.addListener(this); 
+
+                        reapplyArmor();
+                        this.shopScreen.setPlayer(this.player);
+                        this.campaignScreenState = CampaignScreenState.RUNNING;
+                    }
                 }
-            }
-            break;
+                break;
 
             // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
             case LEVEL_LOSE:
                 levelLoseScreen.update();
                 break;
-           
-                
+
+
         }
         //DO NOT CHANGE THIS PLEASE-Nicky
     }
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
-    
+
         switch (campaignScreenState) {
             case RUNNING:
                 map.draw(graphicsHandler);
@@ -261,15 +274,15 @@ if (selectedPlayerType == 0) {
     }
 
     @Override
-  
-public void onLevelCompleted() {
-    if (campaignScreenState != CampaignScreenState.LEVEL_COMPLETED) {
-        campaignScreenState = CampaignScreenState.LEVEL_COMPLETED;
-        levelCompletedStateChangeStart = true;
-       
-        // DON'T increment levelIndex here
+
+    public void onLevelCompleted() {
+        if (campaignScreenState != CampaignScreenState.LEVEL_COMPLETED) {
+            campaignScreenState = CampaignScreenState.LEVEL_COMPLETED;
+            levelCompletedStateChangeStart = true;
+
+            // DON'T increment levelIndex here
+        }
     }
-}
 
 
     @Override
@@ -278,37 +291,41 @@ public void onLevelCompleted() {
             campaignScreenState = CampaignScreenState.LEVEL_LOSE;
         }
     }
-
     public void resetLevel() {
-        this.map = loadMapForIndex(levelIndex);  //This is needed for the levels to work
+        this.map = loadMapForIndex(levelIndex);
         Point resetStartPos = map.getPlayerStartPosition(); 
-        int selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
-       
-        if(selectedPlayerType == 0){
+    
+        int selectedPlayerType;
+        if (pickPlayerScreen != null) {
+            selectedPlayerType = pickPlayerScreen.getSelectedPlayer();
+        } else {
+            selectedPlayerType = 0; // DEFAULT = Jack Sparrow
+        }
+    
+        if (selectedPlayerType == 0) {
             this.player = new JackSparrow(resetStartPos.x, resetStartPos.y);
+        } else {
+            this.player = new WillTurner(resetStartPos.x, resetStartPos.y);
         }
-        else {
-            this.player = new WillTurner(resetStartPos.x, resetStartPos.y); 
-        }
+    
         this.player.setMap(map);
         this.player.addListener(this);
-
-        //make sure armor functions through level changes
+    
         reapplyArmor();
         this.shopScreen = new ShopScreen(playerInventory, player);
         this.shopScreen.initialize();
-
+    
         player.getHealthBar().update();
-        
         campaignScreenState = CampaignScreenState.RUNNING;
         levelCompletedStateChangeStart = false;
     }
+    
 
     public void goBackToMenu() {
         saveProgress();
         screenCoordinator.setGameState(GameState.MENU);
     }
-    
+
 
     private void saveProgress(){
         try (FileWriter writer = new FileWriter(SAVE_FILE)) {
@@ -347,17 +364,23 @@ public void onLevelCompleted() {
             case 5: return new Level6();
             case 6: return new Level7();
             case 7: return new FinalLevel();
-            default: return new TitleScreenMap(); // no more levels yet
-                    }
-                }
-            
-                private void reapplyArmor(){
+        }
+        return null;
+    }
+
+    private void triggerEndGameScreen() {
+        endLevelScreen = new EndLevelScreen();
+        endGameActive = true;
+        endGameTimer = 180;  // show for 3 seconds (adjust frames as needed)
+    }
+
+    private void reapplyArmor(){
         Armor armor = playerInventory.getEquippedArmor();
         if (armor != null){
             armor.equip(this.player);
         }
     }
-    
+
     // This enum represents the different states this screen can be in
     private enum CampaignScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE, SHOP

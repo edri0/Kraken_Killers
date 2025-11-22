@@ -3,6 +3,7 @@ package Maps;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Sprite;
+import Level.Coin;
 import Level.Map;
 import Tilesets.TitleCommonTileset;
 import Utils.Colors;
@@ -25,6 +26,12 @@ public class TitleScreenMap extends Map {
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
         cat.draw(graphicsHandler);
+    }
+
+    @Override
+    protected void mapEntity(Coin coin) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mapEntity'");
     }
 
 }

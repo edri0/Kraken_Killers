@@ -43,10 +43,5 @@ public class Weapon extends Item{
             player.updatePlayerWeaponSprite(player.getAvatarTypeName(), weaponType);
     }
     
-    public void unequipWeapon(Player player) {
-        if (!equipped) return;
-        equipped = false;
-        player.removeWeapon();
-        player.updatePlayerWeaponSprite(player.getAvatarTypeName(), WeaponType.NONE);
-    }
+
 }
