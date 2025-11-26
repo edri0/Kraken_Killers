@@ -43,4 +43,5 @@ public class Weapon extends Item{
             player.updatePlayerWeaponSprite(player.getAvatarTypeName(), weaponType);
     }
     
+
 }
