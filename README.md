@@ -18,7 +18,7 @@ Down arrow to crouch \
 C key and Up arrow to climb\
 A key to attack \
 D to use the one-shot pistol  \
-S key to access the shop  \
+S key to access the shop  
 
 ## Documentation
 This project includes a GitHub pages website in the `docs` folder where the documentation resides.<br>
