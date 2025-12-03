@@ -10,6 +10,16 @@ I recommend using an IDE such as IntelliJ or Eclipse to run this game.
 The main method for the game is in the `Game` package > `Game.java` file.<br>
 The main method for the map editor is in the `MapEditor` package > `MapEditor.java` file.
 
+## Controls
+Arrow keys to go left, right 
+Select player and game mode with arrows for up/down and space for selection 
+Up arrow to jump 
+Down arrow to crouch 
+C key to climb 
+A key to attack 
+D to use the one-shot pistol  
+S key to access the shop  
+
 ## Documentation
 This project includes a GitHub pages website in the `docs` folder where the documentation resides.<br>
 It can be accessed at [https://a-r-t.github.io/SER-225-Game-Platformer/](https://a-r-t.github.io/SER-225-Game-Platformer/).
