@@ -1,7 +1,7 @@
 # SER225 Platformer Game
 
 ## What is this?
-This is a platformer game created for Quinnipiac's SER225 Agile Development class. In this class this game was modified to have a Pirates of the Carribean theme and many different features to help game play stay engaging and feel immersive. 
+This is a platformer game created for Quinnipiac's SER225 Agile Development class. In this class this game was modified to have a Pirates of the Carribean theme and many different features to help game play stay engaging and feel immersive. The goal of thsi game is to make it through all eight levels without being killed by the enemies. You go through each level trying to reach the yellow box at the end, you move back and forth, jump, attack, use the shop, and climb walls in order to avoid the enemies and make it to the end. 
 
 ## How to run this project?
 I did not use any external libraries for this, so you can clone this repo as is and run it out of the box with Java (min version 8).
