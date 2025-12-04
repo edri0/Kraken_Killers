@@ -5,42 +5,37 @@ import Utils.ImageUtils;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
-// contains a bunch of helpful methods for loading images file into the game
+// Handles loading images safely, works in IDE and JAR
 public class ImageLoader {
 
-    // loads an image and sets its transparent color to the one defined in the Config class
+    // Load image with default transparent color
     public static BufferedImage load(String imageFileName) {
-        return ImageLoader.load(imageFileName, Config.TRANSPARENT_COLOR);
+        return load(imageFileName, Config.TRANSPARENT_COLOR);
     }
 
-    // loads an image and allows the transparent color to be specified
+    // Load image with specified transparent color
     public static BufferedImage load(String imageFileName, Color transparentColor) {
-        try {
-            BufferedImage initialImage = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
-            return ImageUtils.transformColorToTransparency(initialImage, transparentColor);
+        try (InputStream is = ImageLoader.class.getClassLoader().getResourceAsStream(imageFileName)) {
+            if (is == null) {
+                throw new RuntimeException("Image file not found in classpath: " + imageFileName);
+            }
+            BufferedImage img = ImageIO.read(is);
+            return ImageUtils.transformColorToTransparency(img, transparentColor);
         } catch (IOException e) {
-            System.out.println("Unable to find file " + Config.RESOURCES_PATH + imageFileName);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to load image: " + imageFileName, e);
         }
     }
 
-    // loads a piece of an image from an image file and sets its transparent color to the one defined in the Config class
+    // Load a subimage
     public static BufferedImage loadSubImage(String imageFileName, int x, int y, int width, int height) {
-        return ImageLoader.loadSubImage(imageFileName, Config.TRANSPARENT_COLOR, x, y, width, height);
+        return loadSubImage(imageFileName, Config.TRANSPARENT_COLOR, x, y, width, height);
     }
 
-    // loads a piece of an image from an image file and allows the transparent color to be specified
     public static BufferedImage loadSubImage(String imageFileName, Color transparentColor, int x, int y, int width, int height) {
-        try {
-            BufferedImage initialImage = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
-            BufferedImage transparentImage = ImageUtils.transformColorToTransparency(initialImage, transparentColor);
-            return transparentImage.getSubimage(x, y, width, height);
-        } catch (IOException e) {
-            System.out.println("Unable to find file " + Config.RESOURCES_PATH + imageFileName);
-            throw new RuntimeException(e);
-        }
+        BufferedImage img = load(imageFileName, transparentColor);
+        return img.getSubimage(x, y, width, height);
     }
 }

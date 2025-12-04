@@ -1,36 +1,35 @@
 package Maps;
 
 import EnhancedMapTiles.EndLevelBox;
-// import EnhancedMapTiles.HorizontalMovingPlatform;
 import Level.*;
 import NPCs.Chest;
 import Tilesets.CommonTileset5;
 import Utils.Direction;
+import Engine.SoundPlayer;
 
-//import Utils.Direction;
 import java.util.ArrayList;
-//import Engine.ImageLoader;
-//import GameObject.Rectangle;
 
 import Enemies.DinosaurEnemy;
 import Enemies.RangeEnemy;
 import Enemies.Squidenemy;
 import Enemies.SwordPirate;
-import Engine.SoundPlayer;
 
+public class Level5 extends Map {
 
-public class Level5 extends Map{
-
-    public Level5(){
+    public Level5() {
         super("level5.txt", new CommonTileset5());
         this.playerStartPosition = getMapTile(4, 9).getLocation();
-        SoundPlayer.stopMusic(); 
+        SoundPlayer.stopMusic();
     }
-    
 
-@Override
-public ArrayList<Enemy> loadEnemies() {
-    ArrayList<Enemy> enemies = new ArrayList<>();
+    @Override
+    public void mapEntity(Coin c) {
+        // No coin logic for this level
+    }
+
+    @Override
+    public ArrayList<Enemy> loadEnemies() {
+        ArrayList<Enemy> enemies = new ArrayList<>();
 
         // -------------------------
         // SQUID 1
@@ -41,8 +40,7 @@ public ArrayList<Enemy> loadEnemies() {
                 Direction.RIGHT
         );
         enemies.add(squid1);
-    
-    
+
         // -------------------------
         // SQUID 2
         // -------------------------
@@ -52,8 +50,7 @@ public ArrayList<Enemy> loadEnemies() {
                 Direction.LEFT
         );
         enemies.add(squid2);
-    
-    
+
         // -------------------------
         // SQUID 3
         // -------------------------
@@ -62,76 +59,42 @@ public ArrayList<Enemy> loadEnemies() {
                 getMapTile(49, 18).getLocation().addY(2),
                 Direction.RIGHT
         );
-     // Sword Pirate
-     SwordPirate swordDude = new SwordPirate(
-             getMapTile(45, 10).getLocation().subtractY(25),
-             getMapTile(46, 10).getLocation().subtractY(25),
-             Direction.LEFT
-     );     enemies.add(swordDude);
-          // Sword Pirate
-          SwordPirate swordDude2 = new SwordPirate(
-            getMapTile(19, 10).getLocation().subtractY(25),
-            getMapTile(20, 10).getLocation().subtractY(25),
-            Direction.LEFT
-    );
-    enemies.add(swordDude2);
+        enemies.add(squid3);
 
-              // Sword Pirate
-              SwordPirate swordDude3 = new SwordPirate(
-                getMapTile(7, 12).getLocation().subtractY(25),
-                getMapTile(5, 12).getLocation().subtractY(25),
-                Direction.LEFT
-        );
-        enemies.add(swordDude3);
+        // -------------------------
+        // Sword Pirates
+        // -------------------------
+        enemies.add(new SwordPirate(getMapTile(45, 10).getLocation().subtractY(25),
+                getMapTile(46, 10).getLocation().subtractY(25), Direction.LEFT));
+        enemies.add(new SwordPirate(getMapTile(19, 10).getLocation().subtractY(25),
+                getMapTile(20, 10).getLocation().subtractY(25), Direction.LEFT));
+        enemies.add(new SwordPirate(getMapTile(7, 12).getLocation().subtractY(25),
+                getMapTile(5, 12).getLocation().subtractY(25), Direction.LEFT));
+        enemies.add(new SwordPirate(getMapTile(35, 12).getLocation().subtractY(25),
+                getMapTile(23, 12).getLocation().subtractY(25), Direction.LEFT));
 
-                  // Sword Pirate
-                  SwordPirate swordDude4 = new SwordPirate(
-                    getMapTile(35, 12).getLocation().subtractY(25),
-                    getMapTile(23, 12).getLocation().subtractY(25),
-                    Direction.LEFT
-            );
-            enemies.add(swordDude4);
+        return enemies;
+    }
 
-    return enemies;
-}
+    @Override
+    public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
+        ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
+        // End level box
+        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 7).getLocation());
+        enhancedMapTiles.add(endLevelBox);
 
-@Override
-public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
-    ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-/* 
-    HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
-            ImageLoader.load("GreenPlatform.png"),
-            getMapTile(40, 10).getLocation(),
-            getMapTile(38, 10).getLocation(),
-            TileType.JUMP_THROUGH_PLATFORM,
-            3,
-            new Rectangle(0, 6,16,4),
-            Direction.RIGHT
-    );
-    
-    enhancedMapTiles.add(hmp);
-*/
+        return enhancedMapTiles;
+    }
 
-   
-
-    EndLevelBox endLevelBox = new EndLevelBox(getMapTile(49, 7).getLocation());
-    enhancedMapTiles.add(endLevelBox);
-
-    return enhancedMapTiles;
-} 
-
-//@Override
-
+    @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-        
-        //Chest chest = new Chest(getMapTile(35, 11).getLocation().subtractY(13));
-        //npcs.add(chest);
-        
-        return npcs;
-        
-        }
-    
-}
 
+        // Example chest (commented)
+        // Chest chest = new Chest(getMapTile(35, 11).getLocation().subtractY(13));
+        // npcs.add(chest);
+
+        return npcs;
+    }
+}

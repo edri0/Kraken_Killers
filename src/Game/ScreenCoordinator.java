@@ -8,7 +8,7 @@ import Inventory.PlayerInventory;
 import Screens.ArcadeScreen;
 import Screens.MenuScreen;
 import Screens.CampaignScreen;
-import Screens.PickPlayerScreen; 
+import Screens.PickPlayerScreen;
 import Screens.ControlsScreen;
 
 /*
@@ -17,70 +17,74 @@ import Screens.ControlsScreen;
  */
 public class ScreenCoordinator extends Screen {
 
-	private PickPlayerScreen pickPlayerScreen; 
-	//Global selected player(default to JackSparrow)
-	
-	// currently shown Screen
-	protected Screen currentScreen = new DefaultScreen();
+    private PickPlayerScreen pickPlayerScreen;
+    // Global selected player (default to JackSparrow)
 
-	// keep track of gameState so ScreenCoordinator knows which Screen to show
-	protected GameState gameState;
-	protected GameState previousGameState;
+    // Currently shown Screen
+    protected Screen currentScreen = new DefaultScreen();
 
-	private final PlayerInventory sharedInventory = new PlayerInventory();
+    // Keep track of gameState so ScreenCoordinator knows which Screen to show
+    protected GameState gameState;
+    protected GameState previousGameState;
 
-	public GameState getGameState() {
-		return gameState;
-	}
+    private final PlayerInventory sharedInventory = new PlayerInventory();
 
-	// Other Screens can set the gameState of this class to force it to change the currentScreen
-	public void setGameState(GameState gameState) {
-		this.gameState = gameState;
-	}
+    public GameState getGameState() {
+        return gameState;
+    }
 
-	@Override
-	public void initialize() {
-		// start game off with Menu Screen
-		gameState = GameState.MENU;
-		SoundPlayer.preloadSounds("Resources/POC.wav", "Resources/walking.wav", "Resources/jump.wav", "Resources/swords.wav");
-	}
+    // Other Screens can set the gameState of this class to force it to change the currentScreen
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 
-	@Override
-	public void update() {
-		do {
-			// if previousGameState does not equal gameState, it means there was a change in gameState
-			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
-			if (previousGameState != gameState) {
-				switch(gameState) {
-					case MENU:
-						currentScreen = new MenuScreen(this);
-						break;
-					case PLAYER: 
-						pickPlayerScreen = new PickPlayerScreen(this); 
-						currentScreen = pickPlayerScreen; 
-						break; 
-					case LEVEL:
-						currentScreen = new CampaignScreen(this, sharedInventory, pickPlayerScreen);
-						break;
-					case ARCADE:
-						currentScreen = new ArcadeScreen(this, sharedInventory, pickPlayerScreen);
-						break;
-					case CONTROLS:
-						currentScreen = new ControlsScreen(this);
-						break; 
-				}
-				currentScreen.initialize();
-			}
-			previousGameState = gameState;
+    @Override
+    public void initialize() {
+        // start game off with Menu Screen
+        gameState = GameState.MENU;
 
-			// call the update method for the currentScreen
-			currentScreen.update();
-		} while (previousGameState != gameState);
-	}
+        // Load from JAR root
+        SoundPlayer.preloadSounds("POC.wav", "walking.wav", "jump.wav", "swords.wav");
+    }
 
-	@Override
-	public void draw(GraphicsHandler graphicsHandler) {
-		// call the draw method for the currentScreen
-		currentScreen.draw(graphicsHandler);
-	}
+
+    @Override
+    public void update() {
+        do {
+            // If previousGameState does not equal gameState, it means there was a change in gameState
+            // This triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
+            if (previousGameState != gameState) {
+                switch(gameState) {
+                    case MENU:
+                        currentScreen = new MenuScreen(this);
+                        break;
+                    case PLAYER:
+                        pickPlayerScreen = new PickPlayerScreen(this);
+                        currentScreen = pickPlayerScreen;
+                        break;
+                    case LEVEL:
+                        currentScreen = new CampaignScreen(this, sharedInventory, pickPlayerScreen);
+                        break;
+                    case ARCADE:
+                        currentScreen = new ArcadeScreen(this, sharedInventory, pickPlayerScreen);
+                        break;
+                    case CONTROLS:
+                        currentScreen = new ControlsScreen(this);
+                        break;
+                }
+                currentScreen.initialize();
+            }
+            previousGameState = gameState;
+
+            // Call the update method for the currentScreen
+            currentScreen.update();
+        } while (previousGameState != gameState);
+    }
+
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        // Call the draw method for the currentScreen
+        currentScreen.draw(graphicsHandler);
+    }
 }
+

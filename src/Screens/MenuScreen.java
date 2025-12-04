@@ -63,7 +63,7 @@ public class MenuScreen extends Screen {
 
 
         if (!SoundPlayer.isPlaying()){
-            SoundPlayer.playMusic("Resources/POC.wav", true); 
+            SoundPlayer.playMusic("POC.wav", true);
             System.out.println("Music file exists: " + new File("POC.wav").exists());
         }
     }

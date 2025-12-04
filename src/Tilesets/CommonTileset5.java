@@ -280,39 +280,41 @@ mapTiles.add(LightPointTile);
           mapTiles.add(WaveTile);
         
         //SLOPE
+        //SLOPE
 // (6,6) RIGHT EDGE SLOPE
-Frame slopeRightEdge = new FrameBuilder(getSubImage(6,6))
-        .withScale(tileScale)
-        .build();
+        Frame slopeRightEdge = new FrameBuilder(getSubImage(6,6))
+                .withScale(tileScale)
+                .build();
 
-MapTileBuilder slopeRightEdgeTile = new MapTileBuilder(slopeRightEdge)
-        .withTileType(TileType.SLOPE)
-        .withTileLayout(SlopeTileLayoutUtils.createRight45SlopeLayout(spriteWidth, (int) tileScale));
+        MapTileBuilder slopeRightEdgeTile = new MapTileBuilder(slopeRightEdge)
+                .withTileType(TileType.SLOPE)
+                .withTileLayout(SlopeTileLayoutUtils.createRight45SlopeLayout(spriteWidth, (int) tileScale));
 
-mapTiles.add(slopeRightEdgeTile);
+        mapTiles.add(slopeRightEdgeTile);
+
 
 
 // (5,5) PEAK (SOLID TILE)
-Frame peakFrame = new FrameBuilder(getSubImage(5, 5))
-        .withScale(tileScale)
-        .build();
+        Frame peakFrame = new FrameBuilder(getSubImage(5, 5))
+                .withScale(tileScale)
+                .build();
 
-MapTileBuilder peakTile = new MapTileBuilder(peakFrame)
-        .withTileType(TileType.NOT_PASSABLE);
+        MapTileBuilder peakTile = new MapTileBuilder(peakFrame)
+                .withTileType(TileType.NOT_PASSABLE);
 
-mapTiles.add(peakTile);
+        mapTiles.add(peakTile);
 
 
 // (5,6) LEFT EDGE SLOPE
-Frame slopeLeftEdge = new FrameBuilder(getSubImage(5, 6))
-        .withScale(tileScale)
-        .build();
+        Frame slopeLeftEdge = new FrameBuilder(getSubImage(5, 6))
+                .withScale(tileScale)
+                .build();
 
-MapTileBuilder slopeLeftEdgeTile = new MapTileBuilder(slopeLeftEdge)
-        .withTileType(TileType.SLOPE)
-        .withTileLayout(SlopeTileLayoutUtils.createLeft45SlopeLayout(spriteWidth, (int) tileScale));
+        MapTileBuilder slopeLeftEdgeTile = new MapTileBuilder(slopeLeftEdge)
+                .withTileType(TileType.SLOPE)
+                .withTileLayout(SlopeTileLayoutUtils.createLeft45SlopeLayout(spriteWidth, (int) tileScale));
 
-mapTiles.add(slopeLeftEdgeTile);
+        mapTiles.add(slopeLeftEdgeTile);
 
 
 
@@ -320,41 +322,43 @@ mapTiles.add(slopeLeftEdgeTile);
 // ROW 6
 // -------------------------
 
-// (6,4) RIGHT INNER SLOPE
-Frame slopeRightInner = new FrameBuilder(getSubImage(6, 4))
-        .withScale(tileScale)
-        .build();
 
-MapTileBuilder slopeRightInnerTile = new MapTileBuilder(slopeRightInner)
-        .withTileType(TileType.SLOPE)
-        .withTileLayout(SlopeTileLayoutUtils.createRight45SlopeLayout(spriteWidth, (int) tileScale));
+// (6,4) RIGHT INNER SLOPE (player climbs upward)
+        Frame slopeRightInner = new FrameBuilder(getSubImage(6, 4))
+                .withScale(tileScale)
+                .build();
 
-mapTiles.add(slopeRightInnerTile);
+        MapTileBuilder slopeRightInnerTile = new MapTileBuilder(slopeRightInner)
+                .withTileType(TileType.SLOPE)
+                // Use LEFT layout so player climbs upward
+                .withTileLayout(SlopeTileLayoutUtils.createLeft45SlopeLayout(spriteWidth, (int) tileScale));
+
+        mapTiles.add(slopeRightInnerTile);
 
 
 // (6,5) CENTER SOLID TILE
-Frame centerFrame = new FrameBuilder(getSubImage(6, 5))
-        .withScale(tileScale)
-        .build();
+        Frame centerFrame = new FrameBuilder(getSubImage(6, 5))
+                .withScale(tileScale)
+                .build();
 
-MapTileBuilder centerTile = new MapTileBuilder(centerFrame)
-        .withTileType(TileType.NOT_PASSABLE);
+        MapTileBuilder centerTile = new MapTileBuilder(centerFrame)
+                .withTileType(TileType.NOT_PASSABLE);
 
-mapTiles.add(centerTile);
+        mapTiles.add(centerTile);
 
 
-// (6,6) LEFT INNER SLOPE
-Frame slopeLeftInner = new FrameBuilder(getSubImage(6, 6))
-        .withScale(tileScale)
-        .build();
+// (6,6) LEFT INNER SLOPE (player climbs upward)
+        Frame slopeLeftInner = new FrameBuilder(getSubImage(6, 6))
+                .withScale(tileScale)
+                .build();
 
-MapTileBuilder slopeLeftInnerTile = new MapTileBuilder(slopeLeftInner)
-        .withTileType(TileType.SLOPE)
-        .withTileLayout(SlopeTileLayoutUtils.createLeft45SlopeLayout(spriteWidth, (int) tileScale));
+        MapTileBuilder slopeLeftInnerTile = new MapTileBuilder(slopeLeftInner)
+                .withTileType(TileType.SLOPE)
+                // Use RIGHT layout so player climbs upward along this side
+                .withTileLayout(SlopeTileLayoutUtils.createRight45SlopeLayout(spriteWidth, (int) tileScale));
 
-mapTiles.add(slopeLeftInnerTile);
+        mapTiles.add(slopeLeftInnerTile);
 
-        //SLOPE 
 
 
         // Ladder

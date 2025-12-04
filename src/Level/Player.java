@@ -102,9 +102,9 @@ public abstract class Player extends GameObject {
     private boolean walkingSoundPlaying = false; 
     
 
-    public static final String walkFile = "Resources/walking.wav"; 
-    public static final String jumpFile = "Resources/jump.wav"; 
-    public static final String swordFile = "Resources/swords.wav"; 
+    public static final String walkFile = "walking.wav";
+    public static final String jumpFile = "jump.wav";
+    public static final String swordFile = "swords.wav";
 
 
 
@@ -388,16 +388,19 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
-         
-        else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)){
-            keyLocker.lockKey(ATTACK_KEY); 
-            playerState = PlayerState.ATTACKING; 
-            SoundPlayer.playMusic(swordFile, false); 
-            System.out.println("Music file exists: " + new File(swordFile).exists());
+
+        else if (Keyboard.isKeyDown(ATTACK_KEY) && !keyLocker.isKeyLocked(ATTACK_KEY)) {
+            keyLocker.lockKey(ATTACK_KEY);
+            playerState = PlayerState.ATTACKING;
+
+            // Play sword sound from JAR root
+
             hasDealtDamageThisAttack = false;
-            SoundPlayer.playMusic("Resources/swords.wav", false); 
-            //System.out.println("Music file exists: " + new File("Resources/swords.wav").exists());
-            return; 
+
+            // Optional: debug if the sound exists in the filesystem (won't work in JAR)
+            // System.out.println("Music file exists: " + new File(SoundPlayer.SWORD_FILE).exists());
+
+            return;
         }
 
         else if (Keyboard.isKeyDown(SHOOT_KEY) && !keyLocker.isKeyLocked(SHOOT_KEY)){
